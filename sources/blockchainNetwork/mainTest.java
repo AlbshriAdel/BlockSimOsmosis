@@ -26,7 +26,7 @@ public class mainTest {
 			
 			
 			BlockchainController.generateNodes(); // Create blockchain nodes 
-			Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
+			//Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
 
 
 			//BlockchainController.generateMiner(); // Create blockchain miner

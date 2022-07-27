@@ -86,7 +86,7 @@ public class Block {
 	/**
 	 * Return transactions that included in the block
 	 * 
-	 * @return miner
+	 * @return transactions
 	 */
 	public ArrayList<Transaction> getTransactions() {
 		return transactions;

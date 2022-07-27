@@ -1,4 +1,5 @@
 package blockchainNetwork;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,46 +14,52 @@ import java.util.concurrent.ThreadLocalRandom;
 //import Simulator.Event;
 //import Simulator.InputConfig;
 import blockchainNetwork.Scheduler;
+
 //import Simulator.Statistics;
 //
 public class BlockCmmit {
-	
-	
 
-	
-	// done 
+	// done
 	public static void generateInitialEvents() {
 		System.out.println("####Generate Initial Events####");
-		int currentTime=0;
-			//for (Miner miner : InputConfig.getMiners()) {
-		
-					Scheduler.createBlockEvent(InputConfig.getMiners().get(0), currentTime);
-					//System.out.println("=> An event has been created successfully [" + miner.getId() + "], node type is [" + miner.getNodeType() + "] at [" + currentTime + "]");
-			//	}
-			}
+		int currentTime = 0;
 
+		generateNextBlock(Consensus.getAassignLeader(), currentTime);
+
+	}
+
+	private static void generateNextBlock(Miner miner, double currentTime) {
+		double blockTime = currentTime + 0.555; // time when miner x generate the next block
+		Scheduler.createBlockEvent(miner, blockTime);
+
+	}
+
+		public static void handleEvent(Event event) {
+			if (event.getType() == "create_block") {
+				toGenerateBlock(event);
+				
+			}else if (event.getType() =="receive_block") {
+				BlockCmmit.receiveBlock(event);
+		}
+			}
 		
-//		public static void handleEvent(Event event) {
-//			if (event.getType() == "create_block") {
-//				//BlockCmmit.createBlock(event);
-//			}else if (event.getType() =="receive_block") {
-//				BlockCmmit.receiveBlock(event);
-//		}
-//			}
-//		
-//		
-//		//private static void createBlock(Event event) {
-//		static Event event;
-//		static void createBlock() {
-//			
-//		static void testexploreBlock() {
-//			for(int i=0 ; i<InputConfig.getMiners().get(0).getBlockchain().size() ; i++) {
-//				System.out.println("[test block new ] block ID : " + InputConfig.getMiners().get(0).getBlockchain().get(i).getId() );
-//				System.out.println("[test block new 2] block time : " + InputConfig.getMiners().get(0).getBlockchain().get(i).getSize());
-//				System.out.println("[test block new 3] block gas price : " + InputConfig.getMiners().get(0).getBlockchain().get(i).getTransactions().size());
-//				
-//			}
-//		}
+
+		static void toGenerateBlock(Event event) {
+			
+			Miner miner= Consensus.getAassignLeader();
+			int minerID= miner.getNodeId();
+			double eventTime=event.getTime();
+			long blockPrevious=event.getBlock().getPreviousBlocKID();
+			
+			Transaction.executeTranscationsB(miner,eventTime);
+		     miner.getBlockchainLedger().add(event.getBlock());
+		}
+		
+		private static void receiveBlock(Event event){
+			
+
+		 }
+
 //		
 //		static void testNewArray() {
 //			for(int i=0 ; i< transactions.size(); i++) {
@@ -86,16 +93,8 @@ public class BlockCmmit {
 //		
 //		
 //		
-//		private static void generateNextBlock(Miner miner, double d) {
-//			Scheduler.createBlockEvent(miner, d);
-//			
-//			
-//			
-//		}
+
 //		
 //
-//	private static void receiveBlock(Event event){
-//		
-//
-// }
-	}
+
+}

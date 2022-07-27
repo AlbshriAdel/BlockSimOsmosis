@@ -16,7 +16,6 @@ public class BlockchainController {
 	// InputConfig.getBinterval();
 	// private static double currentTime = 0;
 
-
 	/**
 	 * This method is responsible for generate light node
 	 */
@@ -72,9 +71,9 @@ public class BlockchainController {
 			// InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().add(tx);
 			// // add to shared pool
 			System.out.println("=> Transacation ID : [" + i + "] "
-					+ Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().get(0).transactionID());
+					+ Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().get(i).transactionID());
 			System.out.println("=> Transaction creation time : " + Consensus.getAassignLeader().getTransactionsPool()
-					.getTransactionsPool().get(0).getCreationTime());
+					.getTransactionsPool().get(i).getCreationTime());
 		}
 
 		System.out.println("=>The number of transactions has been created ["
@@ -208,40 +207,6 @@ public class BlockchainController {
 //
 //	}
 //
-//	public ArrayList<Transaction> executeTranscationsB(Miner miner, Event eventtime) {
-//		long limit = 0;
-//		int count = 0;
-//		double blocklimit = 15;
-//		InputConfig.getMiners().get(0).getTransactionsPool().sortTransactionsPool();
-//		// System.out.println("[test tx] ture " +
-//		// InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().get(count).getGasPrice()
-//		// );
-//		// System.out.println("[test tx] ture " +
-//		// InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
-//		while (count < InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size()) {
-//
-//			if (blocklimit >= InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().get(count)
-//					.getGasPrice()) {
-//				System.out.println("[test tx] Blocklimit before - " + blocklimit);
-//				System.out.println("[test tx] Blocklimit f - " + InputConfig.getMiners().get(0).getTransactionsPool()
-//						.getTransactionsPool().get(count).getGasPrice());
-//				blocklimit -= InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().get(count)
-//						.getGasPrice();
-//				System.out.println("[test tx] Blocklimit after - " + blocklimit);
-//
-//				transactions.add(InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().get(count));
-//				System.out.println("[test tx] tx add ");
-//				limit += InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().get(count)
-//						.getGasPrice();
-//				System.out.println("[test tx] limit " + limit);
-//			}
-//
-//			count += 1;
-//
-//		}
-//
-//		BlockchainController.transactionsProcessed();
-//		return transactions;
-//	}
-//	
+	
+
 }

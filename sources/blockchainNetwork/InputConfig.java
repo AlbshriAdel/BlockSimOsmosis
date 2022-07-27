@@ -12,7 +12,7 @@ public class InputConfig {
 	private static final int numberOfMiner = 2;
 	
 	/*************To Create Transaction Parameters ************/
-	private static final int transactionNumber  = 10; // Maximum number of transactions created during running simulator
+	private static final int transactionNumber  = 3; // Maximum number of transactions created during running simulator
 	private static final long minTXsize = 100; // Minimum Transaction size in KB
 	private static final long maxTXsize = 1000; // Maximum Transaction size in KB
 	private static final int Binterval = 7;
@@ -23,12 +23,12 @@ public class InputConfig {
 	private static final long maxGasUsed = 3; // Maximum gas used
 	
 	private static final String consensusAlgorithm = "raft"; 
-	private static final int simTime = 5;
+	private static final int simTime = 100;
 	
 	
 
 
-	private static final double blockGasLimit = 10;//30000000;
+	private static final double blockGasLimit = 30000000;//30000000;
 	
 	
 	private static final Statistics STATISTICS = new Statistics();

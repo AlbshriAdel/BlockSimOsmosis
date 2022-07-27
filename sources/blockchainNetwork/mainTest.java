@@ -28,7 +28,7 @@ public class mainTest {
 			BlockchainController.generateNodes(); // Create blockchain nodes 
 			BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator   
 			Node.generateGenesisBlock(); // Create the gensis block for all miners
-			//BlockCmmit.generateInitialEvents();
+			BlockCmmit.generateInitialEvents();
 			
 //			BlockCmmit.createBlock();
 //			BlockCmmit.testNewArray();
@@ -39,18 +39,18 @@ public class mainTest {
 			//System.out.println(InputConfig.getNODES().size());// need to delete 
 			//InputConfig.getSimtime();
 			
-		//	while (!Queue.isEmpty() && (clock <=InputConfig.getSimtime() )) {
-		//	Event nextEvent = Queue.getNextEvent(); 
+			while (!Queue.isEmpty() && (clock <=InputConfig.getSimTime() )) {
+			Event nextEvent = Queue.getNextEvent(); 
 				
 				// Move clock to the time of the event
-		//	clock = nextEvent.getTime();
-		//	System.out.println (nextEvent.getTime());
-		//		
+			clock = nextEvent.getTime();
+			//System.out.println (nextEvent.getTime());
 				
-		//	BlockCmmit.handleEvent(nextEvent);
-			//Queue.removeEvent(nextEvent);
+				
+			BlockCmmit.handleEvent(nextEvent);
+			Queue.removeEvent(nextEvent);
 
-		//	}
+			}
 			
 			
 			

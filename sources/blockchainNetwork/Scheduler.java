@@ -11,9 +11,11 @@ public class Scheduler {
 			// Populate event attributes
 			Block block = new Block();
 			block.setBlockID(ThreadLocalRandom.current().nextLong(100000000000L));
+			block.setDepth(miner.getBlockchainLedger().size());
 			block.setBlockTimestamp(eventTime);
 			block.setMiner(miner);
-			//block.setPrevious(miner.getBlockchain().); // need to edit.
+			block.setPreviousBlockID(miner.getLastBlock().getBlockID());
+			
 			
 			
 			// Create the event
@@ -21,7 +23,8 @@ public class Scheduler {
 			// Append the event to the event list
 			Queue.addEvent(event);
 			
-			System.out.println("Queue size is :["+ Queue.size() + "] ,event type is : [" + event.getType() + "] ,event time is : [" + event.getTime() +"] and block ID is [" + block.getBlockID()+ "].");
+			System.out.println("Queue size is :["+ Queue.size() + "] ,event type is : [" + event.getType() + "] ,event time is : [" + event.getTime() +"] and block ID is [" + block.getBlockID()+ "]."+
+			"Block time ["+block.getBlockTimestamp() +"]" + "Block depth ["+block.getBlockDepth() +"]"+"Block Previous ["+ block.getPreviousBlocKID() +"].");
 			
 			
 			//System.out.println("Miner id :"+event.getNodeId()+",event time :"+ event.getTime()+",event block id :"+event.getBlock().getId() + ", node type : " + miner.getNodeType());

@@ -48,9 +48,10 @@ public class Node {
 	public ArrayList<Block> getBlockchainLedger() {
 		return blockchainLedger;
 	}
-	
+
 	/**
 	 * set node type
+	 * 
 	 * @param nodeType
 	 */
 	public void setNodeType(String nodeType) {
@@ -62,12 +63,19 @@ public class Node {
 	 */
 	public static void generateGenesisBlock() {
 		System.out.println("####Generate genesis block for all miner in the network####");
-			Consensus.getAassignLeader().getBlockchainLedger().add(new Block());
-			System.out.println("The genesis block has been created successfully for leader id [ " + Consensus.getAassignLeader().getNodeId() + " ].");
-
+		Consensus.getAassignLeader().getBlockchainLedger().add(new Block());
+		System.out.println("The genesis block has been created successfully for leader id [ "
+				+ Consensus.getAassignLeader().getNodeId() + " ].");
 
 	}
-	
-	
+
+	/**
+	 * Return the last block at the nodes local blockchain
+	 * 
+	 * @return block
+	 */
+	public Block getLastBlock() {
+		return this.getBlockchainLedger().get(blockchainLedger.size() - 1);
+	}
 
 }

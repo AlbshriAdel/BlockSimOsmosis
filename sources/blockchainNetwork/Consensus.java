@@ -24,7 +24,7 @@ public class Consensus {
 	 * 
 	 * @return int node index
 	 */
-	public static void becomeCandidateNode() {
+	public void becomeCandidateNode() {
 
 		int NodeID = rand.nextInt(InputConfig.getNumberOfNodes());
 		InputConfig.getNodes().get(NodeID).setNodeType("candidate");
@@ -79,15 +79,15 @@ public class Consensus {
 	 * 
 	 * @return miner
 	 */
-	public Miner getAassignLeader() {
+	public static Miner getAassignLeader() {
 		Miner miner = null;
 		for (int i = 0; i < InputConfig.getMiners().size(); i++) {
 			if (InputConfig.getMiners().get(i).getNodeType().equals("leader")) {
 				miner = InputConfig.getMiners().get(i);
 			}
 		}
-		System.out.println("[Test getAassignLeader] The leader is  [ " + miner.getNodeId() + " ]" + " and type is [ "
-				+ miner.getNodeType() + " ]");
+//		System.out.println("[Test getAassignLeader] The leader is  [ " + miner.getNodeId() + " ]" + " and type is [ "
+//				+ miner.getNodeType() + " ]");
 		return miner;
 	}
 

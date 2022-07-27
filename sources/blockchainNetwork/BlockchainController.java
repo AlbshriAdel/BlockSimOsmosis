@@ -16,23 +16,25 @@ public class BlockchainController {
 	// InputConfig.getBinterval();
 	// private static double currentTime = 0;
 
+
 	/**
 	 * This method is responsible for generate light node
 	 */
 	public static void generateNodes() {
-		if (InputConfig.getNumberOfNodes()>=3 && InputConfig.getConsensusalgorithm().equals("raft")) {
-			
-		System.out.println("####Initialization simulated light nodes in the blockchain network####");
-		for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
-			InputConfig.getNodes().add(new Node(i, "follower"));
-			System.out.println("The node has been created successfully for node id [ "
-					+ InputConfig.getNodes().get(i).getNodeId() + " ]" + " and node type is [ "
-					+ InputConfig.getNodes().get(i).getNodeType() + " ]");
+		if (InputConfig.getNumberOfNodes() >= 3 && InputConfig.getConsensusalgorithm().equals("raft")) {
+
+			System.out.println("####Initialization simulated light nodes in the blockchain network####");
+			for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
+				InputConfig.getNodes().add(new Node(i, "follower"));
+				System.out.println("The node has been created successfully for node id [ "
+						+ InputConfig.getNodes().get(i).getNodeId() + " ]" + " and node type is [ "
+						+ InputConfig.getNodes().get(i).getNodeType() + " ]");
+			}
+			Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
+		} else {
+			System.out.println(
+					"[Error] the number of node must be a larger than three nodes and make sure the spelling of consensus algorithm 'raft'");
 		}
-		Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
-	} else {
-		System.out.println("[Error] the number of node must be a larger than three nodes and make sure the spelling of consensus algorithm 'raft'");
-	}
 	}
 //	/**
 //	 * This method is responsible for generate miners
@@ -65,15 +67,18 @@ public class BlockchainController {
 			// Transaction(double creationTime, double txSize,String fromAddress,String
 			// toAddress)
 			Transaction tx = new Transaction(creationTime, transactionSize, "A", "B");
-			InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().add(tx); // add to shared pool
-			System.out.println("=> Transacation ID : [ " + i + "] " + InputConfig.getMiners().get(0)
-					.getTransactionsPool().getTransactionsPool().get(0).transactionID());
-			System.out.println("=> Transaction creation time : " + InputConfig.getMiners().get(0).getTransactionsPool()
+			Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().add(tx);
+
+			// InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().add(tx);
+			// // add to shared pool
+			System.out.println("=> Transacation ID : [" + i + "] "
+					+ Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().get(0).transactionID());
+			System.out.println("=> Transaction creation time : " + Consensus.getAassignLeader().getTransactionsPool()
 					.getTransactionsPool().get(0).getCreationTime());
 		}
 
-		System.out.println("=>The number of transactions has been created [ "
-				+ InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size() + " ].");
+		System.out.println("=>The number of transactions has been created ["
+				+ Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size() + "].");
 		System.out.println("####################################");
 	}
 

@@ -27,7 +27,7 @@ public class mainTest {
 			
 			BlockchainController.generateNodes(); // Create blockchain nodes 
 			BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator   
-			//Node.generateGenesisBlock(); // Create the gensis block for all miners
+			Node.generateGenesisBlock(); // Create the gensis block for all miners
 			//BlockCmmit.generateInitialEvents();
 			
 //			BlockCmmit.createBlock();

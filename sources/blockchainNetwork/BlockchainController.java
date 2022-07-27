@@ -20,6 +20,8 @@ public class BlockchainController {
 	 * This method is responsible for generate light node
 	 */
 	public static void generateNodes() {
+		if (InputConfig.getNumberOfNodes()>=3) {
+			
 		System.out.println("####Initialization simulated light nodes in the blockchain network####");
 		for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
 			InputConfig.getNodes().add(new Node(i, "follower"));
@@ -27,8 +29,11 @@ public class BlockchainController {
 					+ InputConfig.getNodes().get(i).getNodeId() + " ]" + " and node type is [ "
 					+ InputConfig.getNodes().get(i).getNodeType() + " ]");
 		}
+		Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
+	} else {
+		System.out.println("[Error] the number of node must be a larger than three nodes.");
 	}
-
+	}
 //	/**
 //	 * This method is responsible for generate miners
 //	 */

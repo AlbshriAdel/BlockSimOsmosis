@@ -20,7 +20,7 @@ public class BlockchainController {
 	 * This method is responsible for generate light node
 	 */
 	public static void generateNodes() {
-		if (InputConfig.getNumberOfNodes()>=3) {
+		if (InputConfig.getNumberOfNodes()>=3 && InputConfig.getConsensusalgorithm().equals("raft")) {
 			
 		System.out.println("####Initialization simulated light nodes in the blockchain network####");
 		for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
@@ -31,7 +31,7 @@ public class BlockchainController {
 		}
 		Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
 	} else {
-		System.out.println("[Error] the number of node must be a larger than three nodes.");
+		System.out.println("[Error] the number of node must be a larger than three nodes and make sure the spelling of consensus algorithm 'raft'");
 	}
 	}
 //	/**

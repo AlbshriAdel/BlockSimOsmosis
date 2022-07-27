@@ -15,10 +15,8 @@ public class Consensus {
 
 			becomeCandidateNode();
 			assignLeader();
-			TestRaft();
 			getAassignLeader();
 		}
-
 	}
 
 	/**
@@ -31,7 +29,7 @@ public class Consensus {
 		int NodeID = rand.nextInt(InputConfig.getNumberOfNodes());
 		InputConfig.getNodes().get(NodeID).setNodeType("candidate");
 
-		System.out.println("[Test become candidate node ] : The node [" + InputConfig.getNodes().get(NodeID).getNodeId()
+		System.out.println("[Test become candidate node] The node [" + InputConfig.getNodes().get(NodeID).getNodeId()
 				+ "] has been became candidate, and type has been changed [ "
 				+ InputConfig.getNodes().get(NodeID).getNodeType() + " ]");
 
@@ -88,7 +86,7 @@ public class Consensus {
 				miner = InputConfig.getMiners().get(i);
 			}
 		}
-		System.out.println("[Test getAassignLeader ]The leader is  [ " + miner.getNodeId() + " ]" + " and type is [ "
+		System.out.println("[Test getAassignLeader] The leader is  [ " + miner.getNodeId() + " ]" + " and type is [ "
 				+ miner.getNodeType() + " ]");
 		return miner;
 	}

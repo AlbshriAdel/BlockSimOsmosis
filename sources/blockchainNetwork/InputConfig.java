@@ -19,10 +19,10 @@ public class InputConfig {
 	
 	private static final long maxBlockSize = 4194304; // Maximum Block Size in KB equivalent to 4 GB
 	
-	private static final long minGasUsed = 1; // Minimum gas price 
-	private static final long maxGasUsed = 3; // Maximum gas price
+	private static final long minGasUsed = 1; // Minimum gas used 
+	private static final long maxGasUsed = 3; // Maximum gas used
 	
-	private static final String consensusAlgorithm = "raft"; // Maximum gas price
+	private static final String consensusAlgorithm = "raft"; 
 	private static final int simTime = 5;
 	
 	

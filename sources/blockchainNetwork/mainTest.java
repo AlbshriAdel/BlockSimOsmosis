@@ -22,7 +22,7 @@ public class mainTest {
 	public static void main(String[] args) {
 		
 		double clock=0; //set clock to 0 at the start of the simulation
-			//blockchainController = new BlockchainController();
+			//blockchainController = new BlockchainController(); //
 			
 			
 			BlockchainController.generateNodes(); // Create blockchain nodes 

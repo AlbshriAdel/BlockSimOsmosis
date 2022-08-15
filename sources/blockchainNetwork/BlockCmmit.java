@@ -52,7 +52,25 @@ public class BlockCmmit {
 			long blockPrevious=event.getBlock().getPreviousBlocKID();
 			
 			Transaction.executeTranscationsB(miner,eventTime);
+			System.out.println("Test get executeTranscationsB " + Transaction.getTransactions().size());
+			//event.getBlock().getTransactions().addAll(Transaction.getTransactions());
+			event.getBlock().setTransactions(Transaction.getTransactions());
+			event.getBlock().setUsedGas(Transaction.getLimit());
+			System.out.println("Test get block " + event.getBlock().getTransactions().size());
+			System.out.println("Test block ID " + event.getBlock().getBlockID());
+			System.out.println("Test blockPreviou  " + event.getBlock().getPreviousBlocKID());
+			System.out.println("Test block limit " + event.getBlock().getBlockGasLimit());
+			
+//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(0).transactionID());
+//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(0).getUsedGas());
+//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(1).transactionID());
+//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(1).getUsedGas());
+//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(2).transactionID());
+//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(2).getUsedGas());
+//			System.out.println("Block number " + miner.getBlockchainLedger().size());
 		     miner.getBlockchainLedger().add(event.getBlock());
+		     System.out.println("Block number " + miner.getBlockchainLedger().size());
+
 		}
 		
 		private static void receiveBlock(Event event){

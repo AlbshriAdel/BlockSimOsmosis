@@ -51,6 +51,13 @@ public class mainTest {
 			Queue.removeEvent(nextEvent);
 
 			}
+			System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(0).getUsedGas());
+			System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getUsedGas());
+			//System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getTransactions().get(1).getCreationTime());
+			
+				
+			
+
 			
 			
 			

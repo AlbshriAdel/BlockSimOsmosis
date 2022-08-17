@@ -1,6 +1,7 @@
 package blockchainNetwork;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,9 +28,13 @@ public class Transaction implements Comparable<Transaction> {
 	private double usedGas;
 	// the maximum amount of gas units the transaction can use
 	private double gasLimit;
-	private static ArrayList<Transaction> transactions=new ArrayList<>();
-	static long limit = 0;
+	//A local variable to calculate (count) the remaining limit of Block gas used
+	static double limit = 0;
+	//A local variable to calculate (count) the remaining limit of Block size used
+	static double blockSizelimit = 0;
 
+	
+	
 	/**
 	 * A constructor method for transaction class
 	 * 
@@ -46,8 +51,8 @@ public class Transaction implements Comparable<Transaction> {
 		this.creationTime = creationTime;
 		this.fromAddress = fromAddress;
 		this.toAddress = toAddress;
-		this.gasLimit = 50; //8000000;
-		this.usedGas = 50; //getRandomNumber(0,(int) gasLimit);
+		this.gasLimit = 10;//50; //8000000;
+		this.usedGas = getRandomNumber(0,(int) gasLimit);
 		this.transactionSize = txSize;
 	}
 
@@ -56,7 +61,7 @@ public class Transaction implements Comparable<Transaction> {
 	 * 
 	 * @return transactionID
 	 */
-	public long transactionID() {
+	public long getTransactionID() {
 		return transactionID;
 	}
 
@@ -116,9 +121,9 @@ public class Transaction implements Comparable<Transaction> {
 	 * 
 	 * @return transactions
 	 */
-	public static ArrayList<Transaction> getTransactions() {
-		return transactions;
-	}
+	//public static ArrayList<Transaction> getTransactions() {
+	//	return transactions;
+	//}
 
 	/**
 	 * To set creation time for each transaction
@@ -196,38 +201,54 @@ public class Transaction implements Comparable<Transaction> {
 		return result;
 	}
 	
+	/*
+	 * Remaining limit of Block gas used 
+	 */
 	
-	
-	public static long getLimit() {
+	public static double getLimit() {
 		return limit;
 	}
 
-	public void setLimit(long limit) {
-		this.limit = limit;
+	/*
+	 * Remaining limit of Block gas used 
+	 */
+	
+	public static double getBlockSizeLimit() {
+		return blockSizelimit;
 	}
 
+
 	public static ArrayList<Transaction> executeTranscationsB(Miner miner, double eventTime) {
-
-
+		ArrayList<Transaction> transactions=new ArrayList<>();
+		limit=0;
+		blockSizelimit=0;
 		int count = 0;
-		double blocklimit = InputConfig.getBlockGasLimit(); // need to configure 
+		double  blockGaslimit= InputConfig.getBlockGasLimit(); // need to configure 
+		double blocksize = InputConfig.getMaxblocksize(); // need to configure 
+		
 		miner.getTransactionsPool().sortTransactionsPool();
 		
-
+		
 		while (count < miner.getTransactionsPool().getTransactionsPool().size()) {
-			System.out.println("####arrive here Gas limit ####" + miner.getTransactionsPool().getTransactionsPool().get(count).getUsedGas());
-			System.out.println("####arrive here creation time ####" + miner.getTransactionsPool().getTransactionsPool().get(count).getCreationTime());
-			System.out.println("####arrive here event time ####" + eventTime);
-			if (blocklimit >= miner.getTransactionsPool().getTransactionsPool().get(count).getGasLimit()
-					&& miner.getTransactionsPool().getTransactionsPool().get(count).getCreationTime()<= 10 ) {
-				
-				blocklimit = blocklimit - miner.getTransactionsPool().getTransactionsPool().get(count).getUsedGas();
-				System.out.println("[test tx] Blocklimit after - " + blocklimit);
-
+			if (blockGaslimit >= miner.getTransactionsPool().getTransactionsPool().get(count).getGasLimit()
+					&& miner.getTransactionsPool().getTransactionsPool().get(count).getCreationTime()<= 5 && blocksize>=miner.getTransactionsPool().getTransactionsPool().get(count).getTransactionSize()) {
+				System.out.println("================="+count+"=================" +"\n"+
+				"block gast limit from config : "+ blockGaslimit + "\n"+
+				"count of block gas limit reming : "+ limit);
+				blockGaslimit -= miner.getTransactionsPool().getTransactionsPool().get(count).getUsedGas();
+				blocksize-=miner.getTransactionsPool().getTransactionsPool().get(count).getTransactionSize();
+				System.out.println("Blockl gas imit after - for tx ID : "+ miner.getTransactionsPool().getTransactionsPool().get(count).transactionID+"\n"+ 
+				"block limit become "+ blockGaslimit);
 				transactions.add(miner.getTransactionsPool().getTransactionsPool().get(count));
-				System.out.println("[test tx] tx add ");
+				System.out.println("[test transactions] transactions size is :" + transactions.size());
+				//System.out.println("tx size" : transactions.size());
+				//System.out.println("[test tx] tx add ");
+				//System.out.println("Transaction gas : "+ miner.getTransactionsPool().getTransactionsPool().get(count).getGasLimit());
 				limit += miner.getTransactionsPool().getTransactionsPool().get(count).getUsedGas();
-				System.out.println("[test tx] limit " + limit);
+				System.out.println("count of block gas limit reming become after add: "+ limit);
+				blockSizelimit+=miner.getTransactionsPool().getTransactionsPool().get(count).getTransactionSize();
+				
+				//System.out.println("[test tx] limit " + limit);
 				
 				
 			}

@@ -21,7 +21,7 @@ public class BlockCmmit {
 
 	// done
 	public static void generateInitialEvents() {
-		System.out.println("####Generate Initial Events####");
+		// System.out.println("####Generate Initial Events####");
 		int currentTime = 0;
 
 		generateNextBlock(Consensus.getAassignLeader(), currentTime);
@@ -34,85 +34,84 @@ public class BlockCmmit {
 
 	}
 
-		public static void handleEvent(Event event) {
-			if (event.getType() == "create_block") {
-				toGenerateBlock(event);
-				
-			}else if (event.getType() =="receive_block") {
-				BlockCmmit.receiveBlock(event);
-		}
-			}
-		
+	public static void handleEvent(Event event) {
+		if (event.getType() == "create_block"
+				&& event.getMinerId().getTransactionsPool().getTransactionsPool().size() > 0) {
+			toGenerateBlock(event);
 
-		static void toGenerateBlock(Event event) {
-			
-			Miner miner= Consensus.getAassignLeader();
-			int minerID= miner.getNodeId();
-			double eventTime=event.getTime();
-			long blockPrevious=event.getBlock().getPreviousBlocKID();
-			
-			Transaction.executeTranscationsB(miner,eventTime);
-			System.out.println("Test get executeTranscationsB " + Transaction.getTransactions().size());
-			//event.getBlock().getTransactions().addAll(Transaction.getTransactions());
-			event.getBlock().setTransactions(Transaction.getTransactions());
+		} else if (event.getType() == "receive_block") {
+			BlockCmmit.receiveBlock(event);
+		}
+	}
+
+	static void toGenerateBlock(Event event) {
+
+		Miner miner = Consensus.getAassignLeader();
+		int minerID = miner.getNodeId();
+		double eventTime = event.getTime();
+		long blockPrevious = event.getBlock().getPreviousBlocKID();
+if (blockPrevious==miner.getLastBlock().getBlockID()) {
+		event.getBlock().setTransactions(Transaction.executeTranscationsB(miner, eventTime));
+		event.getBlock().setNumberTx(event.getBlock().getTransactions().size());
+		if (event.getBlock().getTransactions().size() > 0) {
+			event.getBlock().setHasTx(true);
+			event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
 			event.getBlock().setUsedGas(Transaction.getLimit());
-			System.out.println("Test get block " + event.getBlock().getTransactions().size());
-			System.out.println("Test block ID " + event.getBlock().getBlockID());
-			System.out.println("Test blockPreviou  " + event.getBlock().getPreviousBlocKID());
-			System.out.println("Test block limit " + event.getBlock().getBlockGasLimit());
-			
-//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(0).transactionID());
-//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(0).getUsedGas());
-//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(1).transactionID());
-//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(1).getUsedGas());
-//			System.out.println("Test tx ID " + event.getBlock().getTransactions().get(2).transactionID());
-//			System.out.println("Test tx usedGas " + event.getBlock().getTransactions().get(2).getUsedGas());
-//			System.out.println("Block number " + miner.getBlockchainLedger().size());
-		     miner.getBlockchainLedger().add(event.getBlock());
-		     System.out.println("Block number " + miner.getBlockchainLedger().size());
-
+			miner.getBlockchainLedger().add(event.getBlock());
 		}
+		updateTransactionsPool(miner, event.getBlock());
+		propagate_block(event.getBlock());
+		generateNextBlock(miner, eventTime);
+
+
 		
-		private static void receiveBlock(Event event){
-			
+}
+	}
 
-		 }
+	private static void propagate_block(Block newBlock) {
+		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
+			double blockDealy = 10; // need to configure
+			Scheduler.receiveBlockEvent(InputConfig.getNodes().get(i), newBlock, blockDealy);
+		}
 
-//		
-//		static void testNewArray() {
-//			for(int i=0 ; i< transactions.size(); i++) {
-//				System.out.println("[test tx new 1] transcation ID : " + transactions.get(i).getId() );
-//				System.out.println("[test tx new 2] transcation time : " + transactions.get(i).getCreationTime() );
-//				System.out.println("[test tx new 3] transcation gas price : " + transactions.get(i).getGasPrice());
-//				
-//			}
-//		}
-//			
-//		
-//	//	 Miner miner = InputConfig.getMiners().get(0);
-//	//	 for(int i=0 ; i< miner.getTransactionsPool().getTransactionsPool().size(); i++) {
-//	//		System.out.println("[test tx] transcation ID : " + miner.getTransactionsPool().getTransactionsPool().get(i).getId() );
-//	//		System.out.println("[test tx] transcation time : " + miner.getTransactionsPool().getTransactionsPool().get(i).getCreationTime() );
-//	//		System.out.println("[test tx] transcation gas price : " + miner.getTransactionsPool().getTransactionsPool().get(i).getGasPrice());
-//		
-//			
-//	
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
-//		
+	}
 
-//		
-//
+	private static void receiveBlock(Event event) {
+
+		Miner miner = event.getBlock().getMiner();
+		int minerID = miner.getNodeId();
+		double eventTime = event.getTime();
+		long blockPrevious = event.getBlock().getPreviousBlocKID();
+
+		Node node = event.getNodeId();
+		int nodeID = node.getNodeId();
+
+		long lastBlockID = 0;// node.getLastBlock().getBlockID();
+
+		if (blockPrevious == lastBlockID) {
+			node.getBlockchainLedger().add(event.getBlock());
+			// System.out.println("Block add to node ID " + node.getNodeId() +"and node
+			// ledger size is "+ node.getBlockchainLedger().size());
+		}
+
+	}
+
+	private static void updateTransactionsPool(Miner miner, Block block) {
+		int i = 0;
+		while (i < (block.getTransactions().size())) {
+			for (int count = 0; count < miner.getTransactionsPool().getTransactionsPool().size(); count++) {
+
+				if (block.getTransactions().get(i).getTransactionID() == miner.getTransactionsPool()
+						.getTransactionsPool().get(count).getTransactionID()) {
+					block.getTransactions().get(i).setConfirmationTime(block.getBlockTimestamp());
+					miner.getTransactionsPool().getTransactionsPool().remove(count);
+					System.out.println("=> Transacation ID : [" + block.getTransactions().get(i).getTransactionID()
+							+ "] has been deleted from Transactions Pool ");
+				}
+			}
+			i += 1;
+		}
+
+	}
 
 }

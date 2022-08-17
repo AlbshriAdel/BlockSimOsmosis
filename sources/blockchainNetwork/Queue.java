@@ -8,11 +8,12 @@ public class Queue {
 
 	public static void addEvent(Event e) {
 		getEventList().add(e);
-		System.out.println("New event has been added successfully [ " + e.getType() + " ].");
+		//System.out.println("New event has been added successfully [ " + e.getType() + " ].");
 	}
 
 	public static void removeEvent(Event e) {
 		getEventList().remove(getEventList().indexOf(e));
+		//System.out.println("last event has been removed successfully [ " + e.getType() + " ].");
 	}
 
 	public static Event getNextEvent() {

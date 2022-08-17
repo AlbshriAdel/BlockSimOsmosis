@@ -16,59 +16,82 @@ import blockchainNetwork.BlockchainController;
 import blockchainNetwork.Statistics;
 import blockchainNetwork.BlockCmmit;
 
-
 public class mainTest {
 
 	public static void main(String[] args) {
-		
-		double clock=0; //set clock to 0 at the start of the simulation
-			//blockchainController = new BlockchainController(); // //
-			
-			
-			BlockchainController.generateNodes(); // Create blockchain nodes 
-			BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator   
-			Node.generateGenesisBlock(); // Create the gensis block for all miners
-			BlockCmmit.generateInitialEvents();
-			
+
+		double clock = 0; // set clock to 0 at the start of the simulation
+		// blockchainController = new BlockchainController(); // //
+
+		BlockchainController.generateNodes(); // Create blockchain nodes
+		BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT
+																	// simulator
+		Node.generateGenesisBlock(); // Create the gensis block for all miners
+		BlockCmmit.generateInitialEvents();
+
 //			BlockCmmit.createBlock();
 //			BlockCmmit.testNewArray();
 //			BlockCmmit.testexploreBlock();
-			
-			
-			//System.out.println(InputConfig.getMiners().size()); // need to delete 
-			//System.out.println(InputConfig.getNODES().size());// need to delete 
-			//InputConfig.getSimtime();
-			
-			while (!Queue.isEmpty() && (clock <=InputConfig.getSimTime() )) {
-			Event nextEvent = Queue.getNextEvent(); 
-				
-				// Move clock to the time of the event
+
+		// System.out.println(InputConfig.getMiners().size()); // need to delete
+		// System.out.println(InputConfig.getNODES().size());// need to delete
+		// InputConfig.getSimtime();
+		// && (clock <= InputConfig.getSimTime()) !Queue.isEmpty()
+
+		while (!Queue.isEmpty() && (clock <= InputConfig.getSimTime())) {
+			Event nextEvent = Queue.getNextEvent();
+
+
+			// Move clock to the time of the event
 			clock = nextEvent.getTime();
-			//System.out.println (nextEvent.getTime());
-				
-				
+			// System.out.println (nextEvent.getTime());
+
 			BlockCmmit.handleEvent(nextEvent);
 			Queue.removeEvent(nextEvent);
 
-			}
-			System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(0).getUsedGas());
-			System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getUsedGas());
-			//System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getTransactions().get(1).getCreationTime());
-			
+		}
+
+		// for (int i=0; i<InputConfig.getMiners().size(); i++) {
+
+		System.out.println("The number of blocks : " + InputConfig.getMiners().get(0).getBlockchainLedger().size());
+		System.out.println(
+				"Pool size : " + InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
+
+		for (int i = 0; i < InputConfig.getMiners().get(0).getBlockchainLedger().size(); i++) {
+			System.out.println("===============block " + i + "==================");
+			System.out.println("Block ID : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockID()
+					+ "\n" + "Block Per ID : "
+					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getPreviousBlocKID() + "\n"
+					+ "Block time : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockTimestamp()
+					+ "\n" + "Block depth : "
+					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockDepth() + "\n"
+					+ "Block size used : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockSize()
+					+ "\n" + "Block gas used : "
+					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getUsedGas());
+
+			if (InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getHasTx() == true) {
 				
-			
+				System.out.println("Block includes : "
+						+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getNumberTx()
+						+ " transactions");
 
-			
-			
-			
-			
-			//System.out.println("here :"+Queue.getEventList().size());// need to delete 
-			//System.out.println("here :"+InputConfig.getMiners().get(0).getBlockchain().get(0).getTransactions().get(0).getId());// need to delete
-			//System.out.println("here :"+InputConfig.getMiners().get(0).getBlockchain().size());
-			//System.out.println("here :"+InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
-			}// need to delete 
-			
+				Iterator<Transaction> iterator = InputConfig.getMiners().get(0).getBlockchainLedger().get(i)
+						.getTransactions().iterator();
+				while (iterator.hasNext()) {
+
+					Transaction transaction = iterator.next();
+					System.out.println("Transaction ID : " + transaction.getTransactionID() + "\n"
+							+ "Transaction time : " + transaction.getCreationTime() + "\n"
+							+ "Transaction confrimation time: " + transaction.getConfirmationTime() + "\n"
+							+ "Transaction gas used: " + transaction.getUsedGas());
+					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getTransactions().get(0).getTransactionID());
+					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(2).getTransactions().get(0).getTransactionID());
+
+				}
+
+			}
+		}
+
+	}
+
 }
-	
-	
-

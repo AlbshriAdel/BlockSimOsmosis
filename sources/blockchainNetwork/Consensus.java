@@ -29,9 +29,9 @@ public class Consensus {
 		int NodeID = rand.nextInt(InputConfig.getNumberOfNodes());
 		InputConfig.getNodes().get(NodeID).setNodeType("candidate");
 
-		System.out.println("[Test become candidate node] The node [" + InputConfig.getNodes().get(NodeID).getNodeId()
-				+ "] has been became candidate, and type has been changed [ "
-				+ InputConfig.getNodes().get(NodeID).getNodeType() + " ]");
+//		//System.out.println("[Test become candidate node] The node [" + InputConfig.getNodes().get(NodeID).getNodeId()
+//				+ "] has been became candidate, and type has been changed [ "
+//				+ InputConfig.getNodes().get(NodeID).getNodeType() + " ]");
 
 	}
 

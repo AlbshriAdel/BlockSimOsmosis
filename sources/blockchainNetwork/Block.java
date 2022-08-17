@@ -1,6 +1,7 @@
 package blockchainNetwork;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Block {
 	// Block ID for each block created
@@ -21,6 +22,10 @@ public class Block {
 	private double blockGasLimit;
 	// The block used gas limit
 	private double usedGas;
+	//
+	private int numberTX;
+	
+	private boolean hasTX;
 
 	/**
 	 * A constructor method for block class
@@ -35,9 +40,30 @@ public class Block {
 		this.blockSize = InputConfig.getMaxblocksize(); // 1 MB
 		this.blockGasLimit = InputConfig.getBlockGasLimit(); // 8000000
 		this.usedGas = 0;
+		this.hasTX=false;
+		this.numberTX=0;
 
 	}
 
+	
+	public boolean getHasTx() {
+		return this.hasTX;
+	}
+	
+	public void setHasTx(boolean hasTX) {
+		this.hasTX = hasTX;
+	}
+	
+	public int getNumberTx() {
+		return this.numberTX;
+	}
+	
+	public void setNumberTx(int numberTX) {
+		this.numberTX = numberTX;
+	}
+
+	
+	
 	/**
 	 * Return block ID
 	 * 

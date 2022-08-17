@@ -3,16 +3,27 @@ package blockchainNetwork;
 public class Event {
 
 	private String type;
-	private Object nodeId;
+	private Miner minerId;
+	private Node nodeId;
 	private double time;
 	private Block block;
 
-	public Event(String type, Object nodeId, double time, Block block) {
+	public Event(String type, Miner minerId, double time, Block block) {
 		super();
 		this.type = type;
-		this.nodeId = nodeId;
+		this.minerId = minerId;
 		this.time = time;
 		this.block = block;
+		
+	}
+	
+
+	public Event(String type, Node nodeId, double time, Block block) {
+		super();
+		this.type = type;
+		this.time = time;
+		this.block = block;
+		this.nodeId=nodeId;
 	}
 
 	/**
@@ -46,14 +57,28 @@ public class Event {
 	/**
 	 * @return the node
 	 */
-	public Object getNodeId() {
+	public Miner getMinerId() {
+		return minerId;
+	}
+
+	/**
+	 * @param node the node to set
+	 */
+	public void setNodeId(Miner minerId) {
+		this.minerId = minerId;
+	}
+	
+	/**
+	 * @return the node
+	 */
+	public Node getNodeId() {
 		return nodeId;
 	}
 
 	/**
 	 * @param node the node to set
 	 */
-	public void setNodeId(Miner nodeId) {
+	public void setNodeId(Node nodeId) {
 		this.nodeId = nodeId;
 	}
 

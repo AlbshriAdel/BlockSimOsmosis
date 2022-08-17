@@ -62,10 +62,13 @@ public class Node {
 	 * a method to generate genesis Block for all miner in the network
 	 */
 	public static void generateGenesisBlock() {
-		System.out.println("####Generate genesis block for all miner in the network####");
+		//System.out.println("####Generate genesis block for all miner in the network####");
+		for (int i=0; i<InputConfig.getNodes().size(); i++) {
+			InputConfig.getNodes().get(i).getBlockchainLedger().add(new Block());
+		}
 		Consensus.getAassignLeader().getBlockchainLedger().add(new Block());
-		System.out.println("The genesis block has been created successfully for leader id [ "
-				+ Consensus.getAassignLeader().getNodeId() + " ].");
+//		System.out.println("The genesis block has been created successfully for leader id [ "
+//				+ Consensus.getAassignLeader().getNodeId() + " ].");
 
 	}
 
@@ -76,6 +79,8 @@ public class Node {
 	 */
 	public Block getLastBlock() {
 		return this.getBlockchainLedger().get(blockchainLedger.size() - 1);
+		
+		
 	}
 
 }

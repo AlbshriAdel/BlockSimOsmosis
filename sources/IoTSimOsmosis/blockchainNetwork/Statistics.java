@@ -83,7 +83,7 @@ public class Statistics {
 			for (Transaction transaction : b.getTransactions()) {
 				Object[] info = { transaction.getTransactionID(), transaction.getCreationTime(),
 						transaction.getConfirmationTime(), transaction.getTransactionSize(), transaction.getUsedGas(),
-						b.getBlockID() };
+						b.getBlockID(), transaction.getFromAddress(), transaction.getToAddress()};
 				getTransactions().add(info);
 			}
 		}

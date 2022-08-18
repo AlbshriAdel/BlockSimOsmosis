@@ -32,8 +32,46 @@ import java.util.concurrent.ThreadLocalRandom;
 **/
 
 public class PrintResults_Example_3 {
+	
+	public void Adel() {
+		List<WorkflowInfo> tags = new ArrayList<>();
+		for(OsmesisAppDescription app : OsmesisAppsParser.appList){
+			for(WorkflowInfo workflowTag : OsmesisBroker.workflowTag){
+				workflowTag.getAppId();
+				if(app.getAppID() == workflowTag.getAppId()){
+					tags.add(workflowTag);
+				}
+			}
+			printOsmesisApp(tags);		
+			tags.clear();
+		} 
 		
-	public void printOsmesisNetwork(BlockchainController blockchainController) {
+        double transactionTransmissionTime = 0;
+        double transactionOsmosisLetTime = 0;
+
+        double transactionTotalTime;
+        for(WorkflowInfo workflowTag : tags){
+            transactionTransmissionTime = 0;
+            transactionOsmosisLetTime = 0;
+            transactionTotalTime = 0;
+
+            for(int i = 0; i < workflowTag.getFlowLists().size(); i++){
+                Flow flow = workflowTag.getOsmosisFlow(i);
+                transactionTransmissionTime += flow.getTransmissionTime();
+            }
+
+            for(int x =0; x < workflowTag.getOsmosisLetSize(); x++){
+                EdgeLet let = workflowTag.getOsmosislet(x);
+                transactionOsmosisLetTime += let.getActualCPUTime();
+            }
+            	transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
+            	double sendTime = ThreadLocalRandom.current().nextDouble(workflowTag.getSartTime(), workflowTag.getFinishTime());
+            	//BlockchainController.creatTransactionsWithIntegrated(sendTime);
+        }
+		
+	}
+		
+	public void printOsmesisNetwork() {
 		
 		List<WorkflowInfo> tags = new ArrayList<>();
 		for(OsmesisAppDescription app : OsmesisAppsParser.appList){
@@ -43,7 +81,7 @@ public class PrintResults_Example_3 {
 					tags.add(workflowTag);
 				}
 			}
-			printOsmesisApp(tags, blockchainController);		
+			printOsmesisApp(tags);		
 			tags.clear();
 		}
 		
@@ -174,7 +212,7 @@ public class PrintResults_Example_3 {
 					, new DecimalFormat("0.0000").format(flow.getFinishTime())));		
 	}
 	
-	public void printOsmesisApp(List<WorkflowInfo> tags, BlockchainController blockchainController) {
+	public void printOsmesisApp(List<WorkflowInfo> tags) {
 		Log.printLine();				
 		Log.printLine("=========================== Osmesis App Results ========================");
 		Log.printLine(String.format("%1s %11s %18s %17s %17s %19s %20s %35s %37s %21s %29s %29s %33s %32s %23s %28s %20s %30s %33s %23s %28s %20s %30s %25s %10s"
@@ -225,9 +263,9 @@ public class PrintResults_Example_3 {
                 EdgeLet let = workflowTag.getOsmosislet(x);
                 transactionOsmosisLetTime += let.getActualCPUTime();
             }
-            //transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
-            //double sendTime = ThreadLocalRandom.current().nextDouble(workflowTag.getSartTime(), workflowTag.getFinishTime());
-    		//blockchainController.createTransactions(sendTime, "0x36ef5482e8a74d0104fdd5434930849504b3cc39", "0xabea9132b05a70803a4e85094fd0e1800777fbef");
+            	transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
+            	double sendTime = ThreadLocalRandom.current().nextDouble(workflowTag.getSartTime(), workflowTag.getFinishTime());
+            	//BlockchainController.creatTransactionsWithIntegrated(sendTime);
 			Log.printLine(String.format("%1s %15s %15s %18s %18s %22s %25s %18s %34s %32s %24s %28s %31s %41s %18s %26s %23s %24s %44s %18s %22s %28s %23s  %28s"
 					, workflowTag.getAppId()
 					, workflowTag.getAppName()

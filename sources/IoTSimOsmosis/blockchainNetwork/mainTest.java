@@ -9,7 +9,6 @@ import IoTSimOsmosis.blockchainNetwork.BlockchainController;
 import IoTSimOsmosis.blockchainNetwork.Statistics;
 import IoTSimOsmosis.cloudsim.Vm;
 import IoTSimOsmosis.cloudsim.edge.core.edge.MEL;
-import IoTSimOsmosis.cloudsim.osmesis.examples.FireFightingStationAdel;
 import IoTSimOsmosis.osmosis.core.EdgeSDNController;
 import IoTSimOsmosis.osmosis.core.OsmesisBroker;
 import IoTSimOsmosis.osmosis.core.OsmesisDatacenter;

@@ -12,9 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class BlockchainController {
 
-	// private static int Psize = InputConfig.getTxnumber() *
-	// InputConfig.getBinterval();
-	// private static double currentTime = 0;
 
 	/**
 	 * This method is responsible for generate light node
@@ -22,12 +19,8 @@ public class BlockchainController {
 	public static void generateNodes() {
 		if (InputConfig.getNumberOfNodes() >= 3 && InputConfig.getConsensusalgorithm().equals("raft")) {
 
-			//System.out.println("####Initialization simulated light nodes in the blockchain network####");
 			for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
 				InputConfig.getNodes().add(new Node(i, "follower"));
-//				System.out.println("The node has been created successfully for node id [ "
-//						+ InputConfig.getNodes().get(i).getNodeId() + " ]" + " and node type is [ "
-//						+ InputConfig.getNodes().get(i).getNodeType() + " ]");
 			}
 			Consensus consensus = new Consensus(InputConfig.getConsensusalgorithm());
 		} else {
@@ -35,18 +28,7 @@ public class BlockchainController {
 					"[Error] the number of node must be a larger than three nodes and make sure the spelling of consensus algorithm 'raft'");
 		}
 	}
-//	/**
-//	 * This method is responsible for generate miners
-//	 */
-//	public static void generateMiner() {
-//		System.out.println("####Initialization simulated miner nodes in the blockchain network####");
-//		for (int i = 0; i < InputConfig.getNumberOfMiner(); i++) {
-//			InputConfig.getMiners().add(new Miner(i, "Miner"));
-//			System.out.println("The miner has been created successfully for node id [ "
-//					+ InputConfig.getMiners().get(i).getNodeId() + " ]" + "and node type is [ "
-//					+ InputConfig.getMiners().get(i).getNodeType() + " ]");
-//		}
-//	}
+
 
 	/**
 	 * This method is responsible for generate transactions without an integrated
@@ -54,35 +36,39 @@ public class BlockchainController {
 
 	public static void creatTransactionsWithoutIntegrated() {
 
-		//System.out.println("####Generate pending transactions####");
-		//System.out.println("=> Details of transcations");
-
 		for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-			double creationTime = ThreadLocalRandom.current().nextDouble(i, i+1);//ThreadLocalRandom.current().nextDouble(i, i + 1);
+			double creationTime = ThreadLocalRandom.current().nextDouble(i, i+1);
 			double transactionSize = ThreadLocalRandom.current().nextDouble(InputConfig.getMinTransactionSize(),
 					InputConfig.getMaxTransactionSize());
 
 			// create transaction
 			// Transaction(double creationTime, double txSize,String fromAddress,String
 			// toAddress)
-			Transaction tx = new Transaction(creationTime, transactionSize, "A", "B");
+			Transaction tx = new Transaction(creationTime, transactionSize, 1, 2);
 			Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().add(tx);
-			System.out.println("[test] tx id : " + tx.getTransactionID()+ "tx time :  " + tx.getCreationTime());
-			// InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().add(tx);
-			// // add to shared pool
-			 System.out.println("=> Transacation ID : [" + i + "] :"
-			 + tx.getTransactionID() + "\n"
-			 +"Transacation Time :" + tx.getCreationTime() + "\n"
-			 +"Transacation gas limit:" + tx.getTransactionGasLimit() + "\n"
-			 +"Transacation gas used:" +  tx.getUsedGas() + "\n"
-			 +"Transacation size:" +  tx.getTransactionSize());
-			//System.out.println("=> Transaction creation time : " + Consensus.getAassignLeader().getTransactionsPool()
-			//		.getTransactionsPool().get(i).getCreationTime());
+			
 		}
 
-		//System.out.println("=>The number of transactions has been created ["
-		//		+ Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size() + "].");
-		//System.out.println("####################################");
+	}
+	
+	/**
+	 * This method is responsible for generate transactions with IoT simulator
+	 */
+
+	public static void creatTransactionsWithIntegrated(double transactionTime, int fromAddress, int toAddress) {
+
+			double creationTime =transactionTime;
+			double transactionSize = ThreadLocalRandom.current().nextDouble(InputConfig.getMinTransactionSize(),
+					InputConfig.getMaxTransactionSize());
+
+			// create transaction
+			// Transaction(double creationTime, double txSize,String fromAddress,String
+			// toAddress)
+			Transaction tx = new Transaction(creationTime, transactionSize, fromAddress, toAddress);
+			Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().add(tx);
+			
+		
+
 	}
 
 //

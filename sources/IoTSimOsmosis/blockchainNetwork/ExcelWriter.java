@@ -101,7 +101,7 @@ public class ExcelWriter {
 	public static void blockchainTranscations() {
 		ArrayList<Object[]> df4 = new ArrayList<>();
 		df4.add(new Object[] { "Transaction ID", "Creation time ", "Confirmation time", "Transaction size",
-				"Transaction Used Gas", "Block ID" });
+				"Transaction Used Gas", "Block ID", "From Address", "To Address" });
 		for (Object[] transaction : Statistics.getTransactions()) {
 			df4.add(transaction);
 		}

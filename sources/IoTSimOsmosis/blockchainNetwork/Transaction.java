@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import IoTSimOsmosis.cloudsim.Log;
 
-public class Transaction implements Comparable<Transaction> {
+public class Transaction  {
 
 
 	// transaction id
@@ -16,12 +16,10 @@ public class Transaction implements Comparable<Transaction> {
 	private double creationTime;
 	// timestamp of transaction inclusion in a confirmed block
 	private double confirmationTime;
-	// the node that generates the block.
-	private Node miner;
 	// transaction sender address
-	private String fromAddress;
+	private int fromAddress;
 	// transaction receiver address
-	private String toAddress;
+	private int toAddress;
 	// transaction size
 	private double transactionSize;
 	// the amount of gas used by the transaction
@@ -45,8 +43,8 @@ public class Transaction implements Comparable<Transaction> {
 	 * @param fromAddress
 	 * @param toAddress
 	 */
-	public Transaction(double creationTime, double txSize,String fromAddress,
-			String toAddress) {
+	public Transaction(double creationTime, double txSize,int fromAddress,
+			int toAddress) {
 		this.transactionID = ThreadLocalRandom.current().nextLong(10000000000L);
 		this.creationTime = creationTime;
 		this.fromAddress = fromAddress;
@@ -116,14 +114,19 @@ public class Transaction implements Comparable<Transaction> {
 		return transactionGasLimit;
 	}
 	
-	/**
-	 * Return transactions that included in the block
-	 * 
-	 * @return transactions
-	 */
-	//public static ArrayList<Transaction> getTransactions() {
-	//	return transactions;
-	//}
+	
+	
+	
+
+	public int getFromAddress() {
+		return fromAddress;
+	}
+
+
+	public int getToAddress() {
+		return toAddress;
+	}
+
 
 	/**
 	 * To set creation time for each transaction
@@ -149,57 +152,7 @@ public class Transaction implements Comparable<Transaction> {
 		this.confirmationTime = confirmationTime;
 	}
 
-	// check if we need it
-	public static int ChoiceRandomSnderNode() {
-		int NodeID = 0;
-//	for( int i = 0;i<InputConfig.getNODES().size();i++)
-//	{
-//		if (InputConfig.getNODES().get(i).getNodeType() == "lightNode") {
-		NodeID = getRandomNumber(0, InputConfig.getNumberOfNodes());
 
-//		}
-//	}
-		return NodeID;
-	}
-
-	// check if we need it
-	public static int ChoiceRandomReceiverNode() {
-		int NodeID = 0;
-//	for( int i = 0;i<InputConfig.getNODES().size();i++)
-//	{
-//		if (InputConfig.getNODES().get(i).getNodeType() == "lightNode") {
-		NodeID = getRandomNumber(0, InputConfig.getNumberOfNodes());
-
-//		}
-//	}
-		return NodeID;
-	}
-
-	@Override
-	public int compareTo(Transaction transaction) {
-
-		// Get the two double values
-		// to be compared
-		Double d1 = this.usedGas;
-		Double d2 = transaction.usedGas;
-		int result = 0;
-
-		// function call to compare two double values
-		if (Double.compare(d1, d2) == 0) {
-
-			result = 0;
-			// System.out.println("d1=d2");
-		} else if (Double.compare(d1, d2) < 0) {
-
-			result = -1;
-			// System.out.println("d1<d2");
-		} else {
-
-			result = 1;
-			// System.out.println("d1>d2");
-		}
-		return result;
-	}
 	
 	/*
 	 * Remaining limit of Block gas used 

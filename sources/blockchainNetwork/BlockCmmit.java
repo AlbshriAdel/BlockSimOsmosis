@@ -29,7 +29,8 @@ public class BlockCmmit {
 	}
 
 	private static void generateNextBlock(Miner miner, double currentTime) {
-		double blockTime = currentTime + 0.555; // time when miner x generate the next block
+		double blockTime = currentTime + Consensus.generateNextBlockDelay();//0.555; // time when miner x generate the next block
+		//System.out.println("Block time " + blockTime + "current time : " + currentTime);
 		Scheduler.createBlockEvent(miner, blockTime);
 
 	}
@@ -50,22 +51,26 @@ public class BlockCmmit {
 		int minerID = miner.getNodeId();
 		double eventTime = event.getTime();
 		long blockPrevious = event.getBlock().getPreviousBlocKID();
-if (blockPrevious==miner.getLastBlock().getBlockID()) {
-		event.getBlock().setTransactions(Transaction.executeTranscationsB(miner, eventTime));
-		event.getBlock().setNumberTx(event.getBlock().getTransactions().size());
-		if (event.getBlock().getTransactions().size() > 0) {
-			event.getBlock().setHasTx(true);
-			event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
-			event.getBlock().setUsedGas(Transaction.getLimit());
-			miner.getBlockchainLedger().add(event.getBlock());
+		if (blockPrevious == miner.getLastBlock().getBlockID()) {
+			event.getBlock().setTransactions(Transaction.executeTranscationsB(miner, eventTime));
+			event.getBlock().setNumberTx(event.getBlock().getTransactions().size());
+			if (event.getBlock().getTransactions().size() > 0) {
+				event.getBlock().setHasTx(true);
+				event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
+				event.getBlock().setUsedGas(Transaction.getLimit());
+				miner.getBlockchainLedger().add(event.getBlock());
+				updateTransactionsPool(miner, event.getBlock());
+				propagate_block(event.getBlock());
+				
+				
+			}
+			
+			
+			
+			
+			generateNextBlock(miner, eventTime);
+
 		}
-		updateTransactionsPool(miner, event.getBlock());
-		propagate_block(event.getBlock());
-		generateNextBlock(miner, eventTime);
-
-
-		
-}
 	}
 
 	private static void propagate_block(Block newBlock) {
@@ -86,13 +91,39 @@ if (blockPrevious==miner.getLastBlock().getBlockID()) {
 		Node node = event.getNodeId();
 		int nodeID = node.getNodeId();
 
-		long lastBlockID = 0;// node.getLastBlock().getBlockID();
+		long lastBlockID = node.getLastBlock().getBlockID();
 
 		if (blockPrevious == lastBlockID) {
 			node.getBlockchainLedger().add(event.getBlock());
-			// System.out.println("Block add to node ID " + node.getNodeId() +"and node
-			// ledger size is "+ node.getBlockchainLedger().size());
+			System.out.println("Block add to node ID " + node.getNodeId() + "and node " + "\n" + "ledger size is "
+					+ event.getBlock().getBlockID());
+		} else {
+			int depth = event.getBlock().getBlockDepth() + 1;
+			if (depth > node.getBlockchainLedger().size()) {
+				updateLocalBlockchainLedger(node, miner, depth);
+				System.out.println("depth :" + depth);
+
+			}
+
 		}
+
+	}
+
+	private static void updateLocalBlockchainLedger(Node node, Miner miner, int depth) {
+		int i = 0;
+		while (i < depth) {
+			if (i < node.getBlockchainLedger().size()) {
+				System.out.println("here");
+				if (node.getBlockchainLedger().get(i).getBlockID() != node.getBlockchainLedger().get(i).getBlockID()) {
+					Block newBlock = miner.getBlockchainLedger().get(i);
+					node.getBlockchainLedger().add(newBlock);
+
+				}
+
+			}
+
+		}
+		i+=1;
 
 	}
 

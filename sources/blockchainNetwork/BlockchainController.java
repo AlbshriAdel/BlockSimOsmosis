@@ -58,9 +58,9 @@ public class BlockchainController {
 		//System.out.println("=> Details of transcations");
 
 		for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-			double creationTime = ThreadLocalRandom.current().nextDouble(0, 1);//ThreadLocalRandom.current().nextDouble(i, i + 1);
-			double transactionSize = 25;//ThreadLocalRandom.current().nextDouble(InputConfig.getMinTransactionSize(),
-					//InputConfig.getMaxTransactionSize());
+			double creationTime = ThreadLocalRandom.current().nextDouble(i, i+1);//ThreadLocalRandom.current().nextDouble(i, i + 1);
+			double transactionSize = ThreadLocalRandom.current().nextDouble(InputConfig.getMinTransactionSize(),
+					InputConfig.getMaxTransactionSize());
 
 			// create transaction
 			// Transaction(double creationTime, double txSize,String fromAddress,String
@@ -73,7 +73,7 @@ public class BlockchainController {
 			 System.out.println("=> Transacation ID : [" + i + "] :"
 			 + tx.getTransactionID() + "\n"
 			 +"Transacation Time :" + tx.getCreationTime() + "\n"
-			 +"Transacation gas limit:" + tx.getGasLimit() + "\n"
+			 +"Transacation gas limit:" + tx.getTransactionGasLimit() + "\n"
 			 +"Transacation gas used:" +  tx.getUsedGas() + "\n"
 			 +"Transacation size:" +  tx.getTransactionSize());
 			//System.out.println("=> Transaction creation time : " + Consensus.getAassignLeader().getTransactionsPool()

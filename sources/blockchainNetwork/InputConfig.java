@@ -17,8 +17,10 @@ public class InputConfig {
 	private static final long maxTXsize = 1000; // Maximum Transaction size in KB
 	private static final int Binterval = 7;
 	
-	private static final long maxBlockSize = 100;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
+	private static final long maxBlockSize = 10000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
 	
+	
+	private static final double TransactionGasLimit = 100;
 	private static final long minGasUsed = 1; // Minimum gas used 
 	private static final long maxGasUsed = 3; // Maximum gas used
 	
@@ -28,13 +30,21 @@ public class InputConfig {
 	
 
 
-	private static final double blockGasLimit = 1000;//30000000;//30000000;
+	private static final double blockGasLimit = 10000;//30000000;//30000000;
 	
 	
 	private static final Statistics STATISTICS = new Statistics();
 	
 	private static final double propTxDelay = 0.000690847927; 
 	
+	
+	
+
+	public static double getTransactionGaslimit() {
+		
+		return TransactionGasLimit;
+	}
+
 	public static double getProptxdelay() {
 		return propTxDelay;
 	}
@@ -155,6 +165,8 @@ public class InputConfig {
 public static String getConsensusalgorithm() {
 	return consensusAlgorithm;
 }
+
+
 	
 	
 	

@@ -91,23 +91,11 @@ public class Consensus {
 		return miner;
 	}
 
-//	public void TestRaft() {
-//		System.out.println("####Initialization to candidate a leader####");
-//		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
-//			
-//			System.out.println(
-//					"The node has been created successfully for node id [ " + InputConfig.getNodes().get(i).getNodeId()
-//							+ " ]" + " and node type is [ " + InputConfig.getNodes().get(i).getNodeType() + " ]");
-//
-//		}
-//
-//		for (int i = 0; i < InputConfig.getMiners().size(); i++) {
-//			
-//			System.out.println("[leader ]The node has been created successfully for node id [ "
-//					+ InputConfig.getMiners().get(i).getNodeId() + " ]" + " and node type is [ "
-//					+ InputConfig.getMiners().get(i).getNodeType() + " ]");
-//		}
-//		
-//	}
+
+	public static double generateNextBlockDelay() {
+		Random rand = new Random();
+		double double_random=rand.nextDouble();
+		return -Math.log(1-double_random)/(InputConfig.getBinterval());
+	}
 
 }

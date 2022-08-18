@@ -54,44 +54,52 @@ public class mainTest {
 		// for (int i=0; i<InputConfig.getMiners().size(); i++) {
 
 		System.out.println("The number of blocks : " + InputConfig.getMiners().get(0).getBlockchainLedger().size());
-		System.out.println(
-				"Pool size : " + InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
-
-		for (int i = 0; i < InputConfig.getMiners().get(0).getBlockchainLedger().size(); i++) {
-			System.out.println("===============block " + i + "==================");
-			System.out.println("Block ID : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockID()
-					+ "\n" + "Block Per ID : "
-					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getPreviousBlocKID() + "\n"
-					+ "Block time : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockTimestamp()
-					+ "\n" + "Block depth : "
-					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockDepth() + "\n"
-					+ "Block size used : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockSize()
-					+ "\n" + "Block gas used : "
-					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getUsedGas());
-
-			if (InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getHasTx() == true) {
-				
-				System.out.println("Block includes : "
-						+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getNumberTx()
-						+ " transactions");
-
-				Iterator<Transaction> iterator = InputConfig.getMiners().get(0).getBlockchainLedger().get(i)
-						.getTransactions().iterator();
-				while (iterator.hasNext()) {
-
-					Transaction transaction = iterator.next();
-					System.out.println("Transaction ID : " + transaction.getTransactionID() + "\n"
-							+ "Transaction time : " + transaction.getCreationTime() + "\n"
-							+ "Transaction confrimation time: " + transaction.getConfirmationTime() + "\n"
-							+ "Transaction gas used: " + transaction.getUsedGas());
-					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getTransactions().get(0).getTransactionID());
-					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(2).getTransactions().get(0).getTransactionID());
-
-				}
-
-			}
+		System.out.println("Pool size : " + InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
+		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
+			System.out.println("Node id : " + InputConfig.getNodes().get(i).getNodeId() +"\n"+
+					"The number of blockchain ledger : " + InputConfig.getNodes().get(i).getBlockchainLedger().size()  );
 		}
 
+//		for (int i = 0; i < InputConfig.getMiners().get(0).getBlockchainLedger().size(); i++) {
+//			System.out.println("===============block " + i + "==================");
+//			System.out.println("Block ID : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockID()
+//					+ "\n" + "Block Per ID : "
+//					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getPreviousBlocKID() + "\n"
+//					+ "Block time : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockTimestamp()
+//					+ "\n" + "Block depth : "
+//					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockDepth() + "\n"
+//					+ "Block size used : " + InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getBlockSize()
+//					+ "\n" + "Block gas used : "
+//					+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getUsedGas());
+//
+//			if (InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getHasTx() == true) {
+//				
+//				System.out.println("Block includes : "
+//						+ InputConfig.getMiners().get(0).getBlockchainLedger().get(i).getNumberTx()
+//						+ " transactions");
+//
+//				Iterator<Transaction> iterator = InputConfig.getMiners().get(0).getBlockchainLedger().get(i)
+//						.getTransactions().iterator();
+//				while (iterator.hasNext()) {
+//
+//					Transaction transaction = iterator.next();
+//					System.out.println("Transaction ID : " + transaction.getTransactionID() + "\n"
+//							+ "Transaction time : " + transaction.getCreationTime() + "\n"
+//							+ "Transaction confrimation time: " + transaction.getConfirmationTime() + "\n"
+//							+ "Transaction gas used: " + transaction.getUsedGas());
+//					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(1).getTransactions().get(0).getTransactionID());
+//					// System.out.println(InputConfig.getMiners().get(0).getBlockchainLedger().get(2).getTransactions().get(0).getTransactionID());
+//
+//				}
+//
+//			}
+//		}
+//
+		
+		Statistics.calculate();
+		ExcelWriter.printToExcel();
 	}
+
+	
 
 }

@@ -1,4 +1,4 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -17,12 +17,11 @@ public class InputConfig {
 	private static final long maxTXsize = 1000; // Maximum Transaction size in KB
 	private static final int Binterval = 7;
 	
-	private static final long maxBlockSize = 10000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
+	private static final long maxBlockSize = 100000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
 	
 	
 	private static final double TransactionGasLimit = 100;
-	private static final long minGasUsed = 1; // Minimum gas used 
-	private static final long maxGasUsed = 3; // Maximum gas used
+	
 	
 	private static final String consensusAlgorithm = "raft"; 
 	private static final int simTime = 1000;
@@ -35,9 +34,6 @@ public class InputConfig {
 	
 	private static final Statistics STATISTICS = new Statistics();
 	
-	private static final double propTxDelay = 0.000690847927; 
-	
-	
 	
 
 	public static double getTransactionGaslimit() {
@@ -45,9 +41,7 @@ public class InputConfig {
 		return TransactionGasLimit;
 	}
 
-	public static double getProptxdelay() {
-		return propTxDelay;
-	}
+	
 
 	private static ArrayList<Node> NODES = new ArrayList<>();
 	private static ArrayList<Miner> Miners = new ArrayList<>();
@@ -116,10 +110,6 @@ public class InputConfig {
 		return blockGasLimit;
 	}
 
-
-	public static Statistics getStatistics() {
-		return STATISTICS;
-	}
 
 
 	/**

@@ -1,9 +1,12 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import IoTSimOsmosis.blockchainNetwork.BlockCommit;
+import IoTSimOsmosis.blockchainNetwork.BlockchainController;
+import IoTSimOsmosis.blockchainNetwork.Statistics;
 import IoTSimOsmosis.cloudsim.Vm;
 import IoTSimOsmosis.cloudsim.edge.core.edge.MEL;
 import IoTSimOsmosis.cloudsim.osmesis.examples.FireFightingStationAdel;
@@ -11,10 +14,6 @@ import IoTSimOsmosis.osmosis.core.EdgeSDNController;
 import IoTSimOsmosis.osmosis.core.OsmesisBroker;
 import IoTSimOsmosis.osmosis.core.OsmesisDatacenter;
 import IoTSimOsmosis.osmosis.core.OsmosisBuilder;
-import blockchainNetwork.BlockCmmit;
-import blockchainNetwork.BlockchainController;
-import blockchainNetwork.Statistics;
-import blockchainNetwork.BlockCmmit;
 
 public class mainTest {
 
@@ -27,7 +26,7 @@ public class mainTest {
 		BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT
 																	// simulator
 		Node.generateGenesisBlock(); // Create the gensis block for all miners
-		BlockCmmit.generateInitialEvents();
+		BlockCommit.generateInitialEvents();
 
 //			BlockCmmit.createBlock();
 //			BlockCmmit.testNewArray();
@@ -46,7 +45,7 @@ public class mainTest {
 			clock = nextEvent.getTime();
 			// System.out.println (nextEvent.getTime());
 
-			BlockCmmit.handleEvent(nextEvent);
+			BlockCommit.handleEvent(nextEvent);
 			Queue.removeEvent(nextEvent);
 
 		}

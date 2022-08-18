@@ -12,10 +12,10 @@
 package IoTSimOsmosis.cloudsim.osmesis.examples.uti;
 
 
+import IoTSimOsmosis.blockchainNetwork.BlockchainController;
 import IoTSimOsmosis.cloudsim.Log;
 import IoTSimOsmosis.cloudsim.edge.core.edge.EdgeLet;
 import IoTSimOsmosis.osmosis.core.*;
-import blockchainNetwork.BlockchainController;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -225,9 +225,9 @@ public class PrintResults_Example_3 {
                 EdgeLet let = workflowTag.getOsmosislet(x);
                 transactionOsmosisLetTime += let.getActualCPUTime();
             }
-            transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
-            double sendTime = ThreadLocalRandom.current().nextDouble(workflowTag.getSartTime(), workflowTag.getFinishTime());
-    		blockchainController.createTransactions(sendTime, "0x36ef5482e8a74d0104fdd5434930849504b3cc39", "0xabea9132b05a70803a4e85094fd0e1800777fbef");
+            //transactionTotalTime = transactionTransmissionTime +  transactionOsmosisLetTime;
+            //double sendTime = ThreadLocalRandom.current().nextDouble(workflowTag.getSartTime(), workflowTag.getFinishTime());
+    		//blockchainController.createTransactions(sendTime, "0x36ef5482e8a74d0104fdd5434930849504b3cc39", "0xabea9132b05a70803a4e85094fd0e1800777fbef");
 			Log.printLine(String.format("%1s %15s %15s %18s %18s %22s %25s %18s %34s %32s %24s %28s %31s %41s %18s %26s %23s %24s %44s %18s %22s %28s %23s  %28s"
 					, workflowTag.getAppId()
 					, workflowTag.getAppName()

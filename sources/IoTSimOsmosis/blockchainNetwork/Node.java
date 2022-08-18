@@ -1,9 +1,9 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 
-import blockchainNetwork.Block;
-import blockchainNetwork.InputConfig;
+import IoTSimOsmosis.blockchainNetwork.Block;
+import IoTSimOsmosis.blockchainNetwork.InputConfig;
 
 public class Node {
 

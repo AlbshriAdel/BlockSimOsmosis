@@ -1,4 +1,4 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ public class Statistics {
 	private static ArrayList<Object[]> chains = new ArrayList<>();
 	private static ArrayList<Object[]> transactions = new ArrayList<>();
 	private static ArrayList<Object[]> transactionLatencies = new ArrayList<>();
+	private static ArrayList<Object[]> transactionsPool = new ArrayList<>();
 //
 	public static int TotalNumberOfBlock = 0;
 	public static int TotalNumberOfTx = 0;
@@ -29,6 +30,7 @@ public class Statistics {
 		transaction();
 		transactionLatency();
 		calculateLatency();
+		transactionsPool();
 
 	}
 
@@ -108,16 +110,28 @@ public class Statistics {
 		averageLatency = totalTxLatency / TotalNumberOfTx;
 
 	}
+	
+	private static void transactionsPool() {
+
+		Miner miner =Consensus.getAassignLeader();
+		
+
+		Iterator<Transaction> iterator = miner.getTransactionsPool().getTransactionsPool().iterator();
+        while (iterator.hasNext()) {
+        	Transaction transaction = iterator.next();
+
+					Object[] info = { transaction.getTransactionID(), transaction.getCreationTime(),
+							transaction.getConfirmationTime(), "Pending"};
+					getTransactionsPool().add(info);
+	
+        }
+
+	}
 
 	public static ArrayList<Object[]> getChains() {
 		return chains;
 	}
 
-//
-//	public HashMap<Transaction, Double> getTransactionsLatency() {
-//		return TransactionsLatency;
-//	}
-//
 	public static ArrayList<Object[]> getTransactions() {
 		return transactions;
 	}
@@ -125,4 +139,11 @@ public class Statistics {
 	public static ArrayList<Object[]> getTransactionLatencies() {
 		return transactionLatencies;
 	}
+
+	public static ArrayList<Object[]> getTransactionsPool() {
+		return transactionsPool;
+	}
+
+	
+	
 }

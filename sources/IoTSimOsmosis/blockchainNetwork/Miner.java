@@ -1,4 +1,4 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 public class Miner extends Node {
 

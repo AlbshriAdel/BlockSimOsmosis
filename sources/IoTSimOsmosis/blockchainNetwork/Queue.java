@@ -1,4 +1,4 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 

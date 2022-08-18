@@ -1,7 +1,8 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.concurrent.ThreadLocalRandom;
-import blockchainNetwork.InputConfig;
+
+import IoTSimOsmosis.blockchainNetwork.InputConfig;
 
 public class Scheduler {
 	

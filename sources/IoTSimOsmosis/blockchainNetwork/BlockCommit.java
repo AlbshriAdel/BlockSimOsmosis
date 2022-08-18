@@ -1,23 +1,14 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-//
-//
-//
-//
-//import java.util.ArrayList;
-//import java.util.concurrent.ThreadLocalRandom;
-//import Simulator.Queue;
-//import Simulator.Event;
-//import Simulator.InputConfig;
-import blockchainNetwork.Scheduler;
+import IoTSimOsmosis.blockchainNetwork.Scheduler;
 
 //import Simulator.Statistics;
 //
-public class BlockCmmit {
+public class BlockCommit {
 
 	// done
 	public static void generateInitialEvents() {
@@ -41,7 +32,7 @@ public class BlockCmmit {
 			toGenerateBlock(event);
 
 		} else if (event.getType() == "receive_block") {
-			BlockCmmit.receiveBlock(event);
+			receiveBlock(event);
 		}
 	}
 

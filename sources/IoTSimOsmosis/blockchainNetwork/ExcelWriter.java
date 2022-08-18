@@ -1,4 +1,4 @@
-package blockchainNetwork;
+package IoTSimOsmosis.blockchainNetwork;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -19,77 +19,23 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelWriter {
-
+	static XSSFWorkbook workbook = new XSSFWorkbook();
+	
 	public static void printToExcel() {
 
-		ArrayList<Object[]> df1 = new ArrayList<>();
-		df1.add(new Object[] { "No. of Node",
-				"No. of Transactions",
-				"Transaction Gas Limit",
-				"Maximum Transaction Size",
-				"Minimum Transaction Size",
-				"Maximum Block Size",
-				"Block Gas Limit",
-				"Block Propagation Time",
-				"Average Transaction Latency",
-				"Transaction Throughput", 
-				"Transactions execution (secs)" });
-		df1.add(new Object[] { InputConfig.getNodes().size(), 
-				InputConfig.getTransactionNumber(),
-				InputConfig.getTransactionGaslimit(),
-				InputConfig.getMaxTransactionSize(),
-				InputConfig.getMinTransactionSize(),
-				
-				InputConfig.getMaxblocksize(),
-				InputConfig.getBlockGasLimit(),
-				
-				
-				
-
-		});
-
-		// Initialising new workbook
-		XSSFWorkbook workbook = new XSSFWorkbook();
-
-		// writing data frames to workbook
-		writeData(df1, workbook, "config");
-
-		ArrayList<Object[]> df2 = new ArrayList<>();
-		df2.add(new Object[] { "No. of light Node", "No. of Miner Node", "Total No. of Blocks",
-				"Total No of Transactions", "Block Propagation Time", "Average Transaction Latency",
-				"Transaction Throughput", "Transactions execution (secs)" });
-		df2.add(new Object[] { InputConfig.getNodes().size(), InputConfig.getMiners().size(),
-				Statistics.TotalNumberOfBlock, Statistics.TotalNumberOfTx, Statistics.BlockPropagationTime,
-				Statistics.averageLatency, Statistics.transactionsThroughput, Statistics.totalTransactionsTime
-
-		});
-
-		// writing data frames to workbook
-		writeData(df1, workbook, "Results");
-
-		ArrayList<Object[]> df3 = new ArrayList<>();
-		df3.add(new Object[] { "Node ID", "Block ID", "Previous Block ID", "Block Depth", "Block Timestamp",
-				"Block Size", "No. of Transactions" });
-		for (Object[] chain : Statistics.getChains()) {
-			df3.add(chain);
+		
+		if (Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size()>0) {
+			config();
+			transcationPool();
+		}else {
+			config();
+			result();
+			blockchainLedger();
+			blockchainTranscations();
+			transcationLatency();	
 		}
-		writeData(df3, workbook, "Blocks");
-
-		ArrayList<Object[]> df4 = new ArrayList<>();
-		df4.add(new Object[] { "Transaction ID", "Creation time ", "Confirmation time", "Transaction size",
-				"Transaction Used Gas", "Block ID" });
-		for (Object[] transaction : Statistics.getTransactions()) {
-			df4.add(transaction);
-		}
-		writeData(df4, workbook, "Transactions");
-
-		ArrayList<Object[]> df5 = new ArrayList<>();
-		df5.add(new Object[] { "Tx ID", "Creation time ", "Confirmation time", "Transaction Latency", });
-		for (Object[] transactionLatency : Statistics.getTransactionLatencies()) {
-			df5.add(transactionLatency);
-		}
-		writeData(df5, workbook, "TransactionLatency");
-
+		
+		
 		try (FileOutputStream outputStream = new FileOutputStream("IoTBlockchain.xlsx")) {
 			workbook.write(outputStream);
 			outputStream.close();
@@ -103,6 +49,83 @@ public class ExcelWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+	
+
+	public static void config() {
+
+		ArrayList<Object[]> df1 = new ArrayList<>();
+		df1.add(new Object[] { "No. of Node", "consensus Algorithm", "No. of Transactions", "Transaction Gas Limit",
+				"Maximum Transaction Size", "Minimum Transaction Size", "Maximum Block Size", "Block Gas Limit",
+				"Block Interval", });
+		df1.add(new Object[] { InputConfig.getNumberOfNodes(), InputConfig.getConsensusalgorithm(),
+				InputConfig.getTransactionNumber(), InputConfig.getTransactionGaslimit(),
+				InputConfig.getMaxTransactionSize(), InputConfig.getMinTransactionSize(), InputConfig.getMaxblocksize(),
+				InputConfig.getBlockGasLimit(), InputConfig.getBinterval(),
+
+		});
+
+		// writing data frames to workbook
+		writeData(df1, workbook, "config");
+
+	}
+
+	public static void result() {
+		ArrayList<Object[]> df2 = new ArrayList<>();
+		df2.add(new Object[] { "No. of light Node", "No. of Miner Node", "Total No. of Blocks",
+				"Total No of Transactions", "Block Propagation Time", "Average Transaction Latency",
+				"Transaction Throughput", "Transactions execution (secs)" });
+		df2.add(new Object[] { InputConfig.getNodes().size(), InputConfig.getMiners().size(),
+				Statistics.TotalNumberOfBlock, Statistics.TotalNumberOfTx, Statistics.BlockPropagationTime,
+				Statistics.averageLatency, Statistics.transactionsThroughput, Statistics.totalTransactionsTime
+
+		});
+
+		// writing data frames to workbook
+		writeData(df2, workbook, "Results");
+
+	}
+
+	public static void blockchainLedger() {
+		ArrayList<Object[]> df3 = new ArrayList<>();
+		df3.add(new Object[] { "Node ID", "Block ID", "Previous Block ID", "Block Depth", "Block Timestamp",
+				"Block Size", "No. of Transactions" });
+		for (Object[] chain : Statistics.getChains()) {
+			df3.add(chain);
+		}
+		writeData(df3, workbook, "Blocks");
+
+	}
+
+	public static void blockchainTranscations() {
+		ArrayList<Object[]> df4 = new ArrayList<>();
+		df4.add(new Object[] { "Transaction ID", "Creation time ", "Confirmation time", "Transaction size",
+				"Transaction Used Gas", "Block ID" });
+		for (Object[] transaction : Statistics.getTransactions()) {
+			df4.add(transaction);
+		}
+		writeData(df4, workbook, "Transactions");
+
+	}
+
+	public static void transcationLatency() {
+		ArrayList<Object[]> df5 = new ArrayList<>();
+		df5.add(new Object[] { "Transaction ID", "Creation time ", "Confirmation time", "Transaction Latency", });
+		for (Object[] transactionLatency : Statistics.getTransactionLatencies()) {
+			df5.add(transactionLatency);
+		}
+		writeData(df5, workbook, "TransactionLatency");
+
+	}
+	
+	public static void transcationPool() {
+		ArrayList<Object[]> df6 = new ArrayList<>();
+		df6.add(new Object[] { "Transaction ID", "Creation time ", "Confirmation time", "Status", });
+		for (Object[] transactionLatency : Statistics.getTransactionsPool()) {
+			df6.add(transactionLatency);
+		}
+		writeData(df6, workbook, "TransactionPool");
 
 	}
 

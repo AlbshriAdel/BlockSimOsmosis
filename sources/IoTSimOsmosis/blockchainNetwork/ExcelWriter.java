@@ -24,10 +24,13 @@ public class ExcelWriter {
 	public static void printToExcel() {
 
 		
-		if (Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size()>0) {
+		if (Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size()>0 ) {
 			config();
 			transcationPool();
-		}else {
+		}if(Consensus.getAassignLeader().getBlockchainLedger().size()==1){
+			config();
+		}
+		else {
 			config();
 			result();
 			blockchainLedger();
@@ -54,13 +57,14 @@ public class ExcelWriter {
 	
 
 	public static void config() {
+		
 
 		ArrayList<Object[]> df1 = new ArrayList<>();
 		df1.add(new Object[] { "No. of Node", "consensus Algorithm", "No. of Transactions", "Transaction Gas Limit",
 				"Maximum Transaction Size", "Minimum Transaction Size", "Maximum Block Size", "Block Gas Limit",
 				"Block Interval", });
 		df1.add(new Object[] { InputConfig.getNumberOfNodes(), InputConfig.getConsensusalgorithm(),
-				InputConfig.getTransactionNumber(), InputConfig.getTransactionGaslimit(),
+				Statistics.noTransactionsConfig, InputConfig.getTransactionGaslimit(),
 				InputConfig.getMaxTransactionSize(), InputConfig.getMinTransactionSize(), InputConfig.getMaxblocksize(),
 				InputConfig.getBlockGasLimit(), InputConfig.getBinterval(),
 

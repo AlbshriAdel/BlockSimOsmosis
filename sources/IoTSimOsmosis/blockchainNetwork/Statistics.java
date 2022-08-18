@@ -22,6 +22,7 @@ public class Statistics {
 	public static double firstCreationTime = 0;
 	public static double lastConfirmiationTime = 0;
 	public static double totalTransactionsTime = 0;
+	public static int noTransactionsConfig=0;
 
 //	
 //

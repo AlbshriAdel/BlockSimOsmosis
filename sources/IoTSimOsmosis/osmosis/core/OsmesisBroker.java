@@ -270,7 +270,7 @@ public class OsmesisBroker extends DatacenterBroker {
 			sendNow(app.getIoTDeviceId(), OsmosisTags.SENSING, app);
 			double dealy = app.getDataRate();
 			send(this.getId(), dealy, OsmosisTags.GENERATE_OSMESIS, app);
-			BlockchainController.creatTransactionsWithIntegrated(ev.eventTime(), app.getAppID(),app.getAppID());
+			//BlockchainController.creatTransactionsWithIntegrated(ev.eventTime(), app.getAppID(),app.getAppID());
 		} else {
 			
 		}

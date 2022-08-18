@@ -46,6 +46,7 @@ public class BlockchainController {
 			// toAddress)
 			Transaction tx = new Transaction(creationTime, transactionSize, 1, 2);
 			Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().add(tx);
+			Statistics.noTransactionsConfig+=1;
 			
 		}
 
@@ -66,6 +67,7 @@ public class BlockchainController {
 			// toAddress)
 			Transaction tx = new Transaction(creationTime, transactionSize, fromAddress, toAddress);
 			Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().add(tx);
+			Statistics.noTransactionsConfig+=1;
 			
 		
 

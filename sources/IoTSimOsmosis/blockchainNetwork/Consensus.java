@@ -27,7 +27,7 @@ public class Consensus {
 	public void becomeCandidateNode() {
 
 		int NodeID = rand.nextInt(InputConfig.getNumberOfNodes());
-		InputConfig.getNodes().get(NodeID).setNodeType("candidate");
+		Node.getNodes().get(NodeID).setNodeType("candidate");
 
 //		//System.out.println("[Test become candidate node] The node [" + InputConfig.getNodes().get(NodeID).getNodeId()
 //				+ "] has been became candidate, and type has been changed [ "
@@ -56,19 +56,19 @@ public class Consensus {
 	 */
 	public void assignLeader() {
 		int candidateIndex = 0;
-		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
-			voting(InputConfig.getNodes().get(i));
-			if (InputConfig.getNodes().get(i).getNodeType().equals("candidate")) {
+		for (int i = 0; i < Node.getNodes().size(); i++) {
+			voting(Node.getNodes().get(i));
+			if (Node.getNodes().get(i).getNodeType().equals("candidate")) {
 				candidateIndex = i;
 
 			}
 
 		}
 
-		if (vote.size() >= InputConfig.getNodes().size()) {
+		if (vote.size() >= Node.getNodes().size()) {
 
-			InputConfig.getMiners().add(new Miner(candidateIndex, "leader"));
-			InputConfig.getNodes().remove(candidateIndex);
+			Node.getMiners().add(new Miner(candidateIndex, "leader"));
+			Node.getNodes().remove(candidateIndex);
 
 		}
 
@@ -81,16 +81,21 @@ public class Consensus {
 	 */
 	public static Miner getAassignLeader() {
 		Miner miner = null;
-		for (int i = 0; i < InputConfig.getMiners().size(); i++) {
-			if (InputConfig.getMiners().get(i).getNodeType().equals("leader")) {
-				miner = InputConfig.getMiners().get(i);
+		for (int i = 0; i < Node.getMiners().size(); i++) {
+			if (Node.getMiners().get(i).getNodeType().equals("leader")) {
+				miner = Node.getMiners().get(i);
 			}
 		}
 //		System.out.println("[Test getAassignLeader] The leader is  [ " + miner.getNodeId() + " ]" + " and type is [ "
 //				+ miner.getNodeType() + " ]");
 		return miner;
 	}
-
+	
+	/**
+	 * The time it takes the miner to generate next block
+	 * 
+	 * @return double 
+	 */
 
 	public static double generateNextBlockDelay() {
 		Random rand = new Random();

@@ -51,12 +51,12 @@ public class mainTest {
 
 		// for (int i=0; i<InputConfig.getMiners().size(); i++) {
 
-		System.out.println("The number of blocks : " + InputConfig.getMiners().get(0).getBlockchainLedger().size());
-		System.out.println("Pool size : " + InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
-		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
-			System.out.println("Node id : " + InputConfig.getNodes().get(i).getNodeId() +"\n"+
-					"The number of blockchain ledger : " + InputConfig.getNodes().get(i).getBlockchainLedger().size()  );
-		}
+//		System.out.println("The number of blocks : " + InputConfig.getMiners().get(0).getBlockchainLedger().size());
+//		System.out.println("Pool size : " + InputConfig.getMiners().get(0).getTransactionsPool().getTransactionsPool().size());
+//		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
+//			System.out.println("Node id : " + InputConfig.getNodes().get(i).getNodeId() +"\n"+
+//					"The number of blockchain ledger : " + InputConfig.getNodes().get(i).getBlockchainLedger().size()  );
+//		}
 
 //		for (int i = 0; i < InputConfig.getMiners().get(0).getBlockchainLedger().size(); i++) {
 //			System.out.println("===============block " + i + "==================");

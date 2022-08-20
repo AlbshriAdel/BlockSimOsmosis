@@ -13,6 +13,8 @@ public class Node {
 	private String nodeType;
 	// Blockchain Ledger
 	private final ArrayList<Block> blockchainLedger;
+	private static ArrayList<Node> NODES = new ArrayList<>();
+	private static ArrayList<Miner> Miners = new ArrayList<>();
 
 	public Node(int nodeID, String nodeType) {
 
@@ -63,8 +65,8 @@ public class Node {
 	 */
 	public static void generateGenesisBlock() {
 		//System.out.println("####Generate genesis block for all miner in the network####");
-		for (int i=0; i<InputConfig.getNodes().size(); i++) {
-			InputConfig.getNodes().get(i).getBlockchainLedger().add(new Block());
+		for (int i=0; i<getNodes().size(); i++) {
+			getNodes().get(i).getBlockchainLedger().add(new Block());
 		}
 		Consensus.getAassignLeader().getBlockchainLedger().add(new Block());
 //		System.out.println("The genesis block has been created successfully for leader id [ "
@@ -81,6 +83,25 @@ public class Node {
 		return this.getBlockchainLedger().get(blockchainLedger.size() - 1);
 		
 		
+	}
+	
+	/**
+	 * Return an arrayList of node
+	 * @return
+	 */
+	public static ArrayList<Node> getNodes() {
+		return NODES;
+	}
+
+
+	
+	
+/**
+ *  Return an arrayList of Miner
+ * @return Miners
+ */
+	public static ArrayList<Miner> getMiners() {
+		return Miners;
 	}
 
 }

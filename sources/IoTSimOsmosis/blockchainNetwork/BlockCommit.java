@@ -65,9 +65,10 @@ public class BlockCommit {
 	}
 
 	private static void propagate_block(Block newBlock) {
-		for (int i = 0; i < InputConfig.getNodes().size(); i++) {
-			double blockDealy = 10; // need to configure
-			Scheduler.receiveBlockEvent(InputConfig.getNodes().get(i), newBlock, blockDealy);
+		for (int i = 0; i < Node.getNodes().size(); i++) {
+			double blockDealy = BlockchainController.blockPropagatingDelay();
+			System.out.println(blockDealy);
+			Scheduler.receiveBlockEvent(Node.getNodes().get(i), newBlock, blockDealy);
 		}
 
 	}
@@ -75,24 +76,24 @@ public class BlockCommit {
 	private static void receiveBlock(Event event) {
 
 		Miner miner = event.getBlock().getMiner();
-		int minerID = miner.getNodeId();
 		double eventTime = event.getTime();
 		long blockPrevious = event.getBlock().getPreviousBlocKID();
 
 		Node node = event.getNodeId();
-		int nodeID = node.getNodeId();
+		
 
 		long lastBlockID = node.getLastBlock().getBlockID();
 
 		if (blockPrevious == lastBlockID) {
 			node.getBlockchainLedger().add(event.getBlock());
-			System.out.println("Block add to node ID " + node.getNodeId() + "and node " + "\n" + "ledger size is "
-					+ event.getBlock().getBlockID());
+			updateTransactionsPool(miner, event.getBlock());
+			generateNextBlock(miner, eventTime);
 		} else {
 			int depth = event.getBlock().getBlockDepth() + 1;
 			if (depth > node.getBlockchainLedger().size()) {
 				updateLocalBlockchainLedger(node, miner, depth);
-				System.out.println("depth :" + depth);
+				generateNextBlock(miner, eventTime);
+
 
 			}
 
@@ -104,8 +105,9 @@ public class BlockCommit {
 		int i = 0;
 		while (i < depth) {
 			if (i < node.getBlockchainLedger().size()) {
-				System.out.println("here");
+				
 				if (node.getBlockchainLedger().get(i).getBlockID() != node.getBlockchainLedger().get(i).getBlockID()) {
+					System.out.println("updateLocalBlockchainLedger");
 					Block newBlock = miner.getBlockchainLedger().get(i);
 					node.getBlockchainLedger().add(newBlock);
 
@@ -127,8 +129,8 @@ public class BlockCommit {
 						.getTransactionsPool().get(count).getTransactionID()) {
 					block.getTransactions().get(i).setConfirmationTime(block.getBlockTimestamp());
 					miner.getTransactionsPool().getTransactionsPool().remove(count);
-					System.out.println("=> Transacation ID : [" + block.getTransactions().get(i).getTransactionID()
-							+ "] has been deleted from Transactions Pool ");
+//					System.out.println("=> Transacation ID : [" + block.getTransactions().get(i).getTransactionID()
+//							+ "] has been deleted from Transactions Pool ");
 				}
 			}
 			i += 1;

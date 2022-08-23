@@ -2,8 +2,8 @@ package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 
-import IoTSimOsmosis.blockchainNetwork.Block;
-import IoTSimOsmosis.blockchainNetwork.InputConfig;
+
+
 
 public class Node {
 
@@ -11,17 +11,40 @@ public class Node {
 	private final int nodeID;
 	// Node type
 	private String nodeType;
+	
+	private String joinTime;
 	// Blockchain Ledger
 	private final ArrayList<Block> blockchainLedger;
-	private static ArrayList<Node> NODES = new ArrayList<>();
-	private static ArrayList<Miner> Miners = new ArrayList<>();
+	// transactions Pool
+	private final ArrayList<Transaction> transactionsPool;
+	// Node list
+	private final static ArrayList<Node> NodesList = new ArrayList<>();
+	
 
-	public Node(int nodeID, String nodeType) {
+	/**
+	 * 
+	 * @param nodeID
+	 * @param nodeType
+	 * @param joinTime
+	 */
+	public Node(int nodeID, String nodeType, String joinTime) {
 
 		this.nodeID = nodeID;
 		this.nodeType = nodeType;
+		this.joinTime = joinTime;
 		this.blockchainLedger = new ArrayList<>();
-
+		this.transactionsPool=new ArrayList<>();
+		
+	
+	}
+	
+	/**
+	 * a method to generate genesis Block for all miner in the network
+	 */
+	public static void generateGenesisBlock() {
+		for (Node node: Node.getNodes()) {
+			node.getBlockchainLedger().add(new Block());
+		}
 	}
 
 	/**
@@ -41,6 +64,16 @@ public class Node {
 	public String getNodeType() {
 		return nodeType;
 	}
+	
+	/**
+	 * Return the the time that node join to blockchain network
+	 * @return joinTime
+	 */
+	public String getJoinTime() {
+		return joinTime;
+	}
+	
+	
 
 	/**
 	 * Return the local blockchain ledger
@@ -50,6 +83,19 @@ public class Node {
 	public ArrayList<Block> getBlockchainLedger() {
 		return blockchainLedger;
 	}
+	
+	
+	/**
+	 *  Return array of transactions pool
+	 *  
+	 * @return ArrayList<Transaction>
+	 */
+	public ArrayList<Transaction> getTransactionsPool() {
+		return transactionsPool;
+
+	}
+	
+
 
 	/**
 	 * set node type
@@ -59,20 +105,7 @@ public class Node {
 	public void setNodeType(String nodeType) {
 		this.nodeType = nodeType;
 	}
-
-	/**
-	 * a method to generate genesis Block for all miner in the network
-	 */
-	public static void generateGenesisBlock() {
-		//System.out.println("####Generate genesis block for all miner in the network####");
-		for (int i=0; i<getNodes().size(); i++) {
-			getNodes().get(i).getBlockchainLedger().add(new Block());
-		}
-		Consensus.getAassignLeader().getBlockchainLedger().add(new Block());
-//		System.out.println("The genesis block has been created successfully for leader id [ "
-//				+ Consensus.getAassignLeader().getNodeId() + " ].");
-
-	}
+	
 
 	/**
 	 * Return the last block at the nodes local blockchain
@@ -90,18 +123,7 @@ public class Node {
 	 * @return
 	 */
 	public static ArrayList<Node> getNodes() {
-		return NODES;
-	}
-
-
-	
-	
-/**
- *  Return an arrayList of Miner
- * @return Miners
- */
-	public static ArrayList<Miner> getMiners() {
-		return Miners;
+		return NodesList;
 	}
 
 }

@@ -6,8 +6,7 @@ import java.util.Iterator;
 
 public class Statistics {
 
-	HashMap<Transaction, Double> TransactionsLatency = new HashMap<Transaction, Double>();
-	private static ArrayList<Object[]> validation = new ArrayList<>();
+
 
 	private static ArrayList<Object[]> chains = new ArrayList<>();
 	private static ArrayList<Object[]> transactions = new ArrayList<>();
@@ -27,19 +26,25 @@ public class Statistics {
 
 //	
 //
-	public static void calculate() {
+	public static void calculate(int simulationRunNumber) {
 		blockchainLedger();
 		transaction();
-		transactionLatency();
-		calculateLatency();
-		transactionsPool();
-		ExcelWriter.printToExcel();
-		rest();
+//		transactionLatency();
+//		calculateLatency();
+//		transactionsPool();
+		ExcelWriter.printToExcel(simulationRunNumber);
+//		rest();
 
 	}
 
 	public static void calculateLatency() {
-		Miner miner = Node.getMiners().get(0);
+		
+		Node miner = null;
+		for (Node m : Node.getNodes()) {
+			if (m.getNodeType().equals("leader")) {
+				miner=m;
+			}
+		}
 		int blockchainSize = miner.getBlockchainLedger().size();
 		int transactionListSize = miner.getBlockchainLedger().get(blockchainSize - 1).getTransactions().size();
 		if (blockchainSize > 0) {
@@ -67,8 +72,8 @@ public class Statistics {
 			while (iterator.hasNext()) {
 
 				Block b = iterator.next();
-				Object[] info = { getRunNumber(),Node.getNodes().get(i).getNodeId(), b.getBlockID(), b.getPreviousBlocKID(),
-						b.getBlockDepth(), b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size() };
+				Object[] info = { getRunNumber(),Node.getNodes().get(i).getNodeId(), b.getBlockID(), b.getPreviousBlockID(),
+						b.getBlockDepth(), b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(),b.getMiner().getNodeId()};
 				getChains().add(info);
 			}
 		}
@@ -79,13 +84,21 @@ public class Statistics {
 		TotalNumberOfBlock = node.getBlockchainLedger().size();
 		BlockPropagationTime = BlockPropagationTimeCount / TotalNumberOfBlock;
 	}
+	
+	
 
 	private static void transaction() {
 
-		Miner Miner = Node.getMiners().get(0);
-		for (Block b : Miner.getBlockchainLedger()) {
+		Node miner = Node.getNodes().get(0);
+//		for (Node m : Node.getNodes()) {
+//			if (m.getNodeType().equals("leader")) {
+//				miner=m;
+//				break;
+//			}
+//		}
+		for (Block b : miner.getBlockchainLedger()) {
 			for (Transaction transaction : b.getTransactions()) {
-				Object[] info = { getRunNumber(),transaction.getTransactionID(), transaction.getCreationTime(),
+				Object[] info = { getRunNumber(),miner.getNodeId(),transaction.getTransactionID(), transaction.getCreationTime(),
 						transaction.getConfirmationTime(), transaction.getTransactionSize(), transaction.getUsedGas(),
 						b.getBlockID(), transaction.getFromAddress(), transaction.getToAddress()};
 				getTransactions().add(info);
@@ -94,12 +107,16 @@ public class Statistics {
 
 		TotalNumberOfTx = getTransactions().size();
 	}
+	
+	
 
 	private static void transactionLatency() {
 		double TransactionLatency;
 		double totalTxLatency = 0;
-		for (int i = 0; i < Node.getMiners().size(); i++) {
-			Miner Miner = Node.getMiners().get(i);
+		for (int i = 0; i < Node.getNodes().size(); i++) {
+			if (Node.getNodes().get(i).getNodeType().equals("leader")){
+			Node Miner = Node.getNodes().get(i);
+			
 			for (Block b : Miner.getBlockchainLedger()) {
 				for (Transaction transaction : b.getTransactions()) {
 					Object[] info = { getRunNumber(),transaction.getTransactionID(), transaction.getCreationTime(),
@@ -109,6 +126,7 @@ public class Statistics {
 					totalTxLatency += TransactionLatency;
 				}
 			}
+			}
 		}
 
 		averageLatency = totalTxLatency / TotalNumberOfTx;
@@ -117,10 +135,10 @@ public class Statistics {
 	
 	private static void transactionsPool() {
 
-		Miner miner =Consensus.getAassignLeader();
+		Node miner =Consensus.getAassignLeader();
 		
 
-		Iterator<Transaction> iterator = miner.getTransactionsPool().getTransactionsPool().iterator();
+		Iterator<Transaction> iterator = miner.getTransactionsPool().iterator();
         while (iterator.hasNext()) {
         	Transaction transaction = iterator.next();
 
@@ -131,6 +149,11 @@ public class Statistics {
         }
 
 	}
+	
+
+
+		
+	
 	
 	public static void rest() {
 		TotalNumberOfBlock = 0;
@@ -166,7 +189,6 @@ public class Statistics {
 	public static ArrayList<Object[]> getTransactionsPool() {
 		return transactionsPool;
 	}
-
 
 
 	public static int getRunNumber() {

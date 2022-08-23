@@ -2,50 +2,70 @@ package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import IoTSimOsmosis.blockchainNetwork.InputConfig;
-
+/**
+ * 
+ * @author adelalbshri
+ *
+ */
 public class Scheduler {
 	
-	public static void createBlockEvent(Miner miner, double eventTime) { 
+	/**
+	 * 
+	 * @param miner
+	 * @param eventTime
+	 */
+	public static void createBlockEvent(Node miner, double eventTime) { 
 		String eventType = "create_block";
 		if (eventTime <= InputConfig.getSimTime()) {
-			// Populate event attributes
 			Block block = new Block();
 			block.setBlockID(ThreadLocalRandom.current().nextLong(100000000000L));
-			block.setDepth(miner.getBlockchainLedger().size());
+			block.setBlockDepth(miner.getBlockchainLedger().size());
 			block.setBlockTimestamp(eventTime);
 			block.setMiner(miner);
 			block.setPreviousBlockID(miner.getLastBlock().getBlockID());
-
-			
-			
-			
-			// Create the event
-			Event event = new Event(eventType, miner, eventTime, block);
-			// Append the event to the event list
+			Event event = new Event(eventType, block.getMiner(), eventTime, block);
 			Queue.addEvent(event);
-			
-//			System.out.println("Queue size is :["+ Queue.size() + "] ,event type is : [" + event.getType() + "] ,event time is : [" + event.getTime() +"] and block ID is [" + block.getBlockID()+ "]."+
-//			"Block time ["+block.getBlockTimestamp() +"]" + "Block depth ["+block.getBlockDepth() +"]"+"Block Previous ["+ block.getPreviousBlocKID() +"].");
-			
-			
-			//System.out.println("Miner id :"+event.getNodeId()+",event time :"+ event.getTime()+",event block id :"+event.getBlock().getId() + ", node type : " + miner.getNodeType());
-			//System.out.println("Block :"+ miner.getBlockchain().size());
 		}
-//		System.out.println("Final Queue size is : ["+Queue.size() +"].");
-	}
+	
+		}
 	
 
-	
-// Schedule a block receiving event for a node and append to event list
-	public static void receiveBlockEvent(Node recipient, Block block, double blockDelay) {
+
+/**
+ * 
+ * @param node
+ * @param newBlock
+ * @param blockDelay
+ */
+	public static void receiveBlockEvent(Node node, Block newBlock, double blockDelay) {
 		String eventType = "receive_block";
-		double receiveBlockTime = block.getBlockTimestamp() + blockDelay;
+		double receiveBlockTime = newBlock.getBlockTimestamp();
 		if (receiveBlockTime <= InputConfig.getSimTime()) {
-			Event event = new Event(eventType, recipient, receiveBlockTime, block);
+			updateTx(newBlock);
+			//System.out.println ("====Event.getxList() be fore =======" + Event.getxList().size()); 
+			Event event = new Event(eventType, node, receiveBlockTime, newBlock);
 			Queue.addEvent(event);
 		}
 	}
+	
+	public static void updateTx(Block block) {
+		
+		int count=0;
+		for (count=0 ;count <block.getTransactions().size(); count ++) {
+			for (Node node :Node.getNodes()) {
+				if(node.getNodeType().equals("leader") && node != block.getMiner()) {
+					for (int i=0 ; i<node.getTransactionsPool().size();i++) {
+						if(block.getTransactions().get(count)== node.getTransactionsPool().get(i)) {
+							node.getTransactionsPool().remove(i);
+						}
+					}
+				}
+			}
+		}
+		
+		
+	}
+
 
 
 	

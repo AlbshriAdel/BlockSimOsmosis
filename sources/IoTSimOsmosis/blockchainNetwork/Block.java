@@ -1,19 +1,21 @@
 package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 public class Block {
 	// Block ID for each block created
 	private long blockID;
 	// The previous block ID
-	private long previousBlocKID;
+	private long previousBlockID;
 	// the index of block in the local BCL
-	private int depth;
+	private int blockDepth;
 	// the time when the block is created
 	private double blockTimestamp;
+	// the time when the block is add received
+	private double blockReceivedTime;
 	// Miner node who mined (created) the block
-	private Miner miner;
+	private Node miner;
 	// list of transaction that included in the block
 	private ArrayList<Transaction> transactions;
 	// The block size
@@ -21,10 +23,10 @@ public class Block {
 	// The block gas limit
 	private double blockGasLimit;
 	// The block used gas limit
-	private double usedGas;
-	//
+	private double blockUsedGas;
+	// The number of transaction in a block
 	private int numberTX;
-	
+	// is block include transaction?
 	private boolean hasTX;
 
 	/**
@@ -32,38 +34,20 @@ public class Block {
 	 */
 	public Block() {
 		this.blockID = 0;
-		this.previousBlocKID = -1;
-		this.depth = 0;
+		this.previousBlockID = -1;
+		this.blockDepth = 0;
 		this.blockTimestamp = 0.0;
-		this.miner = null;
+		this.blockReceivedTime=0.0;
+		this.miner = Node.getNodes().get(0); // need to change just for test
 		this.transactions = new ArrayList<>();
 		this.blockSize = InputConfig.getMaxblocksize(); // 1 MB
 		this.blockGasLimit = InputConfig.getBlockGasLimit(); // 8000000
-		this.usedGas = 0;
-		this.hasTX=false;
-		this.numberTX=0;
+		this.blockUsedGas = 0;
+		this.hasTX = false;
+		this.numberTX = 0;
 
 	}
 
-	
-	public boolean getHasTx() {
-		return this.hasTX;
-	}
-	
-	public void setHasTx(boolean hasTX) {
-		this.hasTX = hasTX;
-	}
-	
-	public int getNumberTx() {
-		return this.numberTX;
-	}
-	
-	public void setNumberTx(int numberTX) {
-		this.numberTX = numberTX;
-	}
-
-	
-	
 	/**
 	 * Return block ID
 	 * 
@@ -78,8 +62,8 @@ public class Block {
 	 * 
 	 * @return previousBlocKID
 	 */
-	public long getPreviousBlocKID() {
-		return previousBlocKID;
+	public long getPreviousBlockID() {
+		return previousBlockID;
 	}
 
 	/**
@@ -88,7 +72,7 @@ public class Block {
 	 * @return depth
 	 */
 	public int getBlockDepth() {
-		return depth;
+		return blockDepth;
 	}
 
 	/**
@@ -99,13 +83,25 @@ public class Block {
 	public double getBlockTimestamp() {
 		return blockTimestamp;
 	}
+	
 
+	
+	/**
+	 * Return block Received Time
+	 * 
+	 * @return blockTimestamp
+	 */
+	public double getBlockReceivedTime() {
+		return blockReceivedTime;
+	}
+	
+	
 	/**
 	 * Return miner who created the block
 	 * 
 	 * @return miner
 	 */
-	public Miner getMiner() {
+	public Node getMiner() {
 		return miner;
 	}
 
@@ -141,8 +137,26 @@ public class Block {
 	 * 
 	 * @return usedGas
 	 */
-	public double getUsedGas() {
-		return usedGas;
+	public double getBlockUsedGas() {
+		return blockUsedGas;
+	}
+
+	/**
+	 * Return number of transactions that included in the block
+	 * 
+	 * @return numberTX
+	 */
+	public int getNumberTx() {
+		return this.numberTX;
+	}
+
+	/**
+	 * Return boolean if block includes transactions
+	 * 
+	 * @return hasTX
+	 */
+	public boolean getHasTx() {
+		return this.hasTX;
 	}
 
 	/**
@@ -159,8 +173,8 @@ public class Block {
 	 * 
 	 * @param previous
 	 */
-	public void setPreviousBlockID(long previous) {
-		this.previousBlocKID = previous;
+	public void setPreviousBlockID(long previousID) {
+		this.previousBlockID = previousID;
 	}
 
 	/**
@@ -168,8 +182,8 @@ public class Block {
 	 * 
 	 * @param depth
 	 */
-	public void setDepth(int depth) {
-		this.depth = depth;
+	public void setBlockDepth(int depth) {
+		this.blockDepth = depth;
 	}
 
 	/**
@@ -177,7 +191,7 @@ public class Block {
 	 * 
 	 * @param miner
 	 */
-	public void setMiner(Miner miner) {
+	public void setMiner(Node miner) {
 		this.miner = miner;
 	}
 
@@ -213,19 +227,46 @@ public class Block {
 	 * 
 	 * @param usedGas
 	 */
-	public void setUsedGas(double usedGas) {
-		this.usedGas = usedGas;
+	public void setBlockUsedGas(double usedGas) {
+		this.blockUsedGas = usedGas;
 	}
 
 	/**
 	 * set block Timestamp
+	 * 
 	 * @param timestamp
 	 */
 	public void setBlockTimestamp(double timestamp) {
 		this.blockTimestamp = timestamp;
 	}
+	
+	
+	
+	/**
+	 * set block received time
+	 * 
+	 * @param timestamp
+	 */
+	public void setBlockReceivedTime(double timestamp) {
+		this.blockReceivedTime = timestamp;
+	}
 
+	/**
+	 * set block has Tx
+	 * 
+	 * @param timestamp
+	 */
+	public void setHasTx(boolean hasTX) {
+		this.hasTX = hasTX;
+	}
 
-
+	/**
+	 * set block number of tx that include in a block
+	 * 
+	 * @param timestamp
+	 */
+	public void setNumberTx(int numberTX) {
+		this.numberTX = numberTX;
+	}
 
 }

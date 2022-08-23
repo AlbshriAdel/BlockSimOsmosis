@@ -9,28 +9,28 @@ public class InputConfig {
 	
 	/****************To Create Node Parameters *****************/
 	private static final int numberOfNodes = 5;
-	private static final int numberOfMiner = 2;
+	private static final int numberOfMiner = 3; // number of is part of total number of Nodes
 	
 	/*************To Create Transaction Parameters ************/
-	private static final int transactionNumber  = 9; // Maximum number of transactions created during running simulator
+	private static final int transactionNumber  = 15000; // Maximum number of transactions created during running simulator
 	private static final long minTXsize = 100; // Minimum Transaction size in KB
 	private static final long maxTXsize = 1000; // Maximum Transaction size in KB
-	private static final int Binterval = 7;
-	private static final double blockDelay= 6; //average block propogation delay in seconds
-	private static final long maxBlockSize = 100000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
+	private static final int Binterval = 1;
+	private static final double blockDelay= 30; //average block propogation delay in seconds
+	private static final long maxBlockSize = 10000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
 	
 	
-	private static final double TransactionGasLimit = 100;
+	private static final double TransactionGasLimit = 10000;
 	
 	
 	private static final String consensusAlgorithm = "raft"; 
-	private static final int simTime = 10;
+	private static final int simTime = 2000000;
 	private static final int simulatorRun= 1;
 	
 	
 
 
-	private static final double blockGasLimit = 10000;//30000000;//30000000;
+	private static final double blockGasLimit = 1000000;//30000000;//30000000;
 	
 	
 	

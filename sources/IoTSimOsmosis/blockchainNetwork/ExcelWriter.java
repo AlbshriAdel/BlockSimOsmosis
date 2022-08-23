@@ -20,9 +20,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelWriter {
 	static XSSFWorkbook workbook = new XSSFWorkbook();
-	public static String sheetName;
+	public static int runNumber=0;
+	public static String fileName;
 
-	public static void printToExcel() {
+	public static void printToExcel(int simulationRunNumber) {
+		runNumber=simulationRunNumber;
 
 //		
 //		if (Consensus.getAassignLeader().getTransactionsPool().getTransactionsPool().size()>0 ) {
@@ -46,18 +48,31 @@ public class ExcelWriter {
 //		}
 
 		//config();
-		result();
-
-		try (FileOutputStream outputStream = new FileOutputStream("IoTBlockchain.xlsx")) {
+		//eventList();
+		blockchainLedger();
+		blockchainTranscations();
+		//nodeLog();
+		
+		
+		// Generate filename
+		
+		String fname = "Blockchain-" + 
+						LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyy-HH:mm:ss")) + 
+						"-" + 
+						(simulationRunNumber+1)+
+						".xlsx";
+		fileName=fname;
+		
+		try (FileOutputStream outputStream = new FileOutputStream(fname)) {
 			workbook.write(outputStream);
 			outputStream.close();
 			outputStream.flush();
-//			outputStream.close();
 
-			// Open file
-			//if (InputConfig.getSimulatorRun() == Statistics.getRunNumber()) {
-				Desktop.getDesktop().open(new File("IoTBlockchain.xlsx"));
-			//}
+
+	
+			
+				Desktop.getDesktop().open(new File(fname));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,6 +80,10 @@ public class ExcelWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		 
+		
+
+		
 
 	}
 
@@ -92,10 +111,10 @@ public class ExcelWriter {
 
 	public static void result() {
 		ArrayList<Object[]> df2 = new ArrayList<>();
-		df2.add(new Object[] { "Simulator No. Run", "No. of light Node", "No. of Miner Node", "Total No. of Blocks",
+		df2.add(new Object[] { "Simulator No. Run", "No. of Node", "Total No. of Blocks",
 				"Total No of Transactions", "Block Propagation Time", "Average Transaction Latency",
 				"Transaction Throughput", "Transactions execution (secs)" });
-		df2.add(new Object[] { Statistics.getRunNumber(), Node.getNodes().size(), Node.getMiners().size(),
+		df2.add(new Object[] { Statistics.getRunNumber(), Node.getNodes().size(),
 				Statistics.TotalNumberOfBlock, Statistics.TotalNumberOfTx, Statistics.BlockPropagationTime,
 				Statistics.averageLatency, Statistics.transactionsThroughput, Statistics.totalTransactionsTime
 
@@ -109,22 +128,25 @@ public class ExcelWriter {
 	public static void blockchainLedger() {
 		ArrayList<Object[]> df3 = new ArrayList<>();
 		df3.add(new Object[] { "Simulator No. Run", "Node ID", "Block ID", "Previous Block ID", "Block Depth",
-				"Block Timestamp", "Block Size", "No. of Transactions" });
+				"Block Timestamp", "Block Size", "No. of Transactions", "Mined by" });
 		for (Object[] chain : Statistics.getChains()) {
 			df3.add(chain);
 		}
-		// writeData(df3, workbook, "Blocks");
+		
+		
+		 writeData(df3, workbook, "block");
 
 	}
 
 	public static void blockchainTranscations() {
 		ArrayList<Object[]> df4 = new ArrayList<>();
-		df4.add(new Object[] { "Simulator No. Run", "Transaction ID", "Creation time ", "Confirmation time",
+		df4.add(new Object[] { "Simulator No. Run","Miner ID", "Transaction ID", "Creation time ", "Confirmation time",
 				"Transaction size", "Transaction Used Gas", "Block ID", "From Address", "To Address" });
 		for (Object[] transaction : Statistics.getTransactions()) {
 			df4.add(transaction);
 		}
-		// writeData(df4, workbook, "Transactions");
+		
+		 writeData(df4, workbook, "Blocks");
 
 	}
 
@@ -149,14 +171,22 @@ public class ExcelWriter {
 		// writeData(df6, workbook, "TransactionPool");
 
 	}
+	
+	public static void nodeLog() {
+		ArrayList<Object[]> df7 = new ArrayList<>();
+		df7.add(new Object[] { "Stage", "Node ID", "Node Type", "Joining Time" });
+		
+		for (Object[] NodesLog :Consensus.getNodesLog()) {
+			df7.add(NodesLog);
+		}
+		
+		
+		 writeData(df7, workbook, "NodesLog");
 
-	public static String getSheetName() {
-		return sheetName;
 	}
+	
+	
 
-	public static void setSheetName(String sheetName) {
-		ExcelWriter.sheetName = sheetName;
-	}
 
 	// Writes each Array within Data frame as a Row in the excel sheet.
 	private static void writeData(ArrayList<Object[]> DataFrame,XSSFWorkbook workbook,String sheetName) {

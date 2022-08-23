@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Queue {
 
 	private static ArrayList<Event> eventList = new ArrayList<>();
+	
 
 	public static void addEvent(Event e) {
 		getEventList().add(e);
@@ -32,6 +33,7 @@ public class Queue {
 	public static ArrayList<Event> getEventList() {
 		return eventList;
 	}
+	
 
 	public static void setEventList(ArrayList<Event> eventList) {
 		Queue.eventList = eventList;

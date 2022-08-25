@@ -27,7 +27,7 @@ public class BlockCommit {
 				event.getBlock().setBlockUsedGas(Transaction.getLimit());
 				event.getBlock().setBlockReceivedTime(eventTime);
 				miner.getBlockchainLedger().add(event.getBlock());
-				event.getBlock().setBlockReceivedTime(eventTime);
+				//event.getBlock().setBlockReceivedTime(eventTime);
 				propagateBlock(event.getBlock());
 				//updateTransactionsPool(node, event.getBlock());
 			}

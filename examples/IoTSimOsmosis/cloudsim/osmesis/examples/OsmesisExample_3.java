@@ -86,7 +86,7 @@ public class OsmesisExample_3 {
   
 		LogUtil.simulationFinished();
 		PrintResults_Example_3 pr = new PrintResults_Example_3();
-		//pr.printOsmesisNetwork();
+		pr.printOsmesisNetwork();
 			
 		Log.printLine();
 

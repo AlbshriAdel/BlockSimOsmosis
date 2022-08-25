@@ -14,6 +14,7 @@ package IoTSimOsmosis.osmosis.core;
 import java.util.List;
 import java.util.Map;
 
+import IoTSimOsmosis.blockchainNetwork.Block;
 import IoTSimOsmosis.cloudsim.edge.core.edge.EdgeLet;
 ;
 
@@ -54,6 +55,8 @@ public class OsmesisAppDescription {
 	private int iotDeviceID;
 	private int melId;	 
 	private int vmCloudId; 
+	
+	
 	
 	private int edgeDcId;
 	private int cloudDcId;
@@ -109,6 +112,7 @@ public class OsmesisAppDescription {
 		this.DataRate = dataRate;
 		this.StopDataGenerationTime = stopDataGenerationTime;
 		this.layers = layers;
+		
 	}
 
 	public double getStopDataGenerationTime() {

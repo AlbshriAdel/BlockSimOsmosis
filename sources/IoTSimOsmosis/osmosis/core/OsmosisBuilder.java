@@ -39,6 +39,7 @@ import IoTSimOsmosis.cloudsim.provisioners.RamProvisioner;
 import IoTSimOsmosis.cloudsim.provisioners.RamProvisionerSimple;
 import IoTSimOsmosis.osmosis.core.polocies.SDNTrafficPolicyFairShare;
 import IoTSimOsmosis.osmosis.core.polocies.SDNTrafficSchedulingPolicy;
+import IoTSimOsmosis.osmosis.core.Infrastructure.EdgeDatacenters;
 import IoTSimOsmosis.osmosis.core.polocies.SDNRoutingLoadBalancing;
 import IoTSimOsmosis.osmosis.core.polocies.SDNRoutingPolicy;
 import IoTSimOsmosis.osmosis.core.polocies.VmMELAllocationPolicyCombinedLeastFullFirst;
@@ -57,6 +58,7 @@ import java.util.*;
 
 public class OsmosisBuilder {    
 	private OsmesisBroker  broker;
+	private EdgeDatacenters aa;
 	List<CloudDatacenter> cloudDatacentres;
 	public static  List<EdgeDataCenter> edgeDatacentres;
 	public static int flowId = 1;
@@ -137,8 +139,8 @@ public class OsmosisBuilder {
 
             CloudDatacenter datacentre = createCloudDatacenter(
                     datacentreEntity.getName(),
-                    sdnController,                    
-                    vmAllocationPolicyFactory
+                    sdnController,                     
+                    vmAllocationPolicyFactory  
             );
             datacentre.initCloudTopology(datacentreEntity.getHosts(),datacentreEntity.getSwitches(),
             		datacentreEntity.getLinks());
@@ -148,7 +150,7 @@ public class OsmosisBuilder {
             List<Vm> vmList = createVMs(datacentreEntity.getVMs());
             
 			for(Vm mel : vmList){
-				datacentre.mapVmNameToID(mel.getId(), mel.getVmName());
+			 	datacentre.mapVmNameToID(mel.getId(), mel.getVmName());
 			}
 			
 			this.broker.mapVmNameToId(datacentre.getVmNameToIdList());
@@ -439,7 +441,7 @@ public class OsmosisBuilder {
 			}
 
 		}
-		return vms;
+		return vms; 
 	}
 		
 	private List<IoTDevice> createIoTDevice(List<ConfiguationEntity.IotDeviceEntity>  iotDeviceEntity) {

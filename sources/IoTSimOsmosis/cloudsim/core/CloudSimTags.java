@@ -317,6 +317,8 @@ public class CloudSimTags {
 	public static final int launchMapTasks = 72;
 	public static final int EXECUTE_REDUCER = 73;
 	
+
+	
 	/** Private Constructor */
 	private CloudSimTags() {
 		throw new UnsupportedOperationException("CloudSim Tags cannot be instantiated");

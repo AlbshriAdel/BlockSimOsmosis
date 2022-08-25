@@ -17,6 +17,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import IoTSimOsmosis.blockchainNetwork.Block;
+
 /**
  * 
  * @author Khaled Alwasel
@@ -65,6 +67,8 @@ public class OsmesisAppsParser {
 			String MELName; // mel resides in an edge device
 			long OsmesisEdgeletSize; //MI
 			long MELOutput; // Mb
+			
+			Block blockID;
 
 			// renewable energy
 			String MELName_2; // mel resides in another edge datacenter
@@ -109,6 +113,7 @@ public class OsmesisAppsParser {
 					layers.add(layer);
 					sourceName = destName; // IoT device, mel 1, mel 2, etc.
 					sourceLayerName = destLayerName; // IoT, edge datacenter 1, etc.
+					
 				}
 				OsmesisAppDescription appComposition = new OsmesisAppDescription(OsmesisAppName, appID, DataRate, StopDataGenerationTime,
 						layers);

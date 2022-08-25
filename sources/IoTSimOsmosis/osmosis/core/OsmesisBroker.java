@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
+import IoTSimOsmosis.blockchainNetwork.Node;
 import IoTSimOsmosis.cloudsim.Cloudlet;
 import IoTSimOsmosis.cloudsim.DatacenterBroker;
 import IoTSimOsmosis.cloudsim.UtilizationModelFull;
@@ -262,15 +263,17 @@ public class OsmesisBroker extends DatacenterBroker {
 	static int count =0;
 	private void generateIoTData(SimEvent ev){
 		OsmesisAppDescription app = (OsmesisAppDescription) ev.getData();
+		
 		count++;
 		if(CloudSim.clock() <= app.getStopDataGenerationTime() && !app.getIsIoTDeviceDied()){
 			System.out.println("Generating data " + count);
 			
-			System.out.println("Adel Here here here.......................... ");
+			//System.out.println("Adel Here here here.......................... ");
 			sendNow(app.getIoTDeviceId(), OsmosisTags.SENSING, app);
 			double dealy = app.getDataRate();
 			send(this.getId(), dealy, OsmosisTags.GENERATE_OSMESIS, app);
-			//BlockchainController.creatTransactionsWithIntegrated(ev.eventTime(), app.getAppID(),app.getAppID());
+			BlockchainController.createOsmosisTransaction (ev.eventTime());
+			System.out.println("Adel Here here here.......................... ");
 		} else {
 			
 		}

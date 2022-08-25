@@ -6,6 +6,7 @@ import IoTSimOsmosis.blockchainNetwork.Block;
 import IoTSimOsmosis.blockchainNetwork.BlockCommit;
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
 import IoTSimOsmosis.blockchainNetwork.Event;
+import IoTSimOsmosis.blockchainNetwork.Excel;
 import IoTSimOsmosis.blockchainNetwork.ExcelWriter;
 import IoTSimOsmosis.blockchainNetwork.InputConfig;
 import IoTSimOsmosis.blockchainNetwork.Node;
@@ -16,9 +17,25 @@ import IoTSimOsmosis.blockchainNetwork.Transaction;
 public class BlockSim {
 
 	public static void main(String[] args) {
+		int i=0;
+		for (i=0; i<5 ; i++) {
 		BlockchainController.generateNodes(); // Create blockchain nodes
-		BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator
-		Node.generateGenesisBlock();
+		
+		
+		System.out.println("===============[round" +  i +"]=================");
+			for (Node node : Node.getNodes()) {
+				Excel.getDf3().add(new Object[] {i,node.getNodeId(),node.getNodeType()});
+				System.out.println("Node ID :" + node.getNodeId() +"\n"+
+									"Node type : " + node.getNodeType());
+			}
+			
+			BlockchainController.restState();
+		}
+		Excel.printToExcel(i);
+			
+	}
+//		BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator
+//		Node.generateGenesisBlock();
 //		BlockCommit.generateInitialEvents();// Create the gensis block for all miners
 //
 //
@@ -137,4 +154,3 @@ public class BlockSim {
 //}
 }
 	
-}

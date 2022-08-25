@@ -4,6 +4,7 @@ import IoTSimOsmosis.blockchainNetwork.BlockCommit;
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
 import IoTSimOsmosis.blockchainNetwork.Consensus;
 import IoTSimOsmosis.blockchainNetwork.Event;
+import IoTSimOsmosis.blockchainNetwork.ExcelWriter;
 import IoTSimOsmosis.blockchainNetwork.InputConfig;
 import IoTSimOsmosis.blockchainNetwork.Node;
 import IoTSimOsmosis.blockchainNetwork.Queue;
@@ -20,7 +21,7 @@ public class BlockSimDataset {
 		
 		for (int runCount = 0; runCount < InputConfig.getSimulatorRun(); runCount++) {
 
-			Statistics.runNumber += 1;
+			
 			
 			
 			
@@ -37,7 +38,8 @@ public class BlockSimDataset {
 			BlockCommit.generateInitialEvents();
 
 			double clock = 0; // set clock to 0 at the start of the simulation
-			while (!Queue.isEmpty() && (clock <= InputConfig.getSimTime())) {
+			//&& (clock <= InputConfig.getSimTime())
+			while (!Queue.isEmpty()) {
 				Event nextEvent = Queue.getNextEvent();
 
 				// Move clock to the time of the event
@@ -53,8 +55,15 @@ public class BlockSimDataset {
 			System.out.println("run complete");
 			System.out.println("");
 			BlockchainController.restState();
-
+			
+			
+			
 		}
-
+		ExcelWriter.printToExcel();
 	}
+
+
+
+
+	
 }

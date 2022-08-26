@@ -1,7 +1,7 @@
 package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
-
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -10,10 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  */
 public class Transaction {
-	static ArrayList<Integer> poolcheck = new ArrayList<>();
-
-	// pending transaction pool
-	static ArrayList<Long> pool = new ArrayList<>();
+	static Random rand = new Random();
 	// transaction id
 	private long transactionID = 0;
 	// timestamp of transaction send from the IoT side
@@ -34,6 +31,8 @@ public class Transaction {
 	static double limit = 0;
 	// A local variable to calculate (count) the remaining limit of Block size used
 	static double blockSizelimit = 0;
+	
+	
 
 	/**
 	 * A constructor method for transaction class
@@ -45,14 +44,12 @@ public class Transaction {
 	 * @param fromAddress
 	 * @param toAddress
 	 */
-	public Transaction(double creationTime, double txSize, int fromAddress, int toAddress) {
+	public Transaction(double creationTime) {
 		this.transactionID = ThreadLocalRandom.current().nextLong(10000000000L);
 		this.creationTime = creationTime;
-		this.fromAddress = fromAddress;
-		this.toAddress = toAddress;
 		this.transactionGasLimit = InputConfig.getTransactionGaslimit();// 100;//50; //8000000;
 		this.usedGas = getRandomNumber(0, (int) transactionGasLimit);
-		this.transactionSize = txSize;
+		this.transactionSize = InputConfig.getMinTransactionSize() + rand.nextDouble() * (InputConfig.getMaxTransactionSize()-InputConfig.getMinTransactionSize());;
 
 	}
 
@@ -166,54 +163,36 @@ public class Transaction {
 	public static double getBlockSizeLimit() {
 		return blockSizelimit;
 	}
-	
-	
 
-	public static ArrayList<Long> getPool() {
-		return pool;
-	}
-	
-	public static ArrayList<Integer> getPoolcheck() {
-		return poolcheck;
-	}
-
-	
 
 	public static ArrayList<Transaction> executeTranscationsB(Node miner, double eventTime) {
 		ArrayList<Transaction> transactions = new ArrayList<>();
-		System.out.println("Pool size : " + pool.size());
-
-		
 
 		limit = 0;
 		blockSizelimit = 0;
 		int count = 0;
 		double blockGaslimit = InputConfig.getBlockGasLimit();
 		double blocksize = InputConfig.getMaxblocksize();
-		
+
 		miner.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
-		
+
 		while (count < miner.getTransactionsPool().size()) {
-			
+
 			if (blockGaslimit >= miner.getTransactionsPool().get(count).getTransactionGasLimit()
 					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime
 					&& blocksize >= miner.getTransactionsPool().get(count).getTransactionSize()) {
 				blockGaslimit -= miner.getTransactionsPool().get(count).getUsedGas();
 				blocksize -= miner.getTransactionsPool().get(count).getTransactionSize();
-				//if(!Event.getxList().contains(miner.getTransactionsPool().get(count).getTransactionID())) {
 				transactions.add(miner.getTransactionsPool().get(count));
 				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);
-				//pool.add(miner.getTransactionsPool().get(count).transactionID);
-				//}
-				
 				limit += miner.getTransactionsPool().get(count).getUsedGas();
 				blockSizelimit += miner.getTransactionsPool().get(count).getTransactionSize();
 			}
 			count += 1;
 		}
-		
+
 		return transactions;
-		
+
 	}
 
 }

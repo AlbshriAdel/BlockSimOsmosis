@@ -7,30 +7,63 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class InputConfig {
 	
+	/**
+	 * @param numberOfNodes
+	 * @param numberOfMiner
+	 * 
+	 * Miner is part of total number of nodes 
+	 *    e.g. No.nodes 5 and Miner 2 
+	 * (total number of nodes and miner is 5)
+	 */
 	/****************To Create Node Parameters *****************/
 	private static final int numberOfNodes = 4;
-	private static final int numberOfMiner = 4; // number of is part of total number of Nodes
-	
+	private static final int numberOfMiner = 2; 
+														
+	/**
+	 * 
+	 * @param transactionNumber : Maximum number of transactions created during running simulator.
+	 * @param maxTXsize : Maximum Transaction size in MB.
+	 * @param minTXsize : Minimum Transaction size in MB.
+	 * @param TransactionGasLimit : maximum amount of gas units the transaction can used.
+	 * 
+	 */
 	/*************To Create Transaction Parameters ************/
-	private static final int transactionNumber  = 100; // Maximum number of transactions created during running simulator
-	private static final double minTXsize = 0.1; // Minimum Transaction size in KB
-	private static final double maxTXsize = 1; // Maximum Transaction size in KB
-	private static final double Binterval = 12.42;
-	private static final double blockDelay= 2.6; //average block propogation delay in seconds
-	private static final long maxBlockSize = 1;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
+	private static final int transactionNumber  = 400; // 
+	private static final double maxTXsize = 1; // Maximum Transaction size in MB
+	private static final double minTXsize = 0.1; // Minimum Transaction size in MB
+	private static final double transactionGasLimit = 100; //the maximum amount of gas units the transaction can use
 	
+	/**
+	 * 
+	 * @param maxBlockSize
+	 * @param blockGasLimit
+	 *  @param blockInterval
+	 * 
+	 */
+	/*************To Create Block Parameters ************/
+	private static final long maxBlockSize = 1;//4194304;//4194304;
+	private static final double blockGasLimit = 1000000;//30000000;//30000000;
+	private static final double Binterval = 3; //12.41
 	
-	private static final double TransactionGasLimit = 100;
-	
-	
+	/**
+	 * @param consensusAlgorithm : PoW and raft
+	 */
+	/*************To configure consensus Algorithm   ************/
 	private static final String consensusAlgorithm = "PoW"; // raft or PoW
+	
+	/**
+	 * 
+	 * @param simTime
+	 * @param simulatorRun
+	 */
+	/*************To configure simulator ************/
 	private static final int simTime = 100;
 	private static final int simulatorRun= 1;
 	
 	
 
 
-	private static final double blockGasLimit = 1000000;//30000000;//30000000;
+	
 	
 	
 	
@@ -43,14 +76,14 @@ public class InputConfig {
 
 	public static double getTransactionGaslimit() {
 		
-		return TransactionGasLimit;
+		return transactionGasLimit;
 	}
 
 	
 
 
 	
-	public static double getBinterval() {
+	public static double getBlockInterval() {
 		return Binterval;
 	}
 
@@ -131,7 +164,7 @@ public class InputConfig {
  * Return the simulation time that is configured 
  * @return simTime
  */
-	public static int getSimTime() {
+	public static int getSimulationTime() {
 		return simTime;
 	}
 
@@ -143,9 +176,7 @@ public static String getConsensusalgorithm() {
 	return consensusAlgorithm;
 }
 
-	public static double getBlockDelay() {
-		return blockDelay;
-	}
+
 
 
 

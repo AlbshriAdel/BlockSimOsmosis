@@ -3,6 +3,7 @@ package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 
@@ -175,7 +176,7 @@ public class Consensus {
 //		}
 	}
 	
-	public static double protocalPoW() {
+	public static double protocalPoW(Node miner) {
 		double totalHash=0;
 		
 		for (Node node : Node.getNodes()) {
@@ -184,10 +185,10 @@ public class Consensus {
 			}
 		}
 		
-		//double hash=miner.getHashPower()/totalHash;
-		double double_random = rand.nextDouble();
+		double hash=miner.getHashPower()/totalHash;
+		//double double_random = rand.nextDouble();
 		
-		return -Math.log(1- double_random) / (InputConfig.getBinterval());
+		return ThreadLocalRandom.current().nextDouble(hash,InputConfig.getBlockInterval());
 	}
 	
 	public static void fork() {
@@ -255,9 +256,7 @@ public class Consensus {
 	 */
 
 	public static double protocal() {
-		Random rand = new Random();
-		double double_random = rand.nextDouble();
-		return -Math.log(1 - double_random) / (InputConfig.getBinterval());
+		return ThreadLocalRandom.current().nextDouble(0,InputConfig.getBlockInterval());
 	}
 
 }

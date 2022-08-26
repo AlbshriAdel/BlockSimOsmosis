@@ -24,6 +24,8 @@ public class Node {
 	private final static ArrayList<Node> NodesList = new ArrayList<>();
 	
 
+	
+
 	/**
 	 * 
 	 * @param nodeID
@@ -37,6 +39,7 @@ public class Node {
 		this.joinTime = joinTime;
 		this.blockchainLedger = new ArrayList<>();
 		this.transactionsPool=new ArrayList<>();
+
 		
 	
 	}
@@ -138,5 +141,10 @@ public class Node {
 	public static ArrayList<Node> getNodes() {
 		return NodesList;
 	}
+
+	
+	
+	
+	
 
 }

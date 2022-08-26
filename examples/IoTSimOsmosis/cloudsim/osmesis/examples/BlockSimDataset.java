@@ -50,7 +50,7 @@ public class BlockSimDataset {
 
 			double clock = 0; // set clock to 0 at the start of the simulation
 			//&& (clock <= InputConfig.getSimTime())
-			while (!Queue.isEmpty()&& (clock <= InputConfig.getSimTime())) {
+			while (!Queue.isEmpty()&& (clock <= InputConfig.getSimulationTime())) {
 				Event nextEvent = Queue.getNextEvent();
 
 				// Move clock to the time of the event
@@ -62,23 +62,25 @@ public class BlockSimDataset {
 			
 			Consensus.fork();
 			
-			System.out.println("Global Blockchain : " + Consensus.getGlobalBlockchain().size());
-			for (Block block :Consensus.getGlobalBlockchain()) {
-				System.out.println( "Block ID : "  + block.getBlockID() +"\n"+
-						"Block Pre ID : " + block.getPreviousBlockID());
-				
-			}
+//			System.out.println("Global Blockchain : " + Consensus.getGlobalBlockchain().size());
+//			for (Block block :Consensus.getGlobalBlockchain()) {
+//				System.out.println( "Block ID : "  + block.getBlockID() +"\n"+
+//						"Block Pre ID : " + block.getPreviousBlockID());
+//				
+//			}
 			// Calculate the simulation results (e.g block statistics)
 			Statistics.calculate(runCount);
 
 			System.out.println("run complete");
 			System.out.println("");
-			BlockchainController.restState();
+			
+			//BlockchainController.restState();
 			
 			
 			
 		}
 		ExcelWriter.printToExcel();
+		
 	}
 
 

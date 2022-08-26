@@ -1,5 +1,6 @@
 package IoTSimOsmosis.blockchainNetwork;
 
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -9,6 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Scheduler {
 	
+	static ArrayList<Block> countGenerateBlockByMiner = new ArrayList<>();
+	
 	/**
 	 * 
 	 * @param miner
@@ -16,7 +19,7 @@ public class Scheduler {
 	 */
 	public static void createBlockEvent(Node miner, double eventTime) { 
 		String eventType = "create_block";
-		if (eventTime <= InputConfig.getSimTime()) {
+		if (eventTime <= InputConfig.getSimulationTime()) {
 			Block block = new Block();
 			block.setBlockID(ThreadLocalRandom.current().nextLong(100000000000L));
 			block.setBlockDepth(miner.getBlockchainLedger().size());
@@ -25,10 +28,9 @@ public class Scheduler {
 			block.setPreviousBlockID(miner.getLastBlock().getBlockID());
 			Event event = new Event(eventType, block.getMiner(), eventTime, block);
 			Queue.addEvent(event);
+			
 		}
-	
 		}
-	
 
 
 /**
@@ -37,10 +39,10 @@ public class Scheduler {
  * @param newBlock
  * @param blockDelay
  */
-	public static void receiveBlockEvent(Node node, Block newBlock, double blockDelay) {
+	public static void receiveBlockEvent(Node node, Block newBlock) {
 		String eventType = "receive_block";
 		double receiveBlockTime = newBlock.getBlockTimestamp();
-		if (receiveBlockTime <= InputConfig.getSimTime()) {
+		if (receiveBlockTime <= InputConfig.getSimulationTime()) {
 			updateTx(newBlock);
 			//System.out.println ("====Event.getxList() be fore =======" + Event.getxList().size()); 
 			Event event = new Event(eventType, node, receiveBlockTime, newBlock);
@@ -65,6 +67,10 @@ public class Scheduler {
 		
 		
 	}
+	
+
+	
+	
 
 
 

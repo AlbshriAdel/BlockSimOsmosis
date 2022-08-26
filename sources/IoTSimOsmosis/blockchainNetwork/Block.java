@@ -12,8 +12,6 @@ public class Block {
 	private int blockDepth;
 	// the time when the block is created
 	private double blockTimestamp;
-	// the time when the block is add received
-	private double blockReceivedTime;
 	// Miner node who mined (created) the block
 	private Node miner;
 	// list of transaction that included in the block
@@ -24,10 +22,9 @@ public class Block {
 	private double blockGasLimit;
 	// The block used gas limit
 	private double blockUsedGas;
-	// The number of transaction in a block
-	private int numberTX;
-	// is block include transaction?
-	private boolean hasTX;
+	// is block include Tx?
+	private boolean hasTx;
+
 
 	/**
 	 * A constructor method for block class
@@ -37,14 +34,12 @@ public class Block {
 		this.previousBlockID = -1;
 		this.blockDepth = 0;
 		this.blockTimestamp = 0.0;
-		this.blockReceivedTime=0.0;
-		this.miner = Node.getNodes().get(0); // need to change just for test
+		this.miner = null; // need to change just for test
 		this.transactions = new ArrayList<>();
 		this.blockSize = InputConfig.getMaxblocksize(); // 1 MB
 		this.blockGasLimit = InputConfig.getBlockGasLimit(); // 8000000
 		this.blockUsedGas = 0;
-		this.hasTX = false;
-		this.numberTX = 0;
+
 
 	}
 
@@ -85,16 +80,6 @@ public class Block {
 	}
 	
 
-	
-	/**
-	 * Return block Received Time
-	 * 
-	 * @return blockTimestamp
-	 */
-	public double getBlockReceivedTime() {
-		return blockReceivedTime;
-	}
-	
 	
 	/**
 	 * Return miner who created the block
@@ -141,23 +126,16 @@ public class Block {
 		return blockUsedGas;
 	}
 
+	
 	/**
-	 * Return number of transactions that included in the block
-	 * 
-	 * @return numberTX
-	 */
-	public int getNumberTx() {
-		return this.numberTX;
-	}
-
-	/**
-	 * Return boolean if block includes transactions
-	 * 
-	 * @return hasTX
+	 * 	is the block include Tx
+	 * @return boolean hasTx
 	 */
 	public boolean getHasTx() {
-		return this.hasTX;
+		return hasTx;
 	}
+
+	
 
 	/**
 	 * Set block ID
@@ -240,33 +218,16 @@ public class Block {
 		this.blockTimestamp = timestamp;
 	}
 	
+	/**
+	 * set the funcation if block includes Tx (true)
+	 * @param hasTx
+	 */
+	public void setHasTx(boolean hasTx) {
+		this.hasTx = hasTx;
+	}
 	
+
+
 	
-	/**
-	 * set block received time
-	 * 
-	 * @param timestamp
-	 */
-	public void setBlockReceivedTime(double timestamp) {
-		this.blockReceivedTime = timestamp;
-	}
-
-	/**
-	 * set block has Tx
-	 * 
-	 * @param timestamp
-	 */
-	public void setHasTx(boolean hasTX) {
-		this.hasTX = hasTX;
-	}
-
-	/**
-	 * set block number of tx that include in a block
-	 * 
-	 * @param timestamp
-	 */
-	public void setNumberTx(int numberTX) {
-		this.numberTX = numberTX;
-	}
 
 }

@@ -23,7 +23,7 @@ public class BlockSim {
 		BlockchainController.generateNodes(); // Create blockchain nodes
 		
 		
-		System.out.println("===============[round" +  Consensus.protocalPoW() +"]=================");
+		System.out.println("===============[round" +  //Consensus.protocalPoW() +"]=================");
 		System.out.println("===============[round" +  Consensus.protocal() +"]=================");
 			for (Node node : Node.getNodes()) {
 				Excel.getDf3().add(new Object[] {i,node.getNodeId(),node.getNodeType()});

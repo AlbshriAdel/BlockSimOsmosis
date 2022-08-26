@@ -14,7 +14,7 @@ public class Event {
 	private Node  minerNode;
 	private double time;
 	private Block block;
-	static ArrayList<Long> txList = new ArrayList<>();
+	
 	
 	public Event(String type, Node minerNode, double time, Block block) {
 		super();
@@ -32,15 +32,7 @@ public class Event {
 		return block;
 	}
 	
-	/**
-	 * @return the block
-	 */
-	public static ArrayList<Long> getxList() {
-		return txList;
-	}
-
-
-
+	
 	/**
 	 * @return the type
 	 */

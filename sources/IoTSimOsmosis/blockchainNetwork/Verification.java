@@ -2,6 +2,7 @@ package IoTSimOsmosis.blockchainNetwork;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Verification {
 
@@ -54,21 +55,39 @@ public class Verification {
 //		index;
 //	}
 
+	static ArrayList<Object[]> test = new ArrayList<>();
+	public static void test() {
+		test.add(new Object[] {"Adel", "Mohammed", "Albshri"});
+	}
 
 	
-	public static void main(String[] args) {
-		Random rand = new Random();
-		
-		for (int i=0; i<50 ; i++) {
-			double double_random = rand.nextDouble();
-			Random rd = new Random();
-		      byte[] arr = new byte[7];
-		      rd.nextBytes(arr);
-		      
-		System.out.println(InputConfig.getMinTransactionSize() + rd.nextDouble() * (InputConfig.getMaxTransactionSize()-InputConfig.getMinTransactionSize()));
+	@Override
+	public String toString() {
+		return "Verification [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
-//		for (Object[] a : Verification.getChains()
+
+	public static void main(String[] args) {
+		test();
+		
+		for (Object obj :test) {
+			if (obj.getClass()== String.class) {
+			System.out.println(obj);
+			}
 		}
+		
+	}
+		
+//		Random rand = new Random();
+//		
+//		for (int i=0; i<50 ; i++) {
+//			double double_random = rand.nextDouble();
+//			
+//			//System.out.println (-Math.l(0,3333*1) / (InputConfig.getBinterval()));
+//			System.out.println ( ThreadLocalRandom.current().nextDouble(0.333,InputConfig.getBinterval()));    
+//		}
+////		for (Object[] a : Verification.getChains()
+//		}
 		
 	}
 	

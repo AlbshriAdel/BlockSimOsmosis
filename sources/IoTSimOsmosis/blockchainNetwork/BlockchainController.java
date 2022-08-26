@@ -84,7 +84,7 @@ public class BlockchainController {
 //			for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
 				double creationTime = osmosisTransactionTime;
 				double transactionSize =ThreadLocalRandom.current().nextDouble(100,1000);
-				Transaction tx = new Transaction(creationTime, transactionSize, 1, 2);
+				Transaction tx = new Transaction(creationTime);
 //				Node.getNodes().get(0).getTransactionsPool().add(tx);
 				
 				
@@ -112,10 +112,10 @@ public class BlockchainController {
 	public static void creatTransactionsWithoutIntegrated() {
 
 			for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-				double creationTime = ThreadLocalRandom.current().nextDouble(0,InputConfig.getSimTime()-1);
-				double transactionSize = InputConfig.getMinTransactionSize() + rand.nextDouble() * (InputConfig.getMaxTransactionSize()-InputConfig.getMinTransactionSize());
+				double creationTime = ThreadLocalRandom.current().nextDouble(0,0.05/*InputConfig.getSimTime()-1*/);
+				//double transactionSize = 
 				//ThreadLocalRandom.current().nextDouble(InputConfig.getMaxTransactionSize(),InputConfig.getMinTransactionSize());
-				Transaction tx = new Transaction(creationTime, transactionSize, 1, 2);
+						Transaction tx = new Transaction(creationTime);
 		
 				
 				
@@ -123,7 +123,7 @@ public class BlockchainController {
 					if(n.getNodeType().equals("leader") || n.getNodeType().equals("miner")) {
 						n.getTransactionsPool().add(tx);
 						
-						Statistics.noTransactionsConfig += 1;
+						
 					
 					}	
 				}
@@ -150,23 +150,12 @@ public class BlockchainController {
 		// create transaction
 		// Transaction(double creationTime, double txSize,String fromAddress,String
 		// toAddress)
-		Transaction tx = new Transaction(creationTime, transactionSize, fromAddress, toAddress);
+		Transaction tx = new Transaction(creationTime);
 		//Consensus.getAassignLeader().getTransactionsPool().add(tx);
-		Statistics.noTransactionsConfig += 1;
+		
 
 	}
 
-	/**
-	 * Delay for propagating blocks in the network
-	 * 
-	 * @return double
-	 */
-
-	public static double blockPropagatingDelay() {
-		Random rand = new Random();
-		double double_random = rand.nextDouble();
-		return -Math.log(1 - double_random) / (1/InputConfig.getBlockDelay());
-	}
 	
 	
 

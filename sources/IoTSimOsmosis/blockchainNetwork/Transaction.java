@@ -190,9 +190,9 @@ public class Transaction {
 		int count = 0;
 		double blockGaslimit = InputConfig.getBlockGasLimit();
 		double blocksize = InputConfig.getMaxblocksize();
-		System.out.println("pool size : " + pool.size());
+		
 		miner.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
-		//System.out.println("Miner iD : " + miner.getNodeId() + "Miner size : " + miner.getTransactionsPool().size() );
+		
 		while (count < miner.getTransactionsPool().size()) {
 			
 			if (blockGaslimit >= miner.getTransactionsPool().get(count).getTransactionGasLimit()
@@ -202,6 +202,7 @@ public class Transaction {
 				blocksize -= miner.getTransactionsPool().get(count).getTransactionSize();
 				//if(!Event.getxList().contains(miner.getTransactionsPool().get(count).getTransactionID())) {
 				transactions.add(miner.getTransactionsPool().get(count));
+				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);
 				//pool.add(miner.getTransactionsPool().get(count).transactionID);
 				//}
 				
@@ -210,7 +211,7 @@ public class Transaction {
 			}
 			count += 1;
 		}
-		//System.out.println("transactions size" + transactions.size());
+		
 		return transactions;
 		
 	}

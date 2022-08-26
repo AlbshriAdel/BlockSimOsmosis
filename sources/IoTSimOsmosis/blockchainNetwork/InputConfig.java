@@ -8,23 +8,23 @@ import java.util.concurrent.ThreadLocalRandom;
 public class InputConfig {
 	
 	/****************To Create Node Parameters *****************/
-	private static final int numberOfNodes = 5;
-	private static final int numberOfMiner = 2; // number of is part of total number of Nodes
+	private static final int numberOfNodes = 4;
+	private static final int numberOfMiner = 4; // number of is part of total number of Nodes
 	
 	/*************To Create Transaction Parameters ************/
 	private static final int transactionNumber  = 100; // Maximum number of transactions created during running simulator
-	private static final long minTXsize = 100; // Minimum Transaction size in KB
-	private static final long maxTXsize = 1000; // Maximum Transaction size in KB
-	private static final int Binterval = 1;
-	private static final double blockDelay= 5; //average block propogation delay in seconds
-	private static final long maxBlockSize = 1000;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
+	private static final double minTXsize = 0.1; // Minimum Transaction size in KB
+	private static final double maxTXsize = 1; // Maximum Transaction size in KB
+	private static final double Binterval = 12.42;
+	private static final double blockDelay= 2.6; //average block propogation delay in seconds
+	private static final long maxBlockSize = 1;//4194304;//4194304; // Maximum Block Size in KB equivalent to 4 GB
 	
 	
-	private static final double TransactionGasLimit = 10000;
+	private static final double TransactionGasLimit = 100;
 	
 	
-	private static final String consensusAlgorithm = "raft"; 
-	private static final int simTime = 10;
+	private static final String consensusAlgorithm = "PoW"; // raft or PoW
+	private static final int simTime = 100;
 	private static final int simulatorRun= 1;
 	
 	
@@ -50,7 +50,7 @@ public class InputConfig {
 
 
 	
-	public static int getBinterval() {
+	public static double getBinterval() {
 		return Binterval;
 	}
 
@@ -111,7 +111,7 @@ public class InputConfig {
  * Return the minimum of transaction size
  * @return minTXsize
  */
-	public static long getMinTransactionSize() {
+	public static double getMinTransactionSize() {
 		return minTXsize;
 	}
 
@@ -120,7 +120,7 @@ public class InputConfig {
 	 * Return the maximum of transaction size
 	 * @return maxTXsize
 	 */
-	public static long getMaxTransactionSize() {
+	public static double getMaxTransactionSize() {
 		return maxTXsize;
 	}
 

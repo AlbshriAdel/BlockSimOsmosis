@@ -13,6 +13,9 @@ public class Node {
 	private String nodeType;
 	
 	private String joinTime;
+	
+	private double hashPower;
+	
 	// Blockchain Ledger
 	private final ArrayList<Block> blockchainLedger;
 	// transactions Pool
@@ -74,6 +77,16 @@ public class Node {
 	}
 	
 	
+	
+
+	public double getHashPower() {
+		return hashPower;
+	}
+
+	
+	public void setHashPower(double hashPower) {
+		this.hashPower = hashPower;
+	}
 
 	/**
 	 * Return the local blockchain ledger

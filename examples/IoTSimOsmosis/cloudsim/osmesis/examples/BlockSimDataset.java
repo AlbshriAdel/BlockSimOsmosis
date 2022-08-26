@@ -1,9 +1,11 @@
 package IoTSimOsmosis.cloudsim.osmesis.examples;
 
+import IoTSimOsmosis.blockchainNetwork.Block;
 import IoTSimOsmosis.blockchainNetwork.BlockCommit;
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
 import IoTSimOsmosis.blockchainNetwork.Consensus;
 import IoTSimOsmosis.blockchainNetwork.Event;
+import IoTSimOsmosis.blockchainNetwork.Excel;
 import IoTSimOsmosis.blockchainNetwork.ExcelWriter;
 import IoTSimOsmosis.blockchainNetwork.InputConfig;
 import IoTSimOsmosis.blockchainNetwork.Node;
@@ -36,10 +38,19 @@ public class BlockSimDataset {
 			
 			// Create Initial events
 			BlockCommit.generateInitialEvents();
+			
+			for (Node node : Node.getNodes()) {
+				System.out.println("Node ID :" + node.getNodeId() +"\n"+
+									"Node type : " + node.getNodeType() +"\n"+
+									"hash power : " + node.getHashPower());
+				//System.out.println("protocal PoW : " + Consensus.protocalPoW(node));
+				//}
+			}
+			
 
 			double clock = 0; // set clock to 0 at the start of the simulation
 			//&& (clock <= InputConfig.getSimTime())
-			while (!Queue.isEmpty()) {
+			while (!Queue.isEmpty()&& (clock <= InputConfig.getSimTime())) {
 				Event nextEvent = Queue.getNextEvent();
 
 				// Move clock to the time of the event
@@ -48,7 +59,15 @@ public class BlockSimDataset {
 				BlockCommit.handleEvent(nextEvent);
 				Queue.removeEvent(nextEvent);
 			}
-
+			
+			Consensus.fork();
+			
+			System.out.println("Global Blockchain : " + Consensus.getGlobalBlockchain().size());
+			for (Block block :Consensus.getGlobalBlockchain()) {
+				System.out.println( "Block ID : "  + block.getBlockID() +"\n"+
+						"Block Pre ID : " + block.getPreviousBlockID());
+				
+			}
 			// Calculate the simulation results (e.g block statistics)
 			Statistics.calculate(runCount);
 

@@ -7,6 +7,7 @@ import java.util.Iterator;
 public class Statistics {
 
 	private static ArrayList<Object[]> chains = new ArrayList<>();
+	private static ArrayList<Object[]> globalBlockchain = new ArrayList<>();
 	private static ArrayList<Object[]> transactions = new ArrayList<>();
 	private static ArrayList<Object[]> transactionLatencies = new ArrayList<>();
 	private static ArrayList<Object[]> transactionsPool = new ArrayList<>();
@@ -28,6 +29,7 @@ public class Statistics {
 	public static void calculate(int simulationRunNumber) {
 		result();
 		blockchainLedger();
+		globalBlockchain();
 		transaction();
 		transactionLatency();
 		calculateLatency();
@@ -48,7 +50,7 @@ public class Statistics {
 
 		Node miner = null;
 		for (Node m : Node.getNodes()) {
-			if (m.getNodeType().equals("leader")) {
+			if (m.getNodeType().equals("leader") || m.getNodeType().equals("miner")) {
 				miner = m;
 			}
 		}
@@ -81,7 +83,7 @@ public class Statistics {
 				Block b = iterator.next();
 				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 						b.getBlockTimestamp(), b.getBlockReceivedTime(), b.getBlockSize(), b.getTransactions().size(),
-						b.getMiner().getNodeId() };
+						b.getMiner().getNodeId(), b.getMiner().getHashPower() };
 				getChains().add(info);
 			}
 		}
@@ -91,6 +93,26 @@ public class Statistics {
 		}
 		TotalNumberOfBlock = node.getBlockchainLedger().size();
 		BlockPropagationTime = BlockPropagationTimeCount / TotalNumberOfBlock;
+	}
+	
+	
+	private static void globalBlockchain() {
+
+		
+		double BlockPropagationTimeCount = 0;
+		for (int i = 0; i < Node.getNodes().size(); i++) {
+			Iterator<Block> iterator = Node.getNodes().get(i).getBlockchainLedger().iterator();
+			while (iterator.hasNext()) {
+
+				Block b = iterator.next();
+				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+						b.getBlockTimestamp(), b.getBlockReceivedTime(), b.getBlockSize(), b.getTransactions().size(),
+						b.getMiner().getNodeId(), b.getMiner().getHashPower() };
+				getGlobalBlockchain().add(info);
+			}
+		}
+
+	
 	}
 
 	private static void transaction() {
@@ -143,7 +165,7 @@ public class Statistics {
 //        while (iterator.hasNext()) {
 //        	Transaction transaction = iterator.next();
 		for (Node node : Node.getNodes()) {
-			if (node.getNodeType().equals("leader")) {
+			if (node.getNodeType().equals("leader") || node.getNodeType().equals("miner")) {
 				for (Transaction transaction : node.getTransactionsPool()) {
 
 					Object[] info = { getRunNumber(), node.getNodeId(), transaction.getTransactionID(),
@@ -190,6 +212,9 @@ public class Statistics {
 
 	public static ArrayList<Object[]> getResult() {
 		return Result;
+	}
+	public static ArrayList<Object[]> getGlobalBlockchain() {
+		return globalBlockchain;
 	}
 
 	public static int getRunNumber() {

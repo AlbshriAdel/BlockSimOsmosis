@@ -61,7 +61,11 @@ public class Verification {
 		
 		for (int i=0; i<50 ; i++) {
 			double double_random = rand.nextDouble();
-		System.out.println(-Math.log(1 - double_random) / (i));
+			Random rd = new Random();
+		      byte[] arr = new byte[7];
+		      rd.nextBytes(arr);
+		      
+		System.out.println(InputConfig.getMinTransactionSize() + rd.nextDouble() * (InputConfig.getMaxTransactionSize()-InputConfig.getMinTransactionSize()));
 	}
 //		for (Object[] a : Verification.getChains()
 		}

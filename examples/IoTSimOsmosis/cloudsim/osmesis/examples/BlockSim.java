@@ -5,6 +5,7 @@ import java.util.Iterator;
 import IoTSimOsmosis.blockchainNetwork.Block;
 import IoTSimOsmosis.blockchainNetwork.BlockCommit;
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
+import IoTSimOsmosis.blockchainNetwork.Consensus;
 import IoTSimOsmosis.blockchainNetwork.Event;
 import IoTSimOsmosis.blockchainNetwork.Excel;
 import IoTSimOsmosis.blockchainNetwork.ExcelWriter;
@@ -22,11 +23,16 @@ public class BlockSim {
 		BlockchainController.generateNodes(); // Create blockchain nodes
 		
 		
-		System.out.println("===============[round" +  i +"]=================");
+		System.out.println("===============[round" +  Consensus.protocalPoW() +"]=================");
+		System.out.println("===============[round" +  Consensus.protocal() +"]=================");
 			for (Node node : Node.getNodes()) {
 				Excel.getDf3().add(new Object[] {i,node.getNodeId(),node.getNodeType()});
+				//if (node.getNodeType().equals("miner")) {
 				System.out.println("Node ID :" + node.getNodeId() +"\n"+
-									"Node type : " + node.getNodeType());
+									"Node type : " + node.getNodeType() +"\n"+
+									"hash power : " + node.getHashPower());
+				//System.out.println("protocal PoW : " + Consensus.protocalPoW(node));
+				//}
 			}
 			
 			BlockchainController.restState();

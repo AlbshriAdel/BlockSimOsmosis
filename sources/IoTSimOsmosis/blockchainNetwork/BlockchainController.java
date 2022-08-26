@@ -17,27 +17,35 @@ import IoTSimOsmosis.osmosis.core.Infrastructure.EdgeDatacenters;
  *
  */
 public class BlockchainController {
+	static Random rand = new Random();
+	static Calendar now = Calendar.getInstance();
+	static DateFormat df = new SimpleDateFormat("dd-MM-yyy-HH:mm");
 
 
 	/**
 	 * This method is responsible for generate light node
 	 */
 	public static void generateNodes() {
-		if (InputConfig.getNumberOfNodes() >= 3 && InputConfig.getNumberOfNodes()>InputConfig.getNumberOfMiner() && InputConfig.getConsensusalgorithm().equals("raft")) {
-		    Calendar now = Calendar.getInstance();
-		    DateFormat df = new SimpleDateFormat("dd-MM-yyy-HH:mm");
 
+		if (InputConfig.getConsensusalgorithm().equals("raft")) {
+		if (InputConfig.getNumberOfNodes() >= 3 && InputConfig.getNumberOfNodes()>InputConfig.getNumberOfMiner()) {
+		   
 			for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
 				String time = df.format(now.getTime());
 				Node.getNodes().add(new Node(i, "follower",time));
-
+				}
 			}
-			Consensus.consensus(InputConfig.getConsensusalgorithm());
-
-		} else {
-			System.out.println(
-					"[Error] the number of node must be a larger than three nodes and make sure the spelling of consensus algorithm 'raft'");
 		}
+		//&& InputConfig.getNumberOfNodes()>InputConfig.getNumberOfMiner()
+		 else if(InputConfig.getConsensusalgorithm().equals("PoW") ) {
+			 for (int i = 0; i < InputConfig.getNumberOfNodes(); i++) {
+					String time = df.format(now.getTime());
+					Node.getNodes().add(new Node(i, "node",time));
+					}
+		 		}
+		 
+		
+		Consensus.consensus(InputConfig.getConsensusalgorithm());
 }
 	
 	
@@ -83,7 +91,7 @@ public class BlockchainController {
 				for (Node n :Node.getNodes()){
 					if(n.getNodeType().equals("leader")) {
 						n.getTransactionsPool().add(tx);
-						System.out.println("TX pool : " + n.getTransactionsPool().size());
+						
 					
 					
 					}	
@@ -104,14 +112,15 @@ public class BlockchainController {
 	public static void creatTransactionsWithoutIntegrated() {
 
 			for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-				double creationTime = ThreadLocalRandom.current().nextDouble(i,i+1);
-				double transactionSize =ThreadLocalRandom.current().nextDouble(100,1000);
+				double creationTime = ThreadLocalRandom.current().nextDouble(0,InputConfig.getSimTime()-1);
+				double transactionSize = InputConfig.getMinTransactionSize() + rand.nextDouble() * (InputConfig.getMaxTransactionSize()-InputConfig.getMinTransactionSize());
+				//ThreadLocalRandom.current().nextDouble(InputConfig.getMaxTransactionSize(),InputConfig.getMinTransactionSize());
 				Transaction tx = new Transaction(creationTime, transactionSize, 1, 2);
 		
 				
 				
 				for (Node n :Node.getNodes()){
-					if(n.getNodeType().equals("leader")) {
+					if(n.getNodeType().equals("leader") || n.getNodeType().equals("miner")) {
 						n.getTransactionsPool().add(tx);
 						
 						Statistics.noTransactionsConfig += 1;
@@ -121,7 +130,7 @@ public class BlockchainController {
 			
 			
 			}
-			System.out.println("Tx pool size:" + Transaction.getPool());
+			
 			
 			}
 

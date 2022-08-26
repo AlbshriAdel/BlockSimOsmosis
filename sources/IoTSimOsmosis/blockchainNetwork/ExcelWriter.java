@@ -50,6 +50,7 @@ public class ExcelWriter {
 		config();
 		result();
 		blockchainLedger();
+		globalBlockchain();
 		blockchainTranscations();
 		transcationPool();
 		transcationLatency();
@@ -59,16 +60,14 @@ public class ExcelWriter {
 //		String fname = "Blockchain-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyy-HH:mm:ss"))
 //				+ "-" + (simulationRunNumber + 1) + ".xlsx";
 		
-		String fname = "Blockchain-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyy-HH:mm:ss"))
-				+ "-" +".xlsx";
+//		String fname = "Blockchain-.xlsx" 
 
-
-		try (FileOutputStream outputStream = new FileOutputStream("output/"+fname)) {
+		try (FileOutputStream outputStream = new FileOutputStream("output/Blockchain-.xlsx")) {
 			workbook.write(outputStream);
 			outputStream.close();
 			outputStream.flush();
 
-			Desktop.getDesktop().open(new File("output/"+fname));
+			Desktop.getDesktop().open(new File("output/Blockchain-.xlsx"));
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -119,11 +118,24 @@ public class ExcelWriter {
 		writeData(df2, workbook, "Results");
 
 	}
+	
 
+	public static void globalBlockchain() {
+		ArrayList<Object[]> df8 = new ArrayList<>();
+		df8.add(new Object[] { "Simulator No. Run", "Block ID", "Previous Block ID", "Block Depth",
+				"Block Timestamp","Block Received Time", "Block Size", "No. of Transactions", "Mined by" , "hash power"});
+		for (Object[] globalBlockchain : Statistics.getGlobalBlockchain()) {
+			df8.add(globalBlockchain);
+		}
+
+		writeData(df8, workbook, "globalBlockchain");
+
+	}
+	
 	public static void blockchainLedger() {
 		ArrayList<Object[]> df3 = new ArrayList<>();
 		df3.add(new Object[] { "Simulator No. Run", "Block ID", "Previous Block ID", "Block Depth",
-				"Block Timestamp","Block Received Time", "Block Size", "No. of Transactions", "Mined by" });
+				"Block Timestamp","Block Received Time", "Block Size", "No. of Transactions", "Mined by" , "hash power"});
 		for (Object[] chain : Statistics.getChains()) {
 			df3.add(chain);
 		}

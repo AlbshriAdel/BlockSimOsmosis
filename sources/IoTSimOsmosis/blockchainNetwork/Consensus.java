@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class Consensus {
 
+	private static ArrayList <Block> globalBlockchain = new ArrayList<>();
 	private static ArrayList<Object[]> nodesLog = new ArrayList<>();
 	static Random rand = new Random();
 	
@@ -21,13 +22,20 @@ public class Consensus {
 	public static void consensus(String ConcensusAlgorithm) {
 
 		if (ConcensusAlgorithm.equals("raft")) {
-
 			statusNodeLog();
-			
-
+		} else {
+			AssignPoWMiner();
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public static ArrayList<Block> getGlobalBlockchain() {
+		return globalBlockchain;
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -102,10 +110,20 @@ public class Consensus {
 	public static Node getAassignLeader(){
 		Node miner = null;
 		
+		if (InputConfig.getConsensusalgorithm().equals("raft")) {
 		for (Node node : Node.getNodes()) {
 			if (node.getNodeType().equals("leader")) {
 				miner= node;
 			}
+		}
+		}
+		else {
+			for (Node node : Node.getNodes()) {
+				if (node.getNodeType().equals("miner")) {
+					miner= node;
+				}
+			}
+			
 		}
 		return miner;
 	}
@@ -132,6 +150,103 @@ public class Consensus {
 
 	}
 
+	public static void AssignPoWMiner() {
+		int countMiner = 0;
+		//if (InputConfig.getNumberOfMiner()< Node.getNodes().size()) {
+			int i=0;
+		for (i=0; i<Node.getNodes().size() ; i++) {
+			int NodeID = rand.nextInt(Node.getNodes().size());
+			if (!Node.getNodes().get(NodeID).getNodeType().equals("miner") && countMiner < InputConfig.getNumberOfMiner()) {
+				Node.getNodes().get(NodeID).setHashPower(70/*rand.nextInt((100-10) + 10)*/);
+				Node.getNodes().get(NodeID).setNodeType("miner");
+				countMiner+=1;
+				
+			}
+			if (countMiner < InputConfig.getNumberOfMiner() ) {
+				i=0;
+			}
+		}
+//		} else if (InputConfig.getNumberOfMiner() == Node.getNodes().size()) {
+//			for(Node node : Node.getNodes()) {
+//				node.setHashPower(rand.nextInt((100-10) + 10));
+//				node.setNodeType("miner");
+//				
+//			}
+//		}
+	}
+	
+	public static double protocalPoW() {
+		double totalHash=0;
+		
+		for (Node node : Node.getNodes()) {
+			if (node.getNodeType().equals("miner")) {
+				totalHash+=node.getHashPower();
+			}
+		}
+		
+		//double hash=miner.getHashPower()/totalHash;
+		double double_random = rand.nextDouble();
+		
+		return -Math.log(1- double_random) / (InputConfig.getBinterval());
+	}
+	
+	public static void fork() {
+		
+		ArrayList <Integer> a= new ArrayList<>();
+		ArrayList <Integer> b= new ArrayList<>();
+		ArrayList <Node> c= new ArrayList<>();
+		int Z=0;
+		int Max = 0;
+		
+		for (Node node : Node.getNodes()) {
+			if(node.getNodeType().equals("miner")) {
+				a.add(node.getBlockchainLedger().size());
+			}
+		}
+		
+	    for (int i = 1; i < a.size(); i++){
+	        if (a.get(i) > Max) {
+	            Max = a.get(i);
+	        }
+	    }
+	    
+	    
+	    for (Node node : Node.getNodes()) {
+	    	if(node.getNodeType().equals("miner")) {
+	    		if (node.getBlockchainLedger().size() == Max) {
+	    			b.add(node.getNodeId());
+	    			Z=node.getNodeId();
+	    		}
+	    }
+	    }
+//	    if(b.size()>1) {
+//	    	for (Node node : Node.getNodes()) {
+//		    	if(node.getNodeType().equals("miner")) {
+//		    		if (node.getBlockchainLedger().size() == Max) {
+//		    		c.add(node.getLastBlock().getMiner());
+//		    		}
+//		    	}
+//	    	}
+//	    	int contp=0, cntn=0, cntz=0;
+
+
+	    	
+	    for (Node node : Node.getNodes()) {
+	    	if(node.getNodeType().equals("miner")) {
+	    		if (node.getBlockchainLedger().size()==Max && node.getLastBlock().getMiner().getNodeId()==Z) {
+	    			for (Block block : node.getBlockchainLedger()) {
+	    				globalBlockchain.add(block);
+	    				
+	    			}
+	    		}
+	    	}
+	    	
+	    }
+		
+		
+		
+	}
+	
 
 	/**
 	 * The time it takes the miner to generate next block
@@ -139,7 +254,7 @@ public class Consensus {
 	 * @return double
 	 */
 
-	public static double generateNextBlockDelay() {
+	public static double protocal() {
 		Random rand = new Random();
 		double double_random = rand.nextDouble();
 		return -Math.log(1 - double_random) / (InputConfig.getBinterval());

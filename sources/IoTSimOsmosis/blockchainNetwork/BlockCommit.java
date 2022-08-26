@@ -19,18 +19,15 @@ public class BlockCommit {
 		
 		if (blockPrevious == miner.getLastBlock().getBlockID()) {
 			event.getBlock().setTransactions(Transaction.executeTranscationsB(miner, eventTime));
-			for (int i=0 ; i<event.getBlock().getTransactions().size(); i++) {
-				System.out.println("Node ID: " + event.getBlock().getTransactions().get(i).getTransactionID());
-			}
 			event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
-			if (event.getBlock().getTransactions().size() > 0) {
+			//if (event.getBlock().getTransactions().size() > 0) {
 				event.getBlock().setBlockUsedGas(Transaction.getLimit());
 				event.getBlock().setBlockReceivedTime(eventTime);
 				miner.getBlockchainLedger().add(event.getBlock());
 				//event.getBlock().setBlockReceivedTime(eventTime);
 				propagateBlock(event.getBlock());
 				//updateTransactionsPool(node, event.getBlock());
-			}
+			//}
 			
 			generateNextBlock(miner, eventTime);
 		}
@@ -64,7 +61,7 @@ public class BlockCommit {
 		if (blockPrevious == lastBlockID) {
 			node.getBlockchainLedger().add(event.getBlock());
 			event.getBlock().setBlockReceivedTime(eventTime);
-			updateTransactionsPool(miner, event.getBlock());
+			updateTransactionsPool(miner, event.getBlock()); //*************
 			generateNextBlock(node, eventTime);
 		} else {
 			int depth = event.getBlock().getBlockDepth() + 1;
@@ -72,7 +69,7 @@ public class BlockCommit {
 				updateLocalBlockchainLedger(node, miner, depth, event);
 				generateNextBlock(node, eventTime);
 			} else {
-				updateTransactionsPool(miner, event.getBlock());
+				updateTransactionsPool(miner, event.getBlock()); //***********
 			}
 		}
 	}
@@ -89,13 +86,13 @@ public class BlockCommit {
 				if (node.getBlockchainLedger().get(i).getBlockID() != miner.getBlockchainLedger().get(i).getBlockID()) {
 					Block newBlock = miner.getBlockchainLedger().get(i);
 						node.getBlockchainLedger().add(newBlock);
-						updateTransactionsPool(miner, newBlock);
+						updateTransactionsPool(miner, newBlock); // ********
 					
 				} else {
 					Block block = miner.getBlockchainLedger().get(i);
 					node.getBlockchainLedger().add(block);
 					block.setBlockReceivedTime(eventTime.getTime());
-					updateTransactionsPool(miner, block);
+					updateTransactionsPool(miner, block); //**********
 				}
 			}
 		}
@@ -112,10 +109,8 @@ public class BlockCommit {
 			for (int count = 0; count < node.getTransactionsPool().size(); count++) {
 				if (block.getTransactions().get(i).getTransactionID() == node.getTransactionsPool().get(count)
 						.getTransactionID()) {
-					block.getTransactions().get(i).setConfirmationTime(block.getBlockTimestamp());
-					System.out.println("Tx size :"+node.getTransactionsPool().size());
 					node.getTransactionsPool().remove(count);
-					System.out.println("here");
+					
 				}
 			}
 			i += 1;
@@ -130,7 +125,7 @@ public class BlockCommit {
 		int currentTime = 0;
 		
 		for (Node miner : Node.getNodes()) {
-			if (miner.getNodeType().equals("leader")) {
+			if (miner.getNodeType().equals("leader") || miner.getNodeType().equals("miner")) {
 				generateNextBlock(miner, currentTime);
 			}
 				
@@ -145,7 +140,10 @@ public class BlockCommit {
 	 */
 	private static void generateNextBlock(Node miner, double currentTime) {
 		if (miner.getNodeType().equals("leader")) {
-			double blockTime = currentTime + Consensus.generateNextBlockDelay();// 0.555; // time when miner x generate
+			double blockTime = currentTime + Consensus.protocal();// 0.555; // time when miner x generate
+			Scheduler.createBlockEvent(miner, blockTime);
+		} else if (miner.getNodeType().equals("miner") /*&& miner.getHashPower()>0*/) {
+			double blockTime = currentTime + Consensus.protocal();// 0.555; // time when miner x generate
 			Scheduler.createBlockEvent(miner, blockTime);
 		}
 	}

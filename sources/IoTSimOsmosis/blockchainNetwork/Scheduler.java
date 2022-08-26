@@ -53,7 +53,7 @@ public class Scheduler {
 		int count=0;
 		for (count=0 ;count <block.getTransactions().size(); count ++) {
 			for (Node node :Node.getNodes()) {
-				if(node.getNodeType().equals("leader") && node != block.getMiner()) {
+				if((node.getNodeType().equals("leader") ||node.getNodeType().equals("miner"))&& node != block.getMiner()) {
 					for (int i=0 ; i<node.getTransactionsPool().size();i++) {
 						if(block.getTransactions().get(count)== node.getTransactionsPool().get(i)) {
 							node.getTransactionsPool().remove(i);

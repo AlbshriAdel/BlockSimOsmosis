@@ -21,24 +21,24 @@ public class BlockSim {
 		int i=0;
 		for (i=0; i<5 ; i++) {
 		BlockchainController.generateNodes(); // Create blockchain nodes
+		BlockchainController.creatTransactions();
 		
 		
-		System.out.println("===============[round" +  //Consensus.protocalPoW() +"]=================");
-		System.out.println("===============[round" +  Consensus.protocal() +"]=================");
 			for (Node node : Node.getNodes()) {
-				Excel.getDf3().add(new Object[] {i,node.getNodeId(),node.getNodeType()});
-				//if (node.getNodeType().equals("miner")) {
+
+				if (node.getNodeType().equals("miner")) {
 				System.out.println("Node ID :" + node.getNodeId() +"\n"+
 									"Node type : " + node.getNodeType() +"\n"+
-									"hash power : " + node.getHashPower());
-				//System.out.println("protocal PoW : " + Consensus.protocalPoW(node));
-				//}
+									"hash power : " + node.getHashPower() +"\n"+
+									"Transcation pool : " + node.getTransactionsPool().size());
+
 			}
 			
 			BlockchainController.restState();
 		}
-		Excel.printToExcel(i);
+		//Excel.printToExcel(i);
 			
+	}
 	}
 //		BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator
 //		Node.generateGenesisBlock();
@@ -159,4 +159,5 @@ public class BlockSim {
 //	}
 //}
 }
+	
 	

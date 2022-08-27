@@ -19,9 +19,9 @@ public class Block {
 	// The block size
 	private double blockSize;
 	// The block gas limit
-	private double blockGasLimit;
+	private double blockGas;
 	// The block used gas limit
-	private double blockUsedGas;
+	//private double blockUsedGas;
 	// is block include Tx?
 	private boolean hasTx;
 
@@ -36,9 +36,9 @@ public class Block {
 		this.blockTimestamp = 0.0;
 		this.miner = null; // need to change just for test
 		this.transactions = new ArrayList<>();
-		this.blockSize = InputConfig.getMaxblocksize(); // 1 MB
-		this.blockGasLimit = InputConfig.getBlockGasLimit(); // 8000000
-		this.blockUsedGas = 0;
+		this.blockSize = InputConfig.getMaxBlockSize(); // 1 MB
+		this.blockGas= InputConfig.getBlockGasLimit(); // 8000000
+		//this.blockUsedGas = 0;
 
 
 	}
@@ -109,12 +109,12 @@ public class Block {
 	}
 
 	/**
-	 * Return block gas Limit
+	 * Return block gas 
 	 * 
-	 * @return blockGasLimit
+	 * @return blockGas
 	 */
-	public double getBlockGasLimit() {
-		return blockGasLimit;
+	public double getBlockGas() {
+		return blockGas;
 	}
 
 	/**
@@ -122,9 +122,9 @@ public class Block {
 	 * 
 	 * @return usedGas
 	 */
-	public double getBlockUsedGas() {
-		return blockUsedGas;
-	}
+//	public double getBlockUsedGas() {
+//		return blockUsedGas;
+//	}
 
 	
 	/**
@@ -192,12 +192,12 @@ public class Block {
 	}
 
 	/**
-	 * set block limit
+	 * set block gas
 	 * 
-	 * @param blockLimit
+	 * @param blockgas
 	 */
-	public void setBlockLimit(double blockLimit) {
-		this.blockGasLimit = blockLimit;
+	public void setBlockGas(double blockGas) {
+		this.blockGas = blockGas;
 	}
 
 	/**
@@ -205,9 +205,9 @@ public class Block {
 	 * 
 	 * @param usedGas
 	 */
-	public void setBlockUsedGas(double usedGas) {
-		this.blockUsedGas = usedGas;
-	}
+//	public void setBlockUsedGas(double usedGas) {
+//		this.blockUsedGas = usedGas;
+//	}
 
 	/**
 	 * set block Timestamp

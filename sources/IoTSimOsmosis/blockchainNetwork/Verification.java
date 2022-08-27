@@ -75,6 +75,7 @@ public class Verification {
 			System.out.println(obj);
 			}
 		}
+		System.out.println ( ThreadLocalRandom.current().nextDouble(0,0.05));    
 		
 	}
 		

@@ -18,19 +18,25 @@ public class BlockCommit {
 		long blockPrevious = event.getBlock().getPreviousBlockID();
 
 		if (blockPrevious == miner.getLastBlock().getBlockID()) {
-			event.getBlock().setTransactions(Transaction.executeTranscationsB(miner, eventTime));
-			event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
+			if (InputConfig.getConsensusalgorithm() == "PoW") {
+				event.getBlock().setTransactions(Transaction.executeTranscationsPoW(miner, event.getBlock(), eventTime));
+				event.getBlock().setBlockGas(Transaction.blockGaslimit);
+			} else if (InputConfig.getConsensusalgorithm() == "raft") {
+				
+				event.getBlock().setTransactions(Transaction.executeTranscationsRaft(miner,event.getBlock(), eventTime));
+				event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
+			}
+
 			if (event.getBlock().getTransactions().size() > 0) {
 				event.getBlock().setHasTx(true);
 			}
-			event.getBlock().setBlockUsedGas(Transaction.getLimit());
+
 			miner.getBlockchainLedger().add(event.getBlock());
 			propagateBlock(event.getBlock());
-			// updateTransactionsPool(node, event.getBlock());
-			// }
+		}//}
 
-			generateNextBlock(miner, eventTime);
-		}
+		generateNextBlock(miner, eventTime);
+
 	}
 
 	/**
@@ -39,8 +45,7 @@ public class BlockCommit {
 	 */
 	private static void propagateBlock(Block newBlock) {
 		for (Node miner : Node.getNodes()) {
-			if (newBlock.getMiner().getNodeId() != miner.getNodeId()
-					&& (miner.getNodeType().equals("miner") || miner.getNodeType().equals("leader"))) {
+			if (newBlock.getMiner().getNodeId() != miner.getNodeId()) {
 
 				Scheduler.receiveBlockEvent(miner, newBlock);
 			}

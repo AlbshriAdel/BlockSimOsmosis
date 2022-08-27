@@ -101,8 +101,46 @@ public class BlockchainController {
 			}
 			//System.out.println("Tx pool size:" + Transaction.getPool());
 			
+
+	public static void creatTransactions() {
+		int countTransaction=0; // to count number of transaction per second
+		double maxTxTime =1;
+		double minTxTime =0;
+		int Psize= InputConfig.getSimulationTime()*InputConfig.getTransactionNumber();
+		int i=0;
+		while (i < Psize) {
+			if (countTransaction<InputConfig.getTransactionNumber()) {
+				double transactionCreatingTime= ThreadLocalRandom.current().nextDouble(minTxTime,maxTxTime);
+				Transaction tx = new Transaction(transactionCreatingTime);
+				for (Node n :Node.getNodes()){
+					if(n.getNodeType().equals("leader") || n.getNodeType().equals("miner")) {
+						n.getTransactionsPool().add(tx);
+						}	
+					}
+				countTransaction+=1;
+				i+=1;
+				System.out.println("count tx: " + countTransaction);
+			} else {
+				countTransaction=0;
+				maxTxTime+=1;
+				minTxTime+=1;
+				
+				
+			}
 			
+					
 	
+			
+			
+
+		
+		
+		}
+		
+		
+		}
+
+	 	
 	
 
 	/**
@@ -112,7 +150,7 @@ public class BlockchainController {
 	public static void creatTransactionsWithoutIntegrated() {
 
 			for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-				double creationTime = ThreadLocalRandom.current().nextDouble(0,0.05/*InputConfig.getSimTime()-1*/);
+				double creationTime = ThreadLocalRandom.current().nextDouble(0,31);
 				//double transactionSize = 
 				//ThreadLocalRandom.current().nextDouble(InputConfig.getMaxTransactionSize(),InputConfig.getMinTransactionSize());
 						Transaction tx = new Transaction(creationTime);

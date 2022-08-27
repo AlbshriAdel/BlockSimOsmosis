@@ -27,9 +27,9 @@ public class Transaction {
 	private double usedGas;
 	// the maximum amount of gas units the transaction can use
 	private double transactionGasLimit;
-	// A local variable to calculate (count) the remaining limit of Block gas used
-	static double limit = 0;
-	// A local variable to calculate (count) the remaining limit of Block size used
+	// A variable to calculate (count) the remaining limit of Block gas used
+	static double blockGaslimit = 0;
+	// A variable to calculate (count) the remaining limit of Block size used
 	static double blockSizelimit = 0;
 	
 	
@@ -153,7 +153,7 @@ public class Transaction {
 	 */
 
 	public static double getLimit() {
-		return limit;
+		return blockGaslimit;
 	}
 
 	/*
@@ -164,28 +164,58 @@ public class Transaction {
 		return blockSizelimit;
 	}
 
-
-	public static ArrayList<Transaction> executeTranscationsB(Node miner, double eventTime) {
+/**
+ *  1- blockGaslimit subtract transaction used gas.
+ *  2- Block size subtract transaction size
+ * @param miner
+ * @param eventTime
+ * @return
+ */
+	public static ArrayList<Transaction> executeTranscationsPoW(Node miner,Block block, double eventTime) {
 		ArrayList<Transaction> transactions = new ArrayList<>();
-
-		limit = 0;
-		blockSizelimit = 0;
+		
+		double blockGas= block.getBlockGas();
+		blockGaslimit = 0;
 		int count = 0;
-		double blockGaslimit = InputConfig.getBlockGasLimit();
-		double blocksize = InputConfig.getMaxblocksize();
+
 
 		miner.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
 
 		while (count < miner.getTransactionsPool().size()) {
-
-			if (blockGaslimit >= miner.getTransactionsPool().get(count).getTransactionGasLimit()
-					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime
-					&& blocksize >= miner.getTransactionsPool().get(count).getTransactionSize()) {
-				blockGaslimit -= miner.getTransactionsPool().get(count).getUsedGas();
-				blocksize -= miner.getTransactionsPool().get(count).getTransactionSize();
+			
+			if (blockGas >= miner.getTransactionsPool().get(count).getUsedGas()
+					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
+				blockGas  -= miner.getTransactionsPool().get(count).getUsedGas();
 				transactions.add(miner.getTransactionsPool().get(count));
 				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);
-				limit += miner.getTransactionsPool().get(count).getUsedGas();
+				blockGaslimit += miner.getTransactionsPool().get(count).getUsedGas();
+				
+			}
+			count += 1;
+		}
+
+		return transactions;
+
+	}
+	
+	public static ArrayList<Transaction> executeTranscationsRaft(Node miner,Block block, double eventTime) {
+		ArrayList<Transaction> transactions = new ArrayList<>();
+		
+	
+		double blockSize= block.getBlockSize();
+		blockSizelimit = 0;
+		int count = 0;
+
+
+		miner.getTransactionsPool().sort((t1, t2) -> Double.compare(t1.getCreationTime(), t2.getCreationTime()));
+
+		while (count < miner.getTransactionsPool().size()) {
+			
+			if (blockSize >= miner.getTransactionsPool().get(count).getTransactionSize()
+					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
+				blockSize  -= miner.getTransactionsPool().get(count).getTransactionSize();
+				transactions.add(miner.getTransactionsPool().get(count));
+				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);
 				blockSizelimit += miner.getTransactionsPool().get(count).getTransactionSize();
 			}
 			count += 1;

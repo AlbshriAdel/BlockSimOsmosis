@@ -31,7 +31,8 @@ public class BlockSimDataset {
 			BlockchainController.generateNodes();
 			
 			// Create pending transactions without integrated
-			BlockchainController.creatTransactionsWithoutIntegrated(); 
+			//BlockchainController.creatTransactionsWithoutIntegrated(); 
+			BlockchainController.creatTransactions();
 			
 			// Create the gensis block for all miners
 			Node.generateGenesisBlock();
@@ -39,13 +40,13 @@ public class BlockSimDataset {
 			// Create Initial events
 			BlockCommit.generateInitialEvents();
 			
-			for (Node node : Node.getNodes()) {
-				System.out.println("Node ID :" + node.getNodeId() +"\n"+
-									"Node type : " + node.getNodeType() +"\n"+
-									"hash power : " + node.getHashPower());
-				//System.out.println("protocal PoW : " + Consensus.protocalPoW(node));
-				//}
-			}
+//			for (Node node : Node.getNodes()) {
+//				System.out.println("Node ID :" + node.getNodeId() +"\n"+
+//									"Node type : " + node.getNodeType() +"\n"+
+//									"hash power : " + node.getHashPower());
+//				//System.out.println("protocal PoW : " + Consensus.protocalPoW(node));
+//				//}
+//			}
 			
 
 			double clock = 0; // set clock to 0 at the start of the simulation

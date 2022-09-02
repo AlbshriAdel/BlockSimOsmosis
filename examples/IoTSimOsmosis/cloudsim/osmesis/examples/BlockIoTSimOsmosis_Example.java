@@ -55,25 +55,27 @@ public class BlockIoTSimOsmosis_Example {
 		//BlockchainController.generateNodes(); // Create blockchain nodes
 		BlockchainController.generateOsmosisNodes(topologyBuilder);
 		//BlockchainController.creatTransactionsWithoutIntegrated(); // Create pending transactions without integrated IoT simulator
-//		Node.generateGenesisBlock(); // Create the gensis block for all miners
-//		BlockCommit.generateInitialEvents();
-//		osmesis.start();
+		Node.generateGenesisBlock(); // Create the gensis block for all miners
+		osmesis.start();
+		BlockCommit.generateInitialEvents();
+		
 		
 		
 
-//		double clock = 0; // set clock to 0 at the start of the simulation
-//		while (!Queue.isEmpty() && (clock <= InputConfig.getSimTime())) {
-//			Event nextEvent = Queue.getNextEvent();
-//
-//			// Move clock to the time of the event
-//			clock = nextEvent.getTime();
-//
-//			BlockCommit.handleEvent(nextEvent);
-//			Queue.removeEvent(nextEvent);
-//
-//		}
+		double clock = 0; // set clock to 0 at the start of the simulation
+		while (!Queue.isEmpty() && (clock <= InputConfig.getSimulationTime())) {
+			Event nextEvent = Queue.getNextEvent();
+
+			// Move clock to the time of the event
+			clock = nextEvent.getTime();
+
+			BlockCommit.handleEvent(nextEvent);
+			Queue.removeEvent(nextEvent);
+
+		}
        
-		//Statistics.calculate();
+		Statistics.calculate(1);
+		ExcelWriter.printToExcel();
 		//ExcelWriter.printToExcel();
 		System.out.println("Edge Node size:" + Node.getNodes().size());
 		for (Node n : Node.getNodes()) {

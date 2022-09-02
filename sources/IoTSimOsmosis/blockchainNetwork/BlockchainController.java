@@ -82,14 +82,14 @@ public class BlockchainController {
 //		//Transaction tx =ev.getData();
 
 //			for (int i = 0; i < InputConfig.getTransactionNumber(); i++) {
-				double creationTime = osmosisTransactionTime;
-				double transactionSize =ThreadLocalRandom.current().nextDouble(100,1000);
-				Transaction tx = new Transaction(creationTime);
+				//double creationTime = osmosisTransactionTime;
+				//double transactionSize =ThreadLocalRandom.current().nextDouble(100,1000);
+				Transaction tx = new Transaction(osmosisTransactionTime);
 //				Node.getNodes().get(0).getTransactionsPool().add(tx);
 				
 				
 				for (Node n :Node.getNodes()){
-					if(n.getNodeType().equals("leader")) {
+					if(n.getNodeType().equals("leader") || n.getNodeType().equals("miner")) {
 						n.getTransactionsPool().add(tx);
 						
 					

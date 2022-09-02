@@ -17,7 +17,7 @@ public class InputConfig {
 	 */
 	/****************To Create Node Parameters *****************/
 	private static final int numberOfNodes = 4;
-	private static final int numberOfMiner = 1; 
+	private static final int numberOfMiner = 2; 
 														
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class InputConfig {
 	 * 
 	 */
 	/*************To Create Transaction Parameters ************/
-	private static final int transactionNumber  = 750; // 
+	private static final int transactionNumber  = 100; // 
 	private static final double maxTXsize = 0.064; // Maximum Transaction size in MB (64KB quorum)
 	private static final double minTXsize = 0.001; // Minimum Transaction size in MB (1 KB)
 	private static final double transactionGasLimit = 100; //the maximum amount of gas units the transaction can use
@@ -43,13 +43,13 @@ public class InputConfig {
 	/*************To Create Block Parameters ************/
 	private static final long maxBlockSize = 1;//4194304;//4194304;
 	private static final double blockGasLimit = 1000000;//30000000;//30000000;
-	private static final double Binterval = 0.05; //12.41
+	private static final double Binterval = 2; //12.41 raft(50ms)
 	
 	/**
 	 * @param consensusAlgorithm : PoW and raft
 	 */
 	/*************To configure consensus Algorithm   ************/
-	private static final String consensusAlgorithm = "raft"; // raft or PoW
+	private static final String consensusAlgorithm = "PoW"; // raft or PoW
 	
 	/**
 	 * 
@@ -57,7 +57,7 @@ public class InputConfig {
 	 * @param simulatorRun
 	 */
 	/*************To configure simulator ************/
-	private static final int simTime = 1;
+	private static final int simTime = 300;
 	private static final int simulatorRun= 1;
 	
 	

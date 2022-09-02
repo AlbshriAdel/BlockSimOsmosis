@@ -22,20 +22,21 @@ public class BlockCommit {
 				event.getBlock().setTransactions(Transaction.executeTranscationsPoW(miner, event.getBlock(), eventTime));
 				event.getBlock().setBlockGas(Transaction.blockGaslimit);
 			} else if (InputConfig.getConsensusalgorithm() == "raft") {
-				
 				event.getBlock().setTransactions(Transaction.executeTranscationsRaft(miner,event.getBlock(), eventTime));
 				event.getBlock().setBlockSize(Transaction.getBlockSizeLimit());
 			}
 
 			if (event.getBlock().getTransactions().size() > 0) {
 				event.getBlock().setHasTx(true);
-			}
+			//}
 
 			miner.getBlockchainLedger().add(event.getBlock());
 			propagateBlock(event.getBlock());
-		}//}
-
+			
+		}}
 		generateNextBlock(miner, eventTime);
+
+		
 
 	}
 
@@ -71,9 +72,9 @@ public class BlockCommit {
 			if (depth > node.getBlockchainLedger().size()) {
 				updateLocalBlockchainLedger(node, miner, depth);
 				generateNextBlock(node, eventTime);
-			} else {
-				updateTransactionsPool(miner, event.getBlock()); // ***********
-			}
+			} 
+				//updateTransactionsPool(miner, event.getBlock()); // ***********
+			
 		}
 	}
 
@@ -84,7 +85,9 @@ public class BlockCommit {
 	 * @param depth
 	 */
 	private static void updateLocalBlockchainLedger(Node node, Node miner, int depth) {
+		
 		for (int i = 0; i < depth; i++) {
+
 			if (i < node.getBlockchainLedger().size()) {
 				if (node.getBlockchainLedger().get(i).getBlockID() != miner.getBlockchainLedger().get(i).getBlockID()) {
 					Block newBlock = miner.getBlockchainLedger().get(i);
@@ -97,6 +100,7 @@ public class BlockCommit {
 				node.getBlockchainLedger().add(block);
 				updateTransactionsPool(miner, block); // **********
 			}
+			
 		}
 	}
 

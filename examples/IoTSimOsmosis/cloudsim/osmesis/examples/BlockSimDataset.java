@@ -61,7 +61,7 @@ public class BlockSimDataset {
 				Queue.removeEvent(nextEvent);
 			}
 			
-			Consensus.fork();
+			//Consensus.fork();
 			
 //			System.out.println("Global Blockchain : " + Consensus.getGlobalBlockchain().size());
 //			for (Block block :Consensus.getGlobalBlockchain()) {

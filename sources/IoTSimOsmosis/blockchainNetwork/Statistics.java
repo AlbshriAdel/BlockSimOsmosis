@@ -234,27 +234,29 @@ public class Statistics {
 	
 	private static void blockCreatedByMiner() {
 		
-		Node miner1 = Consensus.getAassignLeader();
-		Node miner2 = Consensus.getAassignLeader();
-		
+		ArrayList<Node> minerList = new ArrayList<>();
+		for (Node node :Node.getNodes()) {
+			if (node.getNodeType().equals("miner") || node.getNodeType().equals("miner")) {
+				minerList.add(node);
+			}
 			
+		}
 		
-		
-			
-				for(Block block : miner1.getBlockchainLedger()){
-					//if (block.getMiner().getNodeId() == miner1.getNodeId()) {
-						blockMinedby1+=1;
-						blockMinedTime1+=block.getBlockTimestamp();
-					}
-				for(Block block : miner2.getBlockchainLedger()){
-				
+		for (int i=0; i<minerList.size(); i++) {
+			for(Block block : Node.getNodes().get(i).getBlockchainLedger()) {
+				if(block.getMiner()== minerList.get(i)) {
+					blockMinedby1+=1;
+					blockMinedTime1+=block.getBlockTimestamp();
+					System.out.println("Block ID:" + block.getBlockID());
+				}else if (block.getMiner()== minerList.get(i)) {
 					blockMinedby2+=1;
 					blockMinedTime2+=block.getBlockTimestamp();
-				} 
-					
-				
-			
-		
+					System.out.println("Block ID:" + block.getBlockID());
+				}
+			}
+		}
+
+
 		blockMinedTime1 = blockMinedTime1 /blockMinedby1;
 		blockMinedTime2 = blockMinedTime2 /blockMinedby1;
 //		blockMinedTime3 = blockMinedTime3 /blockMinedby1;

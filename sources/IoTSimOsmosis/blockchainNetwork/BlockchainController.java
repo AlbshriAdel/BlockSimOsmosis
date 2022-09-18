@@ -104,7 +104,7 @@ public class BlockchainController {
 
 	public static void creatTransactions() {
 		int countTransaction=0; // to count number of transaction per second
-		double maxTxTime =1;
+		double maxTxTime =0.89;
 		double minTxTime =0;
 		int Psize= InputConfig.getSimulationTime()*InputConfig.getTransactionNumber();
 		int i=0;

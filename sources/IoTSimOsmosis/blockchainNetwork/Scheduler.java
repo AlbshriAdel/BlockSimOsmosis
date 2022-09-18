@@ -26,7 +26,7 @@ public class Scheduler {
 			block.setBlockTimestamp(eventTime);
 			block.setMiner(miner);
 			block.setPreviousBlockID(miner.getLastBlock().getBlockID());
-			Event event = new Event(eventType, block.getMiner(), eventTime, block);
+			Event event = new Event(eventType, block.getMiner(), eventTime, block); // change here
 			Queue.addEvent(event);
 			
 		}

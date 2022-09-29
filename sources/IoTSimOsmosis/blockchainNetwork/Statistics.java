@@ -21,18 +21,14 @@ public class Statistics {
 	public static double firstCreationTime = 0;
 	public static double lastConfirmiationTime = 0;
 	public static double totalTransactionsTime = 0;
-	public static double blockIncludeTx=0;
-	public static double blockWithoutTx=0;
-	public static double blockMinedby1=0;
-	public static double blockMinedTime1=0;
-	public static double blockMinedby2=0;
-	public static double blockMinedTime2=0;
-	public static double TxPerBlock=0;
-	public static double TxInclusionTime=0;
-	public static double TxUsedGas=0;
-	public static double TxSize=0;
-	public static double pendingTx=0;
-	public static double blockSize=0;
+	public static double blockIncludeTx = 0;
+	public static double blockWithoutTx = 0;
+	public static double TxPerBlock = 0;
+	public static double TxInclusionTime = 0;
+	public static double TxUsedGas = 0;
+	public static double TxSize = 0;
+	public static double pendingTx = 0;
+	public static double blockSize = 0;
 	public static int runNumber = 0;
 	public static int blockTim = 0;
 	public static double SDBlockTime = 0;
@@ -40,9 +36,6 @@ public class Statistics {
 	public static double maxBlockTime = 0;
 	public static double meanBlockTime = 0;
 	public static double medBlockTime = 0;
-	
-
-	
 
 //	
 //
@@ -53,11 +46,12 @@ public class Statistics {
 		transaction();
 		transactionLatency();
 		calculateLatency();
-		overallResults(); 
-		blockCreatedByMiner();
+		overallResults();
+//		blockCreatedByMiner();
 		transactionsPool();
 		statisticResultBlockTime();
-		// rest();
+		ExcelWriter.printToExcel(simulationRunNumber);
+		rest();
 
 	}
 
@@ -104,34 +98,36 @@ public class Statistics {
 		while (iterator.hasNext()) {
 
 			Block b = iterator.next();
-			if (InputConfig.getConsensusalgorithm()=="PoW") {
-			if (b.getBlockID() == 0) {
-				totalNumberOfBlock +=1;
-				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
-						b.getBlockTimestamp(), 0,0,"Null",0};
-				getChains().add(info);
-			} else {
-				totalNumberOfBlock +=1;
-				BlockPropagationTimeCount +=b.getBlockTimestamp();
-				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
-						b.getBlockTimestamp(),b.getBlockGas(), b.getTransactions().size(), b.getMiner().getNodeId(),
-						b.getMiner().getHashPower() };
-				getChains().add(info);
-
-			}} else if (InputConfig.getConsensusalgorithm()=="raft") {
+			if (InputConfig.getConsensusalgorithm() == "PoW") {
 				if (b.getBlockID() == 0) {
-					totalNumberOfBlock +=1;
+					totalNumberOfBlock += 1;
 					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
-							b.getBlockTimestamp(), 0,0,"Null"};
+							b.getBlockTimestamp(), 0, 0, "Null", 0 };
 					getChains().add(info);
 				} else {
-					BlockPropagationTimeCount +=b.getBlockTimestamp();
-					totalNumberOfBlock +=1;
+					totalNumberOfBlock += 1;
+					BlockPropagationTimeCount += b.getBlockTimestamp();
 					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
-							b.getBlockTimestamp(),b.getBlockSize(), b.getTransactions().size(), b.getMiner().getNodeId()};
+							b.getBlockTimestamp(), b.getBlockGas(), b.getTransactions().size(),
+							b.getMiner().getNodeId(), b.getMiner().getHashPower() };
 					getChains().add(info);
+
+				}
+			} else if (InputConfig.getConsensusalgorithm() == "raft") {
+				if (b.getBlockID() == 0) {
+					totalNumberOfBlock += 1;
+					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+							b.getBlockTimestamp(), 0, 0, "Null" };
+					getChains().add(info);
+				} else {
+					BlockPropagationTimeCount += b.getBlockTimestamp();
+					totalNumberOfBlock += 1;
+					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+							b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(),
+							b.getMiner().getNodeId() };
+					getChains().add(info);
+				}
 			}
-		}
 		}
 		blockPropagationTime = BlockPropagationTimeCount / totalNumberOfBlock;
 	}
@@ -143,10 +139,10 @@ public class Statistics {
 		while (iterator.hasNext()) {
 
 			Block b = iterator.next();
-			
+
 			if (b.getBlockID() == 0) {
 				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
-						b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(),0,0};
+						b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(), 0, 0 };
 				getGlobalBlockchain().add(info);
 			} else {
 				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
@@ -157,7 +153,6 @@ public class Statistics {
 			}
 		}
 	}
-	
 
 	private static void transaction() {
 
@@ -165,19 +160,17 @@ public class Statistics {
 
 		for (Block b : miner.getBlockchainLedger()) {
 			for (Transaction transaction : b.getTransactions()) {
-				if (InputConfig.getConsensusalgorithm()=="PoW") {
-				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
-						transaction.getConfirmationTime(), transaction.getTransactionSize(), transaction.getUsedGas(),
-						b.getBlockID()};
-				getTransactions().add(info);
+				if (InputConfig.getConsensusalgorithm() == "PoW") {
+					Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+							transaction.getConfirmationTime(), transaction.getTransactionSize(),
+							transaction.getUsedGas(), b.getBlockID() };
+					getTransactions().add(info);
+				} else if (InputConfig.getConsensusalgorithm() == "raft") {
+					Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+							transaction.getConfirmationTime(), transaction.getTransactionSize(), b.getBlockID() };
+					getTransactions().add(info);
+				}
 			}
-				else if(InputConfig.getConsensusalgorithm()=="raft") {
-				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
-						transaction.getConfirmationTime(), transaction.getTransactionSize(), 
-						b.getBlockID()};
-				getTransactions().add(info);
-			}
-		}
 		}
 
 		totalNumberOfTx = getTransactions().size();
@@ -206,114 +199,110 @@ public class Statistics {
 	private static void overallResults() {
 		Node Miner = Consensus.getAassignLeader();
 		for (Block b : Miner.getBlockchainLedger()) {
-			blockSize+=b.getBlockSize();
-				if (b.getHasTx() == false) {
-					blockWithoutTx+=1;
-					
-					
-				} else if (b.getHasTx() == true ) {
-					blockIncludeTx+=1;
-					TxPerBlock+=b.getTransactions().size();
-				}
-				
+			blockSize += b.getBlockSize();
+			if (b.getHasTx() == false) {
+				blockWithoutTx += 1;
+
+			} else if (b.getHasTx() == true) {
+				blockIncludeTx += 1;
+				TxPerBlock += b.getTransactions().size();
+			}
+
 			for (Transaction t : b.getTransactions()) {
-				TxInclusionTime+=t.getConfirmationTime();
-				TxUsedGas+=t.getUsedGas();
-				TxSize+=t.getTransactionSize();
-				
-			}
-		}
-		
-		blockSize=blockSize/totalNumberOfBlock;
-		TxPerBlock=TxPerBlock/totalNumberOfBlock;
-		TxInclusionTime=TxInclusionTime/totalNumberOfTx;
-		TxUsedGas=TxUsedGas/totalNumberOfTx;
-		TxSize=TxSize/totalNumberOfTx;
-		
-	}
-	
-	private static void blockCreatedByMiner() {
-		
-		ArrayList<Node> minerList = new ArrayList<>();
-		for (Node node :Node.getNodes()) {
-			if (node.getNodeType().equals("miner") || node.getNodeType().equals("miner")) {
-				minerList.add(node);
-			}
-			
-		}
-		
-		for (int i=0; i<minerList.size(); i++) {
-			for(Block block : Node.getNodes().get(i).getBlockchainLedger()) {
-				if(block.getMiner()== minerList.get(i)) {
-					blockMinedby1+=1;
-					blockMinedTime1+=block.getBlockTimestamp();
-					System.out.println("Block ID:" + block.getBlockID());
-				}else if (block.getMiner()== minerList.get(i)) {
-					blockMinedby2+=1;
-					blockMinedTime2+=block.getBlockTimestamp();
-					System.out.println("Block ID:" + block.getBlockID());
-				}
+				TxInclusionTime += t.getConfirmationTime();
+				TxUsedGas += t.getUsedGas();
+				TxSize += t.getTransactionSize();
+
 			}
 		}
 
+		blockSize = blockSize / totalNumberOfBlock;
+		TxPerBlock = TxPerBlock / totalNumberOfBlock;
+		TxInclusionTime = TxInclusionTime / totalNumberOfTx;
+		TxUsedGas = TxUsedGas / totalNumberOfTx;
+		TxSize = TxSize / totalNumberOfTx;
 
-		blockMinedTime1 = blockMinedTime1 /blockMinedby1;
-		blockMinedTime2 = blockMinedTime2 /blockMinedby1;
-//		blockMinedTime3 = blockMinedTime3 /blockMinedby1;
-//		blockMinedTime4 = blockMinedTime4 /blockMinedby1;
 	}
-	
+
+//	private static void blockCreatedByMiner() {
+//		
+//		ArrayList<Node> minerList = new ArrayList<>();
+//		for (Node node :Node.getNodes()) {
+//			if (node.getNodeType().equals("miner") || node.getNodeType().equals("miner")) {
+//				minerList.add(node);
+//			}
+//			
+//		}
+//		
+//		for (int i=0; i<minerList.size(); i++) {
+//			for(Block block : Node.getNodes().get(i).getBlockchainLedger()) {
+//				if(block.getMiner()== minerList.get(i)) {
+//					blockMinedby1+=1;
+//					blockMinedTime1+=block.getBlockTimestamp();
+//					System.out.println("Block ID:" + block.getBlockID());
+//				}else if (block.getMiner()== minerList.get(i)) {
+//					blockMinedby2+=1;
+//					blockMinedTime2+=block.getBlockTimestamp();
+//					System.out.println("Block ID:" + block.getBlockID());
+//				}
+//			}
+//		}
+//
+//
+//		blockMinedTime1 = blockMinedTime1 /blockMinedby1;
+//		blockMinedTime2 = blockMinedTime2 /blockMinedby1;
+////		blockMinedTime3 = blockMinedTime3 /blockMinedby1;
+////		blockMinedTime4 = blockMinedTime4 /blockMinedby1;
+//	}
+//	
 
 	private static void transactionsPool() {
 		Node node = Consensus.getAassignLeader();
-		if (InputConfig.getConsensusalgorithm()=="PoW") {
-				node.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
-				for (Transaction transaction : node.getTransactionsPool()) {
-					pendingTx+=1;
-					Object[] info = { getRunNumber(), transaction.getTransactionID(),
-							transaction.getCreationTime(),transaction.getUsedGas(), "Pending" };
-					getTransactionsPool().add(info);
-				}
-		}	else if(InputConfig.getConsensusalgorithm()=="raft") {
-			node.getTransactionsPool().sort((t1, t2) -> Double.compare(t1.getCreationTime(), t2.getCreationTime()));
+		if (InputConfig.getConsensusalgorithm() == "PoW") {
+			node.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
 			for (Transaction transaction : node.getTransactionsPool()) {
-				pendingTx+=1;
-				Object[] info = { getRunNumber(), transaction.getTransactionID(),
-						transaction.getCreationTime(),transaction.getTransactionSize(), "Pending" };
+				pendingTx += 1;
+				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+						transaction.getUsedGas(), "Pending" };
 				getTransactionsPool().add(info);
 			}
-			
+		} else if (InputConfig.getConsensusalgorithm() == "raft") {
+			node.getTransactionsPool().sort((t1, t2) -> Double.compare(t1.getCreationTime(), t2.getCreationTime()));
+			for (Transaction transaction : node.getTransactionsPool()) {
+				pendingTx += 1;
+				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+						transaction.getTransactionSize(), "Pending" };
+				getTransactionsPool().add(info);
+			}
+
 		}
-				
-				
+
 	}
-	
+
 	public static void statisticResultBlockTime() {
-		double sumBlockTime=0;
-		
-		
+		double sumBlockTime = 0;
+
 		Node miner = Consensus.getAassignLeader();
-		for (int i=0; i< miner.getBlockchainLedger().size(); i++) {
-			sumBlockTime+=miner.getBlockchainLedger().get(i).getBlockTimestamp();
-			if (miner.getBlockchainLedger().get(i).getBlockTimestamp()< minBlockTime) {
-				minBlockTime=miner.getBlockchainLedger().get(i).getBlockTimestamp();
-				
-			} 
-			if (miner.getBlockchainLedger().get(i).getBlockTimestamp()>maxBlockTime) {
-				maxBlockTime=miner.getBlockchainLedger().get(i).getBlockTimestamp();
+		for (int i = 0; i < miner.getBlockchainLedger().size(); i++) {
+			sumBlockTime += miner.getBlockchainLedger().get(i).getBlockTimestamp();
+			if (miner.getBlockchainLedger().get(i).getBlockTimestamp() < minBlockTime) {
+				minBlockTime = miner.getBlockchainLedger().get(i).getBlockTimestamp();
+
+			}
+			if (miner.getBlockchainLedger().get(i).getBlockTimestamp() > maxBlockTime) {
+				maxBlockTime = miner.getBlockchainLedger().get(i).getBlockTimestamp();
 			}
 		}
-		meanBlockTime=sumBlockTime/(totalNumberOfBlock-1);
-		
+		meanBlockTime = sumBlockTime / (totalNumberOfBlock - 1);
+
 		for (Block block : miner.getBlockchainLedger()) {
-			SDBlockTime+=Math.pow(block.getBlockTimestamp()-meanBlockTime, 2);
+			SDBlockTime += Math.pow(block.getBlockTimestamp() - meanBlockTime, 2);
 		}
-		SDBlockTime= Math.sqrt(SDBlockTime/(totalNumberOfBlock-1));
+		SDBlockTime = Math.sqrt(SDBlockTime / (totalNumberOfBlock - 1));
 	}
 
-
-
 	public static void rest() {
+
 		totalNumberOfBlock = 0;
 		totalNumberOfTx = 0;
 		blockPropagationTime = 0;
@@ -322,6 +311,21 @@ public class Statistics {
 		firstCreationTime = 0;
 		lastConfirmiationTime = 0;
 		totalTransactionsTime = 0;
+		blockIncludeTx = 0;
+		blockWithoutTx = 0;
+		TxPerBlock = 0;
+		TxInclusionTime = 0;
+		TxUsedGas = 0;
+		TxSize = 0;
+		pendingTx = 0;
+		blockSize = 0;
+		runNumber = 0;
+		blockTim = 0;
+		SDBlockTime = 0;
+		minBlockTime = 0;
+		maxBlockTime = 0;
+		meanBlockTime = 0;
+		medBlockTime = 0;
 //		getChains().clear();
 //		getTransactions().clear();
 //		getTransactionLatencies().clear();

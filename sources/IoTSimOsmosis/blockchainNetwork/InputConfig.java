@@ -57,7 +57,7 @@ public class InputConfig {
 	 * @param simulatorRun
 	 */
 	/*************To configure simulator ************/
-	private static final int simTime = 1;
+	private static final int simTime = 500;
 	private static final int simulatorRun= 1;
 	
 	

@@ -59,7 +59,6 @@ public class Consensus {
 			if (!Node.getNodes().get(NodeID).getNodeType().equals("candidate")
 					&& !Node.getNodes().get(NodeID).getNodeType().equals("leader")) {
 				Node.getNodes().get(NodeID).setNodeType("candidate");
-				System.out.println(" node type : " + Node.getNodes().get(NodeID).getNodeType() );
 				nodesLog.add(new Object[] { "become Candidate", Node.getNodes().get(NodeID).getNodeId(),
 						Node.getNodes().get(NodeID).getNodeType(), Node.getNodes().get(NodeID).getJoinTime() });
 				votingFor(Node.getNodes().get(NodeID));

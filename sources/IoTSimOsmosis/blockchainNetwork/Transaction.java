@@ -210,9 +210,9 @@ public class Transaction {
 		miner.getTransactionsPool().sort((t1, t2) -> Double.compare(t1.getCreationTime(), t2.getCreationTime()));
 
 		while (count < miner.getTransactionsPool().size()) {
-			
-			if (blockSize >= miner.getTransactionsPool().get(count).getTransactionSize()
-					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
+//			if (blockSize >= miner.getTransactionsPool().get(count).getTransactionSize()
+//					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime)
+			if ( miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
 				blockSize  -= miner.getTransactionsPool().get(count).getTransactionSize();
 				transactions.add(miner.getTransactionsPool().get(count));
 				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);

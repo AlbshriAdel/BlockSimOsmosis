@@ -1,5 +1,7 @@
 package IoTSimOsmosis.cloudsim.osmesis.examples;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import IoTSimOsmosis.blockchainNetwork.Block;
 import IoTSimOsmosis.blockchainNetwork.BlockCommit;
 import IoTSimOsmosis.blockchainNetwork.BlockchainController;
@@ -21,15 +23,17 @@ public class BlockSimDataset {
 	}
 
 	public void run() {
-		int runCount;
-		for (runCount=1 ; runCount <= 3; runCount++) {
+
+		for (int runCount=1 ; runCount <= InputConfig.getSimulatorRun(); runCount++) {
 
 			// Create blockchain nodes
 			BlockchainController.generateNodes();
+			
 
 			// Create pending transactions without integrated
-			// BlockchainController.creatTransactionsWithoutIntegrated();
-			BlockchainController.creatTransactionsWithoutIntegrated();
+
+//			BlockchainController.creatTransactionsWithoutIntegrated();
+			BlockchainController.creatTransactions();
 
 			// Create the gensis block for all miners
 			Node.generateGenesisBlock();
@@ -54,7 +58,7 @@ public class BlockSimDataset {
 			System.out.println("run complete " + runCount );
 			System.out.println("");
 			BlockchainController.restState();
-
+//			InputConfig.setSimulationTime(10);
 		}
 		
 

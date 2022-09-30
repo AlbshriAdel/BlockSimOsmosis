@@ -36,11 +36,12 @@ public class Statistics {
 	public static double maxBlockTime = 0;
 	public static double meanBlockTime = 0;
 	public static double medBlockTime = 0;
+	public static double numberRun;
 
 //	
 //
 	public static void calculate(int simulationRunNumber) {
-		// result();
+		numberRun=simulationRunNumber;
 		blockchainLedger();
 		globalBlockchain();
 		transaction();
@@ -92,7 +93,7 @@ public class Statistics {
 	private static void blockchainLedger() {
 
 		Node node = Consensus.getAassignLeader();
-		double BlockPropagationTimeCount = 0;
+		
 
 		Iterator<Block> iterator = node.getBlockchainLedger().iterator();
 		while (iterator.hasNext()) {
@@ -101,13 +102,13 @@ public class Statistics {
 			if (InputConfig.getConsensusalgorithm() == "PoW") {
 				if (b.getBlockID() == 0) {
 					totalNumberOfBlock += 1;
-					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+					Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 							b.getBlockTimestamp(), 0, 0, "Null", 0 };
 					getChains().add(info);
 				} else {
 					totalNumberOfBlock += 1;
-					BlockPropagationTimeCount += b.getBlockTimestamp();
-					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+					
+					Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 							b.getBlockTimestamp(), b.getBlockGas(), b.getTransactions().size(),
 							b.getMiner().getNodeId(), b.getMiner().getHashPower() };
 					getChains().add(info);
@@ -116,20 +117,20 @@ public class Statistics {
 			} else if (InputConfig.getConsensusalgorithm() == "raft") {
 				if (b.getBlockID() == 0) {
 					totalNumberOfBlock += 1;
-					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+					Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 							b.getBlockTimestamp(), 0, 0, "Null" };
 					getChains().add(info);
 				} else {
-					BlockPropagationTimeCount += b.getBlockTimestamp();
+					
 					totalNumberOfBlock += 1;
-					Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+					Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 							b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(),
 							b.getMiner().getNodeId() };
 					getChains().add(info);
 				}
 			}
 		}
-		blockPropagationTime = BlockPropagationTimeCount / totalNumberOfBlock;
+		blockPropagationTime = node.getBlockchainLedger().get(totalNumberOfBlock-1).getBlockTimestamp()/ totalNumberOfBlock;
 	}
 
 	private static void globalBlockchain() {
@@ -141,11 +142,11 @@ public class Statistics {
 			Block b = iterator.next();
 
 			if (b.getBlockID() == 0) {
-				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+				Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 						b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(), 0, 0 };
 				getGlobalBlockchain().add(info);
 			} else {
-				Object[] info = { getRunNumber(), b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
+				Object[] info = { numberRun, b.getBlockID(), b.getPreviousBlockID(), b.getBlockDepth(),
 						b.getBlockTimestamp(), b.getBlockSize(), b.getTransactions().size(), b.getMiner().getNodeId(),
 						b.getMiner().getHashPower() };
 				getGlobalBlockchain().add(info);
@@ -161,12 +162,12 @@ public class Statistics {
 		for (Block b : miner.getBlockchainLedger()) {
 			for (Transaction transaction : b.getTransactions()) {
 				if (InputConfig.getConsensusalgorithm() == "PoW") {
-					Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+					Object[] info = { numberRun, transaction.getTransactionID(), transaction.getCreationTime(),
 							transaction.getConfirmationTime(), transaction.getTransactionSize(),
 							transaction.getUsedGas(), b.getBlockID() };
 					getTransactions().add(info);
 				} else if (InputConfig.getConsensusalgorithm() == "raft") {
-					Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+					Object[] info = { numberRun, transaction.getTransactionID(), transaction.getCreationTime(),
 							transaction.getConfirmationTime(), transaction.getTransactionSize(), b.getBlockID() };
 					getTransactions().add(info);
 				}
@@ -184,7 +185,7 @@ public class Statistics {
 
 		for (Block b : Miner.getBlockchainLedger()) {
 			for (Transaction transaction : b.getTransactions()) {
-				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+				Object[] info = { numberRun, transaction.getTransactionID(), transaction.getCreationTime(),
 						transaction.getConfirmationTime(),
 						TransactionLatency = transaction.getConfirmationTime() - transaction.getCreationTime() };
 				getTransactionLatencies().add(info);
@@ -262,7 +263,7 @@ public class Statistics {
 			node.getTransactionsPool().sort((t1, t2) -> Double.compare(t2.getUsedGas(), t1.getUsedGas()));
 			for (Transaction transaction : node.getTransactionsPool()) {
 				pendingTx += 1;
-				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+				Object[] info = { numberRun, transaction.getTransactionID(), transaction.getCreationTime(),
 						transaction.getUsedGas(), "Pending" };
 				getTransactionsPool().add(info);
 			}
@@ -270,7 +271,7 @@ public class Statistics {
 			node.getTransactionsPool().sort((t1, t2) -> Double.compare(t1.getCreationTime(), t2.getCreationTime()));
 			for (Transaction transaction : node.getTransactionsPool()) {
 				pendingTx += 1;
-				Object[] info = { getRunNumber(), transaction.getTransactionID(), transaction.getCreationTime(),
+				Object[] info = { numberRun, transaction.getTransactionID(), transaction.getCreationTime(),
 						transaction.getTransactionSize(), "Pending" };
 				getTransactionsPool().add(info);
 			}
@@ -326,11 +327,15 @@ public class Statistics {
 		maxBlockTime = 0;
 		meanBlockTime = 0;
 		medBlockTime = 0;
-//		getChains().clear();
-//		getTransactions().clear();
-//		getTransactionLatencies().clear();
-//		getTransactionsPool().clear();
-
+		numberRun=0;
+		
+		getChains().clear();
+		getTransactions().clear();
+		getTransactionLatencies().clear();
+		getTransactionsPool().clear();
+		getResult().clear();
+		getGlobalBlockchain().clear();
+		
 	}
 
 	public static ArrayList<Object[]> getChains() {

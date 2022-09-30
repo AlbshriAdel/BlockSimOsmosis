@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelWriter {
 	static XSSFWorkbook workbook = new XSSFWorkbook();
-	public static int runNumber = 0;
+	public static int runNumber;
 	
 
 	public static void printToExcel(int simulationRunNumber) {
@@ -121,7 +121,7 @@ public class ExcelWriter {
 				"No. of Node",
 				"No. of Miner", 
 				"consensus Algorithm", 
-				"No. of Transactions",
+				"Total No of Transactions Per Sec",
 				"Max Block Size",
 				"Max Tx Size", 
 				"Min Tx Size", 
@@ -155,7 +155,7 @@ public class ExcelWriter {
 				"Total No. of Blocks", 
 				"Total No. of Blocks include Tx",
 				"Total No. of  Blocks without Tx",
-				"Total No of Transactions",
+				"Total No of Transactions Per Sec",
 				"Avg. No. of Tx per block",
 				"Avg. of Tx Inclusion Time (secs)",
 				"Avg. Tx Used Gas",
@@ -166,7 +166,7 @@ public class ExcelWriter {
 				"Transaction Throughput (Tx/secs)",
 				 });
 
-		df2.add(new Object[] { Statistics.getRunNumber(),
+		df2.add(new Object[] { runNumber,
 				Statistics.totalNumberOfBlock,
 				Statistics.blockIncludeTx,
 				Statistics.blockWithoutTx,
@@ -207,7 +207,7 @@ public class ExcelWriter {
 					"Transaction Throughput (Tx/secs)",
 					 });
 
-			df2.add(new Object[] { Statistics.getRunNumber(),
+			df2.add(new Object[] { runNumber,
 					Statistics.totalNumberOfBlock,
 					Statistics.blockIncludeTx,
 					Statistics.blockWithoutTx,

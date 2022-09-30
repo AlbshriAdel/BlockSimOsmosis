@@ -49,6 +49,8 @@ public class BlockIoTSimOsmosis_Example {
 	List<Vm> vmList;
 	
 	public static void main(String[] args) throws Exception {
+		for (int runCount=1 ; runCount <= InputConfig.getSimulatorRun(); runCount++) {
+
 		BlockIoTSimOsmosis_Example osmesis = new BlockIoTSimOsmosis_Example();
 		osmesis.initialOsmosisTopology();
 		
@@ -74,21 +76,11 @@ public class BlockIoTSimOsmosis_Example {
 
 		}
        
-		Statistics.calculate(1);
-		ExcelWriter.printToExcel();
-		//ExcelWriter.printToExcel();
-		System.out.println("Edge Node size:" + Node.getNodes().size());
-		for (Node n : Node.getNodes()) {
-			System.out.println("Node id : " + n.getNodeId() +"\n"+
-					"Node type : " + n.getNodeType());
-//			if (n.getNodeType().equals("leader")) {
-				System.out.println("Node tx pool size:" + n.getTransactionsPool().size());
-//				for (Transaction leader : n.getTransactionsPool() ) {
-//					System.out.println("Tx id:" + leader.getTransactionID());
-//					System.out.println("Tx creating time:" + leader.getConfirmationTime());
-//					
-//				}
-//			}
+		Statistics.calculate(runCount);
+		System.out.println("run complete " + runCount );
+		System.out.println("");
+		BlockchainController.restState();
+
 		}
 	}
 	

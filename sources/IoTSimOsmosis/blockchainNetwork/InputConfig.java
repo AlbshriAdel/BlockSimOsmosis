@@ -28,7 +28,7 @@ public class InputConfig {
 	 * 
 	 */
 	/*************To Create Transaction Parameters ************/
-	private static final int transactionNumber  = 1650; // 
+	private static int transactionNumber  = 150;//1650; // 
 	private static final double maxTXsize = 0.064; // Maximum Transaction size in MB (64KB quorum)
 	private static final double minTXsize = 0.001; // Minimum Transaction size in MB (1 KB)
 	private static final double transactionGasLimit = 100; //the maximum amount of gas units the transaction can use
@@ -57,8 +57,8 @@ public class InputConfig {
 	 * @param simulatorRun
 	 */
 	/*************To configure simulator ************/
-	private static final int simTime = 500;
-	private static final int simulatorRun= 1;
+	static int simTime = 1000;
+	private static final int simulatorRun= 2;
 	
 	
 
@@ -170,11 +170,23 @@ public class InputConfig {
 
 	/**
 	 * Return the consensus algorithm that used in the simulator
+	 * 
 	 * @return consensusAlgorithm
 	 */
-public static String getConsensusalgorithm() {
-	return consensusAlgorithm;
-}
+	public static String getConsensusalgorithm() {
+		return consensusAlgorithm;
+	}
+
+	public static void setTransactionNumber(int transactionNumber) {
+		InputConfig.transactionNumber = transactionNumber;
+	}
+	
+	public static void setSimulationTime(int simTime) {
+		InputConfig.simTime = simTime;
+	}
+
+	
+
 
 
 

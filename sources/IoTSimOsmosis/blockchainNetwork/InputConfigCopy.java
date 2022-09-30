@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class InputConfig {
+public class InputConfigCopy {
 	
 	/**
 	 * @param numberOfNodes
@@ -16,8 +16,8 @@ public class InputConfig {
 	 * (total number of nodes and miner is 5)
 	 */
 	/****************To Create Node Parameters *****************/
-	private static int numberOfNodes = 4;
-	private static int numberOfMiner = 1; 
+	private static final int numberOfNodes = 4;
+	private static final int numberOfMiner = 1; 
 														
 	/**
 	 * 
@@ -28,8 +28,7 @@ public class InputConfig {
 	 * 
 	 */
 	/*************To Create Transaction Parameters ************/
-	private static int transactionNumber  = 1650;//1650; // 
-	private static final double transactionDelay = 0.05; //average transaction propagation delay in seconds
+	private static int transactionNumber  = 750;//1650; // 
 	private static final double maxTXsize = 0.064; // Maximum Transaction size in MB (64KB quorum)
 	private static final double minTXsize = 0.001; // Minimum Transaction size in MB (1 KB)
 	private static final double transactionGasLimit = 100; //the maximum amount of gas units the transaction can use
@@ -44,7 +43,7 @@ public class InputConfig {
 	/*************To Create Block Parameters ************/
 	private static final long maxBlockSize = 1;//4194304;//4194304;
 	private static final double blockGasLimit = 1000000;//30000000;//30000000;
-	private static  double Binterval = 0.05; //12.41 raft(50ms)
+	private static final double Binterval = 0.05; //12.41 raft(50ms)
 	
 	/**
 	 * @param consensusAlgorithm : PoW and raft
@@ -59,7 +58,7 @@ public class InputConfig {
 	 */
 	/*************To configure simulator ************/
 	static int simTime = 1;
-	private static final int simulatorRun= 200;
+	private static final int simulatorRun= 2;
 	
 	
 
@@ -178,33 +177,13 @@ public class InputConfig {
 		return consensusAlgorithm;
 	}
 
-	
-	
-	public static double getTransactiondelay() {
-		return transactionDelay;
-	}
-
 	public static void setTransactionNumber(int transactionNumber) {
-		InputConfig.transactionNumber = transactionNumber;
+		InputConfigCopy.transactionNumber = transactionNumber;
 	}
 	
 	public static void setSimulationTime(int simTime) {
-		InputConfig.simTime = simTime;
+		InputConfigCopy.simTime = simTime;
 	}
-
-	public static void setNumberOfNodes(int numberOfNodes) {
-		InputConfig.numberOfNodes = numberOfNodes;
-	}
-
-	public static void setNumberOfMiner(int numberOfMiner) {
-		InputConfig.numberOfMiner = numberOfMiner;
-	}
-
-	public static void setBinterval(double binterval) {
-		Binterval = binterval;
-	}
-	
-	
 
 	
 

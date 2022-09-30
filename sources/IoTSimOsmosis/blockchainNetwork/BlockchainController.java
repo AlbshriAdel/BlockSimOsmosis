@@ -102,7 +102,7 @@ public class BlockchainController {
 		int i = 0;
 		while (i < Psize) {
 			if (countTransaction < InputConfig.getTransactionNumber()) {
-				double transactionCreatingTime = ThreadLocalRandom.current().nextDouble(minTxTime, maxTxTime);
+				double transactionCreatingTime = ThreadLocalRandom.current().nextDouble(0, maxTxTime );
 				Transaction tx = new Transaction(transactionCreatingTime);
 				for (Node n : Node.getNodes()) {
 					if (n.getNodeType().equals("leader") || n.getNodeType().equals("miner")) {

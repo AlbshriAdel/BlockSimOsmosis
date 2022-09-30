@@ -36,9 +36,7 @@ public class Block {
 		this.blockTimestamp = 0.0;
 		this.miner = null; // need to change just for test
 		this.transactions = new ArrayList<>();
-		this.blockSize = InputConfig.getMaxBlockSize(); // 1 MB
-		this.blockGas= InputConfig.getBlockGasLimit(); // 8000000
-		//this.blockUsedGas = 0;
+
 
 
 	}

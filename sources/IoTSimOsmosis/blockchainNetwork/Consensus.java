@@ -255,6 +255,7 @@ public class Consensus {
 	 */
 
 	public static double protocal() {
+//		return InputConfig.getBlockInterval();
 		return ThreadLocalRandom.current().nextDouble(0,InputConfig.getBlockInterval());
 	}
 

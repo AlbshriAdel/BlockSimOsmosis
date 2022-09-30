@@ -47,22 +47,15 @@ public class Statistics {
 		transaction();
 		transactionLatency();
 		calculateLatency();
-		overallResults();
 //		blockCreatedByMiner();
 		transactionsPool();
 		statisticResultBlockTime();
+		overallResults();
 		ExcelWriter.printToExcel(simulationRunNumber);
 		rest();
 
 	}
 
-//	public static void result() {
-//
-//		getResult().add(new Object[] { Statistics.getRunNumber(), Node.getNodes().size(), Statistics.TotalNumberOfBlock,
-//				Statistics.TotalNumberOfTx, Statistics.BlockPropagationTime, Statistics.averageLatency,
-//				Statistics.transactionsThroughput, Statistics.totalTransactionsTime });
-//
-//	}
 
 	public static void calculateLatency() {
 
@@ -92,10 +85,14 @@ public class Statistics {
 
 	private static void blockchainLedger() {
 
-		Node node = Consensus.getAassignLeader();
-		
+		Node miner=null;
+		for (Node node : Node.getNodes()) {
+			if (node.getNodeType().equals("leader")) {
+				miner=node;
+			}
+		}
 
-		Iterator<Block> iterator = node.getBlockchainLedger().iterator();
+		Iterator<Block> iterator = miner.getBlockchainLedger().iterator();
 		while (iterator.hasNext()) {
 
 			Block b = iterator.next();
@@ -130,7 +127,7 @@ public class Statistics {
 				}
 			}
 		}
-		blockPropagationTime = node.getBlockchainLedger().get(totalNumberOfBlock-1).getBlockTimestamp()/ totalNumberOfBlock;
+		blockPropagationTime = miner.getBlockchainLedger().get(totalNumberOfBlock-1).getBlockTimestamp()/ totalNumberOfBlock;
 	}
 
 	private static void globalBlockchain() {
@@ -201,6 +198,7 @@ public class Statistics {
 		Node Miner = Consensus.getAassignLeader();
 		for (Block b : Miner.getBlockchainLedger()) {
 			blockSize += b.getBlockSize();
+
 			if (b.getHasTx() == false) {
 				blockWithoutTx += 1;
 
@@ -218,6 +216,9 @@ public class Statistics {
 		}
 
 		blockSize = blockSize / totalNumberOfBlock;
+//		 System.out.print(blockSize); // test here
+		 System.out.print(" "); // test here
+		 System.out.print(totalNumberOfBlock); // test here
 		TxPerBlock = TxPerBlock / totalNumberOfBlock;
 		TxInclusionTime = TxInclusionTime / totalNumberOfTx;
 		TxUsedGas = TxUsedGas / totalNumberOfTx;

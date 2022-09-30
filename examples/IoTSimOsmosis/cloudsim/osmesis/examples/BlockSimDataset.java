@@ -58,7 +58,10 @@ public class BlockSimDataset {
 			System.out.println("run complete " + runCount );
 			System.out.println("");
 			BlockchainController.restState();
-//			InputConfig.setSimulationTime(10);
+			InputConfig.setTransactionNumber(ThreadLocalRandom.current().nextInt(1,1000));
+			InputConfig.setNumberOfNodes(ThreadLocalRandom.current().nextInt(3,16));
+			InputConfig.setBinterval(ThreadLocalRandom.current().nextDouble(0.05,0.1));
+			InputConfig.setSimulationTime(ThreadLocalRandom.current().nextInt(1,2));
 		}
 		
 

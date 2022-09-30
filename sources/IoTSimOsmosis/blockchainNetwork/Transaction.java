@@ -174,7 +174,7 @@ public class Transaction {
 	public static ArrayList<Transaction> executeTranscationsPoW(Node miner,Block block, double eventTime) {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		
-		double blockGas= block.getBlockGas();
+		double blockGas= InputConfig.getBlockGasLimit();
 		blockGaslimit = 0;
 		int count = 0;
 
@@ -202,7 +202,7 @@ public class Transaction {
 		ArrayList<Transaction> transactions = new ArrayList<>();
 		
 	
-		double blockSize= block.getBlockSize();
+		double blockSize= InputConfig.getMaxBlockSize();
 		blockSizelimit = 0;
 		int count = 0;
 
@@ -212,7 +212,8 @@ public class Transaction {
 		while (count < miner.getTransactionsPool().size()) {
 //			if (blockSize >= miner.getTransactionsPool().get(count).getTransactionSize()
 //					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime)
-			if ( miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
+			if ( blockSize >= miner.getTransactionsPool().get(count).getTransactionSize()
+					&& miner.getTransactionsPool().get(count).getCreationTime() <= eventTime) {
 				blockSize  -= miner.getTransactionsPool().get(count).getTransactionSize();
 				transactions.add(miner.getTransactionsPool().get(count));
 				miner.getTransactionsPool().get(count).setConfirmationTime(eventTime);

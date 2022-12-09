@@ -65,7 +65,7 @@ public class ExcelWriter {
 			outputStream.close();
 
 
-//			Desktop.getDesktop().open(new File("output"+fname));
+		Desktop.getDesktop().open(new File("output/"+fname));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

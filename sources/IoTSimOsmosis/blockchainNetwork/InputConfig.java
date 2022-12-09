@@ -28,7 +28,7 @@ public class InputConfig {
 	 * 
 	 */
 	/*************To Create Transaction Parameters ************/
-	private static int transactionNumber  = 1650;//1650; // 
+	private static int transactionNumber  = 299;//1650; // 
 	private static final double transactionDelay = 0.05; //average transaction propagation delay in seconds
 	private static final double maxTXsize = 0.064; // Maximum Transaction size in MB (64KB quorum)
 	private static final double minTXsize = 0.001; // Minimum Transaction size in MB (1 KB)
@@ -59,7 +59,7 @@ public class InputConfig {
 	 */
 	/*************To configure simulator ************/
 	static int simTime = 1;
-	private static final int simulatorRun= 200;
+	private static final int simulatorRun= 2;
 	
 	
 
